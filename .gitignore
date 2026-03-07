@@ -3,6 +3,19 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# .NET
+*.runtimeconfig.dev.json
+
+# VS Code
+.vscode/
+
+# Rider
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
 # User-specific files
 *.rsuser
 *.suo
