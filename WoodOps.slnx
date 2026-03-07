@@ -1,6 +1,8 @@
 <Solution>
   <Folder Name="/Solution Items/">
     <File Path="docs/42010-ArchitectureDescription.md" />
+    <File Path="docs/AI-Repository-Source.md" />
+    <File Path="docs/ChatGPT-Repository-Context.md" />
   </Folder>
   <Project Path="WoodOps.Portal/WoodOps.Portal.csproj" />
 </Solution>
