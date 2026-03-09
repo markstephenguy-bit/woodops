@@ -1,0 +1,6 @@
+@WoodOps.Host_HostAddress = http://localhost:5248
+
+GET {{WoodOps.Host_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

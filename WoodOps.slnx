@@ -3,6 +3,12 @@
     <File Path="docs/42010-ArchitectureDescription.md" />
     <File Path="docs/AI-Repository-Source.md" />
     <File Path="docs/ChatGPT-Repository-Context.md" />
+    <File Path="global.json" />
   </Folder>
-  <Project Path="WoodOps.Portal/WoodOps.Portal.csproj" />
+  <Project Path="src/WoodOps.Core/WoodOps.Core.csproj" />
+  <Project Path="src/WoodOps.Host/WoodOps.Host.csproj" />
+  <Project Path="src/WoodOps.Integrations/WoodOps.Integrations.csproj" />
+  <Project Path="src/WoodOps.Intelligence/WoodOps.Intelligence.csproj" />
+  <Project Path="src/WoodOps.Portal/WoodOps.Portal.csproj" />
+  <Project Path="src/WoodOps.Workers/WoodOps.Workers.csproj" />
 </Solution>
