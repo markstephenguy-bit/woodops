@@ -10,10 +10,8 @@
     <File Path="SOLUTION_COMPOSITION_MODEL.md" />
     <File Path="WOODOPS_CAPABILITY_FIRST_MODEL.md" />
   </Folder>
-  <Project Path="src/WoodOps.Core/WoodOps.Core.csproj" />
   <Project Path="src/WoodOps.Host/WoodOps.Host.csproj" />
-  <Project Path="src/WoodOps.Integrations/WoodOps.Integrations.csproj" />
-  <Project Path="src/WoodOps.Intelligence/WoodOps.Intelligence.csproj" />
   <Project Path="src/WoodOps.Portal/WoodOps.Portal.csproj" />
+  <Project Path="src/WoodOps.Shared/WoodOps.Shared.csproj" Id="a9097b73-5c0f-45f3-b0af-bc512b68ff5a" />
   <Project Path="src/WoodOps.Workers/WoodOps.Workers.csproj" />
 </Solution>

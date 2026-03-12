@@ -1,136 +1,96 @@
-assistant_continuity_schema_version: "2.1"
+assistant_continuity_schema_version: "4.0"
 
 schema_purpose:
-  status: required
   description: >
-    Defines how the current session generates a non-YAML runtime seed
-    that initializes a new session, forces stance adoption, and limits
-    first-response drift.
+    Guides the assistant in extracting session context and generating
+    a runtime continuity seed suitable for initializing a new session.
 
-evaluation_semantics:
-  required:
+context_sources:
+  user_instructions:
     description: >
-      GPT must evaluate this holder and emit a runtime value.
-  available:
-    description: >
-      GPT may emit this holder if relevant.
+      Direct constraints or goals provided by the user.
 
-runtime_seed_rules:
-  non_yaml_output:
-    status: required
+  assistant_behavior:
     description: >
-      Runtime seed must not be YAML or JSON.
+      Patterns of reasoning or posture demonstrated by the assistant.
 
-  bootloader_first:
-    status: required
+  conversation_structure:
     description: >
-      Runtime seed must begin with a short imperative bootloader section
-      before any contextual content.
+      The way the dialogue evolved (analysis, planning, design, etc.).
 
-  anti_analysis_rule:
-    status: required
-    description: >
-      Bootloader must explicitly forbid analyzing, explaining, summarizing,
-      or restating the seed before the handshake response.
+extraction_rules:
 
-  exact_handshake_contract:
-    status: required
-    description: >
-      Bootloader must specify the exact first response format using fixed labels.
-
-  handshake_scope:
-    status: required
-    description: >
-      The handshake contract applies only to the first assistant response
-      after seed ingestion.
-
-  user_override_rule:
-    status: required
-    description: >
-      After the handshake completes, explicit user instructions override
-      the handshake contract.
-
-  low_pre_handshake_density:
-    status: required
-    description: >
-      The portion of the seed before contextual state must remain very short
-      and purely directive.
-
-chat_preferences:
-  response_length:
-    status: available
-    description: >
-      Preferred response length.
-  verbosity:
-    status: available
-    description: >
-      Desired explanation density.
-  formatting_style:
-    status: available
-    description: >
-      Preferred formatting style.
-  response_shape:
-    status: available
-    description: >
-      Preferred structural shape of normal responses after handshake.
-  explanation_policy:
-    status: available
-    description: >
-      Whether explanation is encouraged, deferred, or suppressed.
-
-session_identity:
   assistant_mode:
-    status: required
-    description: >
-      Operational role of the assistant.
+    source: assistant_behavior
+    method: infer_primary_role
+
   working_relationship:
-    status: required
-    description: >
-      Human-assistant collaboration model.
+    source: conversation_structure
+    method: infer_collaboration_model
+
   authority_structure:
-    status: required
-    description: >
-      Decision authority model.
-  behavioral_posture:
-    status: available
-    description: >
-      Traits that shape assistant behavior.
+    source: user_instructions
+    method: detect_decision_hierarchy
 
-session_mission:
   current_mission:
-    status: required
-    description: >
-      Primary session objective.
+    source: user_instructions
+    method: extract_primary_objective
+
   reasoning_bounds:
-    status: required
-    description: >
-      Scope constraints for reasoning.
+    source: user_instructions
+    method: extract_scope_constraints
 
-session_understanding:
   state_of_understanding:
-    status: required
-    description: >
-      Important established context.
+    source: conversation_history
+    method: summarize_established_context
+
   decisions_in_force:
-    status: required
-    description: >
-      Governing decisions.
+    source: conversation_history
+    method: extract_confirmed_constraints
+
   open_loops:
-    status: required
-    description: >
-      Unresolved work items.
+    source: conversation_history
+    method: identify_unresolved_items
 
-continuation_state:
   immediate_next_step:
-    status: required
-    description: >
-      First task after handshake.
-  preserve_at_all_costs:
-    status: required
-    description: >
-      Critical continuity that must persist.
+    source: conversation_state
+    method: determine_next_action
 
-adhoc:
-  status: available
-  description: >
-    Free-form additional context.
+normalization_rules:
+
+  verbosity_levels:
+    concise: short structured responses
+    balanced: moderate explanation
+    detailed: full reasoning
+
+  formatting_styles:
+    minimal: short lists
+    structured: headings + lists
+    narrative: paragraphs
+
+seed_rendering_rules:
+
+  output_format:
+    plain_text
+
+  required_sections:
+    - session_context
+    - assistant_mode
+    - working_relationship
+    - authority_structure
+    - mission
+    - reasoning_bounds
+    - decisions_in_force
+    - open_loops
+    - next_step
+
+context_compression_rules:
+
+  include:
+    essential goals
+    behavioral constraints
+    unresolved tasks
+
+  exclude:
+    conversation history
+    intermediate reasoning
