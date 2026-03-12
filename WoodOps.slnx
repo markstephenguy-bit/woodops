@@ -1,9 +1,14 @@
 <Solution>
   <Folder Name="/Solution Items/">
+    <File Path="assistant_continuity_schema_version.yaml" />
+    <File Path="assistant_reconstitution_schema_version.yaml" />
     <File Path="docs/42010-ArchitectureDescription.md" />
     <File Path="docs/AI-Repository-Source.md" />
     <File Path="docs/ChatGPT-Repository-Context.md" />
     <File Path="global.json" />
+    <File Path="PLATFORM_CAPABILITY_MODEL.md" />
+    <File Path="SOLUTION_COMPOSITION_MODEL.md" />
+    <File Path="WOODOPS_CAPABILITY_FIRST_MODEL.md" />
   </Folder>
   <Project Path="src/WoodOps.Core/WoodOps.Core.csproj" />
   <Project Path="src/WoodOps.Host/WoodOps.Host.csproj" />

@@ -1,0 +1,136 @@
+assistant_continuity_schema_version: "2.1"
+
+schema_purpose:
+  status: required
+  description: >
+    Defines how the current session generates a non-YAML runtime seed
+    that initializes a new session, forces stance adoption, and limits
+    first-response drift.
+
+evaluation_semantics:
+  required:
+    description: >
+      GPT must evaluate this holder and emit a runtime value.
+  available:
+    description: >
+      GPT may emit this holder if relevant.
+
+runtime_seed_rules:
+  non_yaml_output:
+    status: required
+    description: >
+      Runtime seed must not be YAML or JSON.
+
+  bootloader_first:
+    status: required
+    description: >
+      Runtime seed must begin with a short imperative bootloader section
+      before any contextual content.
+
+  anti_analysis_rule:
+    status: required
+    description: >
+      Bootloader must explicitly forbid analyzing, explaining, summarizing,
+      or restating the seed before the handshake response.
+
+  exact_handshake_contract:
+    status: required
+    description: >
+      Bootloader must specify the exact first response format using fixed labels.
+
+  handshake_scope:
+    status: required
+    description: >
+      The handshake contract applies only to the first assistant response
+      after seed ingestion.
+
+  user_override_rule:
+    status: required
+    description: >
+      After the handshake completes, explicit user instructions override
+      the handshake contract.
+
+  low_pre_handshake_density:
+    status: required
+    description: >
+      The portion of the seed before contextual state must remain very short
+      and purely directive.
+
+chat_preferences:
+  response_length:
+    status: available
+    description: >
+      Preferred response length.
+  verbosity:
+    status: available
+    description: >
+      Desired explanation density.
+  formatting_style:
+    status: available
+    description: >
+      Preferred formatting style.
+  response_shape:
+    status: available
+    description: >
+      Preferred structural shape of normal responses after handshake.
+  explanation_policy:
+    status: available
+    description: >
+      Whether explanation is encouraged, deferred, or suppressed.
+
+session_identity:
+  assistant_mode:
+    status: required
+    description: >
+      Operational role of the assistant.
+  working_relationship:
+    status: required
+    description: >
+      Human-assistant collaboration model.
+  authority_structure:
+    status: required
+    description: >
+      Decision authority model.
+  behavioral_posture:
+    status: available
+    description: >
+      Traits that shape assistant behavior.
+
+session_mission:
+  current_mission:
+    status: required
+    description: >
+      Primary session objective.
+  reasoning_bounds:
+    status: required
+    description: >
+      Scope constraints for reasoning.
+
+session_understanding:
+  state_of_understanding:
+    status: required
+    description: >
+      Important established context.
+  decisions_in_force:
+    status: required
+    description: >
+      Governing decisions.
+  open_loops:
+    status: required
+    description: >
+      Unresolved work items.
+
+continuation_state:
+  immediate_next_step:
+    status: required
+    description: >
+      First task after handshake.
+  preserve_at_all_costs:
+    status: required
+    description: >
+      Critical continuity that must persist.
+
+adhoc:
+  status: available
+  description: >
+    Free-form additional context.

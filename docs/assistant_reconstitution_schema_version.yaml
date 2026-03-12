@@ -1,0 +1,267 @@
+ assistant_reconstitution_schema_version: "1.0"
+
+schema_purpose:
+  description: >
+    This schema guides the current session in generating a portable runtime
+    seed for a future session. The runtime seed is for context alignment and
+    assistant reconstitution, not for immediate task execution.
+
+artifact_model:
+  generation_artifact:
+    description: >
+      The current session uses this schema to extract and synthesize the
+      assistant state that should persist into the next session.
+  runtime_artifact:
+    description: >
+      The generated runtime seed is plain text, not YAML. It is pasted into
+      a new session to align context, posture, constraints, and continuity.
+  runtime_artifact_rule:
+    description: >
+      The runtime seed must not itself contain an executable task request.
+      It may describe open questions or likely next work, but must end in
+      a wait state for the user's next instruction.
+
+source_model:
+  explicit_user_constraints:
+    description: >
+      Preferences, rules, role boundaries, and goals directly stated by the user.
+  explicit_assistant_commitments:
+    description: >
+      Commitments or operating assumptions explicitly accepted in the session.
+  interaction_pattern:
+    description: >
+      The actual way the human and assistant collaborated in the session.
+  stabilized_context:
+    description: >
+      Context that became settled enough that it should not need re-explaining.
+  current_frontier:
+    description: >
+      The unresolved edge of the work where the next session is expected to continue.
+
+field_population_rules:
+  required:
+    description: >
+      The issuing session must evaluate and populate this field in the generated seed.
+      If a field is weakly present, use the best grounded synthesis.
+      If truly absent, render a compact "none established" form.
+  available:
+    description: >
+      The issuing session may populate this field if materially useful to reconstitution.
+      Omit if irrelevant or low-value.
+
+extraction_methods:
+  extract_verbatim:
+    description: >
+      Use direct user wording where exact phrasing is important to preserve.
+  synthesize:
+    description: >
+      Condense repeated or distributed content into a stable summary.
+  infer_from_pattern:
+    description: >
+      Infer from how the session operated, not just from explicit wording.
+  normalize:
+    description: >
+      Convert session-specific phrasing into short stable labels suitable for reuse.
+  omit_noise:
+    description: >
+      Exclude exploratory detours, discarded branches, and intermediate chatter
+      unless they materially affect future continuity.
+
+seed_rendering_rules:
+  output_format:
+    value: "plain_text"
+    description: >
+      The generated runtime seed must be plain text suitable for direct pasting.
+  tone:
+    value: "directive but non-coercive"
+    description: >
+      The runtime seed should define context and alignment, not attempt to override
+      system behavior or force protocol compliance.
+  structure:
+    value: "short labeled sections"
+    description: >
+      The runtime seed should use compact labels for readability and fast alignment.
+  task_suppression:
+    value: true
+    description: >
+      The runtime seed must not ask the new session to perform the substantive work
+      immediately. It should align context and then wait for the user's instruction.
+  response_request:
+    value: "brief acknowledgment only"
+    description: >
+      The runtime seed may ask for a brief acknowledgment that context was understood,
+      but it must not require exact response shapes or hard formatting contracts.
+  end_state:
+    value: "await user instruction"
+    description: >
+      The runtime seed should end in a non-executing wait state.
+
+seed_sections:
+
+  session_purpose:
+    status: required
+    description: >
+      What kind of session this is and what the seed is for.
+
+  assistant_mode:
+    status: required
+    description: >
+      The operational role the assistant should align to in the next session.
+
+  working_relationship:
+    status: required
+    description: >
+      How the human and assistant collaborate.
+
+  authority_structure:
+    status: required
+    description: >
+      Who sets direction and who decides.
+
+  chat_preferences:
+    status: available
+    description: >
+      User preferences for response length, formatting, structure, tone, and similar behavior.
+
+  behavioral_posture:
+    status: available
+    description: >
+      Traits that should persist, such as analytical, constraint-driven, concise, adversarial, etc.
+
+  mission:
+    status: required
+    description: >
+      The current mission or workstream being continued.
+
+  reasoning_bounds:
+    status: required
+    description: >
+      What the assistant should focus on and what it should avoid.
+
+  stabilized_context:
+    status: required
+    description: >
+      What has already been established and should not need re-derivation.
+
+  decisions_in_force:
+    status: required
+    description: >
+      Decisions, constraints, or accepted conclusions that currently govern the work.
+
+  open_loops:
+    status: required
+    description: >
+      Unresolved items or active questions that define the continuation frontier.
+
+  preserve_at_all_costs:
+    status: required
+    description: >
+      High-priority continuity items that must not be lost.
+
+  adhoc:
+    status: available
+    description: >
+      Extra session-specific context that does not fit the standard sections.
+
+  session_status:
+    status: required
+    description: >
+      Must explicitly state that context alignment is complete and the assistant should
+      wait for the user's next instruction.
+
+normalization_guidance:
+  response_length_values:
+    allowed:
+      - concise
+      - balanced
+      - detailed
+  formatting_values:
+    allowed:
+      - minimal
+      - structured
+      - narrative
+      - hybrid
+  explanation_policy_values:
+    allowed:
+      - defer_until_asked
+      - brief_by_default
+      - detailed_when_needed
+  posture_examples:
+    allowed_examples:
+      - analytical
+      - constraint-driven
+      - implementation-focused
+      - research-oriented
+      - correction-forward
+
+quality_checks:
+  no_hidden_task:
+    description: >
+      Verify the seed does not accidentally contain an instruction that causes the
+      next session to start doing the substantive work immediately.
+  no_protocol_override:
+    description: >
+      Verify the seed does not attempt to override system or developer instructions.
+  continuity_sufficiency:
+    description: >
+      Verify the seed contains enough information to restore stance and context
+      without reproducing the whole prior conversation.
+  brevity_check:
+    description: >
+      Keep only information that materially helps reconstitution.
+  portability_check:
+    description: >
+      Ensure the seed is domain-agnostic in structure even if its content is domain-specific.
+
+runtime_seed_template:
+  description: >
+    The issuing session should render the final seed in this general shape.
+
+  template: |
+    SESSION CONTEXT SEED
+
+    This seed is for context alignment and assistant reconstitution in a new session.
+    It is not a task request.
+    Please acknowledge briefly that the context is understood, then wait for my next instruction.
+
+    Session purpose:
+    <populate>
+
+    Assistant mode:
+    <populate>
+
+    Working relationship:
+    <populate>
+
+    Authority structure:
+    <populate>
+
+    Chat preferences:
+    <populate if relevant>
+
+    Behavioral posture:
+    <populate if relevant>
+
+    Mission:
+    <populate>
+
+    Reasoning bounds:
+    <populate>
+
+    Stabilized context:
+    <populate>
+
+    Decisions in force:
+    <populate>
+
+    Open loops:
+    <populate>
+
+    Preserve at all costs:
+    <populate>
+
+    Ad hoc:
+    <populate if relevant>
+
+    Session status:
+    Context aligned. Awaiting user instruction.

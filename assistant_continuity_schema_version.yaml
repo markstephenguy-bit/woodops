@@ -1,0 +1,96 @@
+assistant_continuity_schema_version: "4.0"
+
+schema_purpose:
+  description: >
+    Guides the assistant in extracting session context and generating
+    a runtime continuity seed suitable for initializing a new session.
+
+context_sources:
+  user_instructions:
+    description: >
+      Direct constraints or goals provided by the user.
+
+  assistant_behavior:
+    description: >
+      Patterns of reasoning or posture demonstrated by the assistant.
+
+  conversation_structure:
+    description: >
+      The way the dialogue evolved (analysis, planning, design, etc.).
+
+extraction_rules:
+
+  assistant_mode:
+    source: assistant_behavior
+    method: infer_primary_role
+
+  working_relationship:
+    source: conversation_structure
+    method: infer_collaboration_model
+
+  authority_structure:
+    source: user_instructions
+    method: detect_decision_hierarchy
+
+  current_mission:
+    source: user_instructions
+    method: extract_primary_objective
+
+  reasoning_bounds:
+    source: user_instructions
+    method: extract_scope_constraints
+
+  state_of_understanding:
+    source: conversation_history
+    method: summarize_established_context
+
+  decisions_in_force:
+    source: conversation_history
+    method: extract_confirmed_constraints
+
+  open_loops:
+    source: conversation_history
+    method: identify_unresolved_items
+
+  immediate_next_step:
+    source: conversation_state
+    method: determine_next_action
+
+normalization_rules:
+
+  verbosity_levels:
+    concise: short structured responses
+    balanced: moderate explanation
+    detailed: full reasoning
+
+  formatting_styles:
+    minimal: short lists
+    structured: headings + lists
+    narrative: paragraphs
+
+seed_rendering_rules:
+
+  output_format:
+    plain_text
+
+  required_sections:
+    - session_context
+    - assistant_mode
+    - working_relationship
+    - authority_structure
+    - mission
+    - reasoning_bounds
+    - decisions_in_force
+    - open_loops
+    - next_step
+
+context_compression_rules:
+
+  include:
+    essential goals
+    behavioral constraints
+    unresolved tasks
+
+  exclude:
+    conversation history
+    intermediate reasoning
