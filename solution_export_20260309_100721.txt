@@ -1,0 +1,6915 @@
+﻿=== SOLUTION EXPORT ===
+Generated: 2026-03-09 10:07:21
+Root: C:\Users\MGUY\source\repos\markstephenguy-bit\woodops
+
+=== DIRECTORY STRUCTURE ===
+
+[DIR] .github
+  [DIR] workflows
+[DIR] docs
+[DIR] src
+  [DIR] WoodOps.Core
+  [DIR] WoodOps.Host
+    [DIR] Controllers
+    [DIR] Properties
+  [DIR] WoodOps.Integrations
+  [DIR] WoodOps.Intelligence
+  [DIR] WoodOps.Portal
+    [DIR] Components
+      [DIR] Layout
+      [DIR] Pages
+    [DIR] Properties
+    [DIR] wwwroot
+  [DIR] WoodOps.Workers
+    [DIR] Properties
+
+=== FILES ===
+
+
+
+========================================
+
+FILE: .editorconfig
+
+SIZE: 114 bytes
+
+MODIFIED: 2026-03-09 05:28:38
+
+========================================
+
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 4
+end_of_line = lf
+insert_final_newline = true
+
+
+========================================
+
+FILE: .github\workflows\dotnet.yml
+
+SIZE: 384 bytes
+
+MODIFIED: 2026-03-09 05:28:38
+
+========================================
+
+name: .NET Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0.x
+
+    - name: Restore
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore
+
+
+========================================
+
+FILE: CONTRIBUTING.md
+
+SIZE: 153 bytes
+
+MODIFIED: 2026-03-09 05:28:38
+
+========================================
+
+# Contributing
+
+## Branching
+Feature branches from main.
+
+## Commit messages
+Short imperative description.
+
+## Pull Requests
+Require review before merge.
+
+
+========================================
+
+FILE: docs\42010-ArchitectureDescription.md
+
+SIZE: 9652 bytes
+
+MODIFIED: 2026-03-09 05:28:38
+
+========================================
+
+# LIGNUM — Kernel Architecture and Development Charter
+
+## Purpose of This Document
+
+This document defines the **architectural philosophy and development posture** for LIGNUM.
+
+LIGNUM is not intended to be a traditional enterprise application divided into domain modules such as:
+
+* Quality
+* Planning
+* Manufacturing
+* Analytics
+* Maintenance
+
+Those are **real-world interpretations of data**, not architectural primitives.
+
+Instead, LIGNUM is designed as a **general operational kernel** capable of hosting any type of operational work by representing information generically and allowing meaning to emerge through structure, relationships, and interpretation layers.
+
+The goal is to build a **single coherent system** capable of absorbing operational software concepts rather than implementing them as separate domain applications.
+
+---
+
+# Architectural Philosophy
+
+## The Kernel Principle
+
+LIGNUM is fundamentally a **kernel system**.
+
+A kernel system provides a set of **generic capabilities** that allow specialized behavior to emerge without those behaviors defining the architecture itself.
+
+In LIGNUM:
+
+* The kernel provides **capabilities**
+* Domain meaning exists **inside structured data**
+* Real-world interpretation is applied **after storage and interaction**
+
+Examples:
+
+A **QC inspection**, **asset care inspection**, or **production checklist** are all the same structural operation:
+
+* a document
+* with fields
+* captured via a form
+* rendered in a grid
+* associated with other records
+* validated by rules
+* optionally routed through workflow
+
+Therefore, the architecture must **not treat these as separate modules**.
+
+Instead, they must be represented as **different realizations of the same kernel capabilities**.
+
+---
+
+# The Core Architectural Insight
+
+The architecture must avoid imposing **subjective domain categories** on the system.
+
+The kernel must remain **generic and capability-driven**.
+
+Examples of incorrect architectural anchors:
+
+* Quality module
+* Maintenance module
+* Planning module
+* Knowledge module
+* Telemetry module
+
+Those are **interpretations of information**, not architectural primitives.
+
+Instead, the kernel must be organized around **capabilities that operate on structured information**.
+
+---
+
+# LIGNUM as an Operational Kernel
+
+LIGNUM is conceptually closer to systems like:
+
+* document databases
+* graph systems
+* workflow engines
+* knowledge systems
+* event stores
+
+But unified inside a single coherent platform.
+
+The system should behave like a **document and interaction kernel** that supports:
+
+* structured documents
+* relationships between documents
+* forms and grids for interaction
+* workflows and rules
+* query and analytics
+* integrations and ingestion
+* LLM-based reasoning over the system corpus
+
+The system must remain **agnostic to domain interpretation**.
+
+---
+
+# Core Structural Layers
+
+LIGNUM should be understood in four conceptual layers.
+
+---
+
+# Layer 1 — Kernel Capability Layer
+
+This layer defines **what the system can do**.
+
+It contains the core capabilities of the system.
+
+Examples include:
+
+* document storage
+* document versioning
+* relationship edges
+* schema definitions
+* form rendering
+* grid rendering
+* query execution
+* workflow orchestration
+* rule evaluation
+* event publishing
+* integration ingestion
+* attachment handling
+* audit and provenance
+* LLM query orchestration
+
+These are **system capabilities**, not business domains.
+
+---
+
+# Layer 2 — Generic Object Layer
+
+This layer defines the **types of objects the system operates on**.
+
+Examples:
+
+* document
+* edge / relationship
+* event
+* form definition
+* grid definition
+* schema definition
+* query definition
+* workflow definition
+* rule definition
+* view definition
+
+These are generic constructs that the kernel manipulates.
+
+---
+
+# Layer 3 — Envelope Layer
+
+The envelope layer introduces **structure and interpretation boundaries**.
+
+Every object in the system should exist inside an **envelope**.
+
+The envelope defines metadata such as:
+
+* identity
+* classification
+* schema
+* provenance
+* scope
+* timestamps
+* relationships
+* versioning
+* access constraints
+
+The envelope separates:
+
+* **kernel behavior**
+  from
+* **domain meaning**
+
+The kernel works with envelopes generically.
+
+The payload inside the envelope contains domain-specific information.
+
+---
+
+# Layer 4 — Domain Interpretation Layer
+
+Only at this layer does real-world meaning appear.
+
+Examples include:
+
+* QC inspection
+* asset care inspection
+* production record
+* knowledge article
+* shift report
+* telemetry observation
+* maintenance log
+
+These are **documents interpreted by schema**, not architectural constructs.
+
+They exist **within the kernel**, not as separate subsystems.
+
+---
+
+# Interaction Model
+
+Most interactions with LIGNUM will occur through **two primary interaction surfaces**:
+
+### Forms
+
+Forms allow users to:
+
+* create documents
+* edit documents
+* validate structured input
+
+Forms are defined by **schema and layout**, not by domain module.
+
+---
+
+### Grids
+
+Grids allow users to:
+
+* browse records
+* filter and sort
+* perform batch operations
+* navigate relationships
+
+Grids are projections of document collections.
+
+---
+
+# Relationships
+
+Documents must be able to connect through **edges**.
+
+Edges allow the system to represent:
+
+* references
+* hierarchies
+* dependencies
+* contextual relationships
+* evidence links
+* event lineage
+
+The system therefore behaves as a **document + graph hybrid**.
+
+---
+
+# Query and Intelligence
+
+The kernel must support:
+
+* structured queries
+* analytical projections
+* LLM-based exploration
+
+LLM queries must be able to operate over:
+
+* internal data
+* external integration data
+* knowledge documents
+* operational records
+
+The system must not differentiate these sources at the architecture level.
+
+They are simply **documents with relationships**.
+
+---
+
+# Integration Philosophy
+
+External systems must enter through **integration boundaries**.
+
+Examples:
+
+* machine telemetry
+* MES systems
+* planning systems
+* file imports
+* APIs
+* database synchronization
+
+External data must be normalized into **kernel envelopes** before becoming part of the corpus.
+
+---
+
+# Mega Monolith Strategy
+
+LIGNUM should begin as a **mega modular monolith**.
+
+This provides:
+
+* internal consistency
+* strong data integrity
+* simpler operational deployment
+* coherent architecture
+
+Microservices are not required early.
+
+The monolith should be internally structured by **capability boundaries**, not by domain modules.
+
+---
+
+# Proposed Solution Structure
+
+A starting solution structure might resemble:
+
+```
+Lignum.Portal
+Lignum.Kernel
+Lignum.Persistence
+Lignum.Integrations
+Lignum.Intelligence
+Lignum.Infrastructure
+Lignum.Tests
+docs/
+```
+
+### Lignum.Portal
+
+User interaction layer.
+
+Responsibilities:
+
+* forms
+* grids
+* dashboards
+* navigation
+* interaction workflows
+
+---
+
+### Lignum.Kernel
+
+The core operational kernel.
+
+Responsibilities:
+
+* documents
+* edges
+* schemas
+* forms
+* grids
+* queries
+* workflows
+* rules
+* events
+* provenance
+* attachments
+
+---
+
+### Lignum.Persistence
+
+Storage layer.
+
+Responsibilities:
+
+* document storage
+* edge storage
+* indexing
+* versioning
+* persistence abstractions
+
+The underlying storage technology is not mandated but must support:
+
+* document structures
+* relationship traversal
+* efficient querying
+
+---
+
+### Lignum.Integrations
+
+External connectivity.
+
+Responsibilities:
+
+* adapters
+* import pipelines
+* synchronization
+* anti-corruption layers
+
+External systems must be normalized into kernel envelopes.
+
+---
+
+### Lignum.Intelligence
+
+Advanced reasoning.
+
+Responsibilities:
+
+* LLM queries
+* knowledge retrieval
+* semantic interpretation
+* document corpus exploration
+
+---
+
+### Lignum.Infrastructure
+
+Technical services.
+
+Responsibilities:
+
+* logging
+* configuration
+* dependency injection
+* background workers
+* scheduling
+
+---
+
+# Development Strategy
+
+LIGNUM will be developed using **vertical slices**.
+
+Each slice must:
+
+* produce working functionality
+* traverse the full stack
+* leave durable structure in the kernel
+
+Slices must use existing kernel capabilities.
+
+Slices should **not create domain modules**.
+
+---
+
+# Example Slice
+
+Example: Operational inspection capture.
+
+This would involve:
+
+* defining a schema
+* rendering a form
+* storing a document
+* displaying records in a grid
+* linking related records
+
+The slice does not create a **QC module**.
+
+Instead it uses kernel capabilities.
+
+---
+
+# Architectural Guardrails
+
+The following rules must be enforced:
+
+### Rule 1 — Domain concepts must not shape the kernel
+
+The kernel is generic.
+
+### Rule 2 — Documents are the primary system object
+
+Everything becomes a document or event.
+
+### Rule 3 — Relationships are first-class
+
+Edges must exist as a core concept.
+
+### Rule 4 — Interaction surfaces are generic
+
+Forms and grids must operate generically.
+
+### Rule 5 — Integration normalizes external systems
+
+External software must translate into envelopes.
+
+---
+
+# Long-Term Vision
+
+If constructed correctly, LIGNUM becomes:
+
+* an operational system kernel
+* a knowledge corpus
+* a workflow engine
+* a document graph
+* a reasoning platform
+* an integration hub
+
+New operational software capabilities can be created or absorbed without changing the architecture.
+
+They simply introduce new document schemas and behaviors.
+
+---
+
+# Starting the Work
+
+The next project should begin by designing the **kernel primitives**, including:
+
+* document
+* envelope
+* edge
+* schema
+* form definition
+* grid definition
+* query definition
+* workflow definition
+
+These primitives will become the **irreversible foundation** of LIGNUM.
+
+All future development will grow from them.
+
+
+
+
+========================================
+
+FILE: docs\AI_BOOTSTRAP.md
+
+SIZE: 0 bytes
+
+MODIFIED: 2026-03-09 05:28:38
+
+========================================
+
+
+
+========================================
+
+FILE: docs\AI_CONTEXT.md
+
+SIZE: 4756 bytes
+
+MODIFIED: 2026-03-09 05:28:38
+
+========================================
+
+# AI_CONTEXT.md
+
+## Purpose
+
+This repository contains the source for **WoodOps**.
+
+WoodOps is an operational software platform for wood products manufacturing operations.  
+Its purpose is to support software capabilities around plant operations, process visibility, quality-related workflows, system integration, analytics, and operator or management decision support.
+
+This file exists to provide a **stable, low-maintenance context seed** for AI-assisted development.  
+It is intentionally general and should not require frequent updates as the repository evolves.
+
+---
+
+## Source of Truth
+
+When working in this repository, treat the repository itself as the authoritative source of truth.
+
+Priority order:
+
+1. actual source code
+2. architecture and design documents in `docs/`
+3. repository structure and naming patterns
+4. README and contributing guidance
+5. chat context or prior discussion
+
+If chat guidance conflicts with the repository, the repository is authoritative.
+
+---
+
+## Architectural Intent
+
+WoodOps should be treated as a structured operational platform rather than a loose collection of scripts or disconnected utilities.
+
+General architectural expectations:
+
+- separate UI concerns from business/domain logic
+- prefer incremental extension over speculative redesign
+- keep boundaries clear between application logic, infrastructure concerns, and external integrations
+- align new code with the existing repository structure and coding patterns
+- avoid introducing major frameworks or patterns unless the repository clearly supports that direction
+- prefer maintainable, explicit code over clever abstraction
+
+The repository may evolve, but AI assistance should default to **continuity with what already exists**.
+
+---
+
+## Development Expectations for AI Assistance
+
+When assisting with this repository:
+
+- inspect existing structure before proposing new structure
+- prefer extending existing projects over creating new ones without cause
+- keep recommendations implementation-oriented and repository-aligned
+- avoid speculative architecture when direct evidence is missing
+- request specific files when major design decisions depend on details not present in the prompt
+- preserve naming consistency with the repository
+- keep solutions simple unless complexity is clearly justified by the codebase
+
+When generating code:
+
+- follow existing code style and file organization
+- keep responsibilities separated
+- avoid mixing UI, domain, and infrastructure logic in one place
+- prefer small, explainable changes
+- generate code that could reasonably belong in the current repository
+
+---
+
+## Repository Guidance
+
+Useful places to inspect first:
+
+- `docs/` for architectural or development guidance
+- `README.md` for project intent and setup
+- solution and project files for actual composition
+- existing application folders for naming, layering, and conventions
+
+If a request depends on architecture, design rules, or system boundaries, consult relevant files in `docs/` first.
+
+If a request depends on implementation details, consult the existing source files first.
+
+---
+
+## Safe Default Assumptions
+
+Unless the repository clearly indicates otherwise, assume the following:
+
+- WoodOps is under active development
+- the current repository structure reflects intentional direction
+- existing names and project boundaries should be preserved
+- new capabilities should be added in a way that supports future operational growth
+- documentation may describe intent, but source code shows current reality
+- incomplete areas should be extended carefully rather than reinvented
+
+---
+
+## When More Context Is Required
+
+Ask for specific files before making major changes when needed.
+
+Examples:
+
+- architecture document for structural changes
+- project files for solution composition changes
+- existing service or component files for pattern alignment
+- README or docs content for intended usage and scope
+
+Prefer asking for **specific file paths** rather than broad repository summaries.
+
+---
+
+## AI Working Rule
+
+Default behavior:
+
+- use the repository as the baseline
+- stay aligned with existing patterns
+- make the smallest sound change that satisfies the request
+- do not invent architecture without evidence
+- do not let old chat context override current repository reality
+
+---
+
+## Practical Use in New Chats
+
+Use this repository as the source of truth for WoodOps.
+
+When helping with design or implementation:
+
+- prefer repository evidence over speculation
+- align with existing structure and code patterns
+- inspect `docs/` first for architectural guidance
+- request specific files if needed before proposing major structural changes
+
+This file is intentionally general so it remains useful without requiring maintenance for every commit.
+
+
+========================================
+
+FILE: docs\AI_INDEX.md
+
+SIZE: 5253 bytes
+
+MODIFIED: 2026-03-09 05:28:38
+
+========================================
+
+# AI_INDEX.md
+
+## Project
+
+WoodOps is an operational software platform for wood products manufacturing operations.
+
+It is intended to support capabilities such as:
+
+- operational dashboards
+- process monitoring
+- quality management
+- mill system integration
+- analytics and decision support
+
+This file provides a structured repository map for AI-assisted development.
+It should be used to realign reasoning after repository changes.
+It is not intended to document every file or every commit.
+
+---
+
+## Source of Truth Order
+
+Use this precedence order when reasoning about the system:
+
+1. implementation source code
+2. project and solution structure
+3. architecture and design documents in `docs/`
+4. repository guidance files such as `README.md` and `CONTRIBUTING.md`
+5. prior chat context
+
+If prior chat context conflicts with the repository, the repository is authoritative.
+
+---
+
+## Architectural Stance
+
+WoodOps should be treated as a structured operational platform with clear separation of responsibilities.
+
+Default expectations:
+
+- UI concerns remain separate from business and domain logic
+- infrastructure concerns remain separate from core application behavior
+- integrations with mill systems or external systems should have explicit boundaries
+- recommendations should extend the existing repository rather than redesign it without evidence
+- changes should be incremental, explainable, and consistent with repository patterns
+
+Primary architectural reference:
+
+- `docs/42010-ArchitectureDescription.md`
+
+Primary AI guidance references:
+
+- `docs/AI_CONTEXT.md`
+- `docs/AI-Repository-Source.md`
+- `docs/AI-Development-Guidelines.md`
+
+---
+
+## Repository Layout
+
+Current top-level structure should be interpreted from the repository itself.
+
+Key known areas:
+
+- `docs/` â€” architecture, AI guidance, and repository-level documentation
+- `WoodOps.Portal/` â€” Blazor-based user interface layer
+
+Other projects or folders should be interpreted according to their actual repository presence and naming.
+
+When new projects are added, this file should only be updated if their addition changes architectural reasoning.
+
+---
+
+## Project Responsibility Map
+
+### WoodOps.Portal
+Purpose:
+- user-facing web interface for interacting with the WoodOps system
+
+Expected responsibility:
+- presentation
+- UI composition
+- user workflows
+- view models / page interaction patterns as appropriate to the codebase
+
+Should avoid:
+- owning deep domain rules
+- absorbing infrastructure-specific logic
+- becoming the default place for unrelated application behavior
+
+---
+
+## Document Map
+
+Use these documents first when relevant:
+
+### `docs/42010-ArchitectureDescription.md`
+Use for:
+- system structure
+- architectural boundaries
+- major design reasoning
+- layer or component decisions
+
+### `docs/AI_CONTEXT.md`
+Use for:
+- general repository bootstrap
+- low-maintenance context refresh
+- source-of-truth behavior
+
+### `docs/AI-Repository-Source.md`
+Use for:
+- repository-first reasoning expectations
+
+### `docs/AI-Development-Guidelines.md`
+Use for:
+- development behavior
+- implementation expectations
+- consistency rules
+
+### `README.md`
+Use for:
+- project overview
+- setup intent
+- contributor orientation
+
+### `CONTRIBUTING.md`
+Use for:
+- expected contribution behavior
+- repository standards
+
+---
+
+## Current Development Shape
+
+This section should describe only high-value structural reality.
+
+Example entries:
+
+- The repository currently contains a Blazor portal as the visible application entry point.
+- Architecture documentation is maintained under `docs/`.
+- The repository should be interpreted as an evolving operational platform rather than a single-purpose application.
+- Additional layers or projects should only be inferred from the repository when they are actually present.
+
+Replace or extend these statements only when the architectural shape materially changes.
+
+---
+
+## Development Guardrails
+
+When assisting with this repository:
+
+- follow existing project boundaries
+- preserve naming consistency
+- prefer extending current code over introducing parallel structures
+- avoid speculative frameworks or abstractions
+- keep UI logic and domain logic separated
+- request specific files before proposing major structural changes when evidence is missing
+- use the smallest sound change that satisfies the request
+
+---
+
+## Expansion Points
+
+These are categories of likely future growth, not commitments:
+
+- domain and application layers
+- infrastructure and integration layers
+- plant or mill system connectors
+- quality or operational workflow modules
+- analytics and decision-support components
+
+AI assistance should not assume any specific implementation exists unless the repository shows it.
+
+---
+
+## AI Working Instructions
+
+When asked to continue work after commits:
+
+1. realign to repository structure first
+2. use this file to re-establish subsystem understanding
+3. use `docs/AI_CONTEXT.md` for stable project intent
+4. consult architecture documentation for structural questions
+5. request specific files only when implementation details are required
+
+Do not let stale chat assumptions override the current repository.
+Do not invent missing layers or services without repository evidence.
+Preserve continuity with the codebase that exists.
+
+
+========================================
+
+FILE: docs\AI-Development-Guidelines.md
+
+SIZE: 3701 bytes
+
+MODIFIED: 2026-03-09 05:28:38
+
+========================================
+
+# AI Development Guidelines
+
+This document defines how AI assistants (ChatGPT, Copilot, or similar tools) should generate code, propose changes, and reason about development within the WoodOps repository.
+
+These guidelines ensure that AI-generated contributions remain consistent with the architecture and development practices of the project.
+
+---
+
+# Repository Authority
+
+The GitHub repository is the authoritative source for:
+
+- architecture
+- project structure
+- code patterns
+- documentation
+- development conventions
+
+Repository:
+
+https://github.com/markstephenguy-bit/woodops
+
+Primary branch:
+
+main
+
+When assisting with development, AI tools should align with the current repository state.
+
+If repository information conflicts with chat discussion, **the repository should be considered authoritative**.
+
+---
+
+# Architectural Reference
+
+The system architecture follows:
+
+ISO/IEC/IEEE 42010 â€” Architecture Description
+
+Primary architecture document:
+
+docs/42010-ArchitectureDescription.md
+
+AI assistants should review this document before proposing architectural changes.
+
+---
+
+# Development Principles
+
+AI-generated code should follow these principles:
+
+## 1. Respect Existing Structure
+
+Do not introduce new project structures without considering the current layout.
+
+Existing solution:
+
+
+WoodOps.slnx
+WoodOps.Portal/
+docs/
+
+
+Future projects may be added as the system grows.
+
+---
+
+## 2. Prefer Incremental Changes
+
+AI assistants should:
+
+- modify existing code where appropriate
+- avoid large structural refactors
+- avoid introducing unnecessary frameworks
+
+Changes should be incremental and compatible with the existing system.
+
+---
+
+## 3. Follow .NET Conventions
+
+Generated code should follow common .NET conventions:
+
+- PascalCase for types
+- camelCase for variables
+- one class per file
+- clear namespace organization
+
+---
+
+## 4. Keep UI and Logic Separated
+
+The current project contains a portal UI.
+
+AI assistants should avoid embedding business logic directly inside UI components.
+
+Business logic should be isolated in services or domain objects when introduced.
+
+---
+
+## 5. Avoid Assumptions About Infrastructure
+
+Unless explicitly documented in the repository, AI assistants should not assume the presence of:
+
+- external databases
+- container infrastructure
+- cloud services
+- message buses
+
+If infrastructure is required, the assistant should ask for clarification.
+
+---
+
+# Code Generation Expectations
+
+When generating code, AI assistants should:
+
+- match the style used in existing files
+- keep implementations simple and readable
+- avoid unnecessary abstractions
+- produce compilable code
+
+Generated code should be suitable for direct inclusion in the repository.
+
+---
+
+# File Creation Guidelines
+
+New files should follow existing naming conventions.
+
+Examples:
+
+
+ServiceName.cs
+FeatureComponent.razor
+FeatureService.cs
+
+
+Avoid creating large files containing multiple unrelated classes.
+
+---
+
+# Documentation Updates
+
+If architectural or structural changes are proposed, AI assistants should recommend updating:
+
+
+docs/42010-ArchitectureDescription.md
+README.md
+
+
+to maintain accurate documentation.
+
+---
+
+# Conflict Handling
+
+If an AI assistant cannot determine the correct design from the repository contents, it should request:
+
+- the relevant source file
+- the relevant project directory
+- clarification about intended architecture
+
+before proposing changes.
+
+---
+
+# Purpose of WoodOps
+
+WoodOps is an operational software platform intended to support wood products manufacturing operations.
+
+The system will evolve to support capabilities such as:
+
+- operational dashboards
+- process monitoring
+- quality management
+- system integrations
+- analytics and decision support
+
+
+========================================
+
+FILE: docs\AI-Repository-Source.md
+
+SIZE: 2629 bytes
+
+MODIFIED: 2026-03-09 05:28:38
+
+========================================
+
+# AI Repository Source Definition
+
+This document establishes how AI assistants (ChatGPT, Copilot, or similar tools) should treat this repository when participating in development discussions.
+
+## Canonical Repository
+
+WoodOps source repository:
+
+https://github.com/markstephenguy-bit/woodops
+
+Primary development branch:
+
+main
+
+The GitHub repository is the authoritative source of truth for:
+
+- system architecture
+- project structure
+- code
+- documentation
+- development standards
+- configuration
+
+AI assistants should assume that the repository contains the most current representation of the project.
+
+## Required Behavior for AI Assistants
+
+When assisting with WoodOps development:
+
+1. Treat the GitHub repository as the primary reference for the project.
+2. Prefer repository structure and documentation over speculative designs.
+3. Align recommendations with the existing project layout.
+4. Request relevant files from the repository when architectural or implementation context is required.
+
+AI assistants should not propose structural changes without first referencing the repository contents.
+
+## Primary Architecture Reference
+
+The architecture description for the project follows:
+
+ISO/IEC/IEEE 42010 â€” Architecture Description.
+
+Primary architecture document:
+
+docs/42010-ArchitectureDescription.md
+
+All architectural discussions should align with the views and concepts defined in that document.
+
+## Key Documentation Sources
+
+When reasoning about the system, consult these files first:
+
+- docs/42010-ArchitectureDescription.md
+- README.md
+- CONTRIBUTING.md
+
+These documents describe:
+
+- system intent
+- architectural structure
+- development workflow
+- contribution expectations
+
+## Repository Structure
+
+Current high-level repository layout:
+
+
+woodops
+â”‚
+â”œâ”€â”€ docs/
+â”‚ â””â”€â”€ 42010-ArchitectureDescription.md
+â”‚
+â”œâ”€â”€ WoodOps.Portal/
+â”‚
+â”œâ”€â”€ .editorconfig
+â”œâ”€â”€ .gitignore
+â”œâ”€â”€ .gitattributes
+â”œâ”€â”€ README.md
+â”œâ”€â”€ CONTRIBUTING.md
+â””â”€â”€ WoodOps.slnx
+
+
+Additional components may be added as the system evolves.
+
+## Conflict Resolution
+
+If a discrepancy exists between:
+
+- information in a chat conversation
+- information in the repository
+
+the repository should be considered the authoritative reference.
+
+## Purpose
+
+WoodOps is an operational software platform intended to support wood products manufacturing operations.
+
+The system will evolve to include capabilities such as:
+
+- operational dashboards
+- process monitoring
+- quality management
+- system integrations
+- analytics and decision support
+
+The repository represents the evolving implementation of this system.
+
+
+========================================
+
+FILE: docs\Chat Stuff.md
+
+SIZE: 1966 bytes
+
+MODIFIED: 2026-03-09 05:28:38
+
+========================================
+
+WoodOps Continuation Seed
+You are continuing work on the WoodOps project.
+
+Repository (canonical source of truth):
+
+https://github.com/markstephenguy-bit/woodops
+
+Always assume the repository contains the most current project state.
+
+When reasoning about the system:
+
+â€¢ prefer repository documentation and structure over speculation  
+â€¢ align suggestions with existing code patterns  
+â€¢ request specific files if architectural context is needed  
+
+Primary architecture reference:
+
+docs/42010-ArchitectureDescription.md
+
+AI interaction rules:
+
+docs/AI-Repository-Source.md  
+docs/AI-Development-Guidelines.md
+
+If information in this chat conflicts with the repository, the repository is authoritative.
+
+---
+
+Project Purpose
+
+WoodOps is an operational software platform for wood products manufacturing operations.
+
+The system is intended to support capabilities such as:
+
+â€¢ operational dashboards  
+â€¢ process monitoring  
+â€¢ quality management  
+â€¢ mill system integration  
+â€¢ analytics and decision support  
+
+---
+
+Current Repository Structure
+
+woodops
+
+docs/
+  42010-ArchitectureDescription.md
+  AI-Repository-Source.md
+  AI-Development-Guidelines.md
+
+WoodOps.Portal/
+  Blazor web interface for interacting with the system
+
+.editorconfig  
+.gitignore  
+.gitattributes  
+CONTRIBUTING.md  
+README.md  
+global.json  
+WoodOps.slnx
+
+---
+
+Assistant Behavior Expectations
+
+When assisting with development:
+
+â€¢ follow existing repository structure  
+â€¢ avoid introducing speculative frameworks  
+â€¢ prefer incremental improvements  
+â€¢ keep UI and domain logic separated  
+â€¢ generate code consistent with the repository  
+
+If architectural decisions are required, refer first to the 42010 architecture document.
+
+---
+
+Continuation Instruction
+
+This chat is a continuation of earlier design discussions.  
+Maintain alignment with the repository architecture and project intent.
+
+If needed, ask for specific repository files before proposing major changes.
+
+
+========================================
+
+FILE: docs\ChatGPT-Repository-Context.md
+
+SIZE: 2837 bytes
+
+MODIFIED: 2026-03-09 05:28:38
+
+========================================
+
+# ChatGPT Repository Context
+
+This document establishes how AI assistants (ChatGPT, Copilot, etc.) should treat this repository when participating in development discussions.
+
+## Repository
+
+Canonical source:
+
+https://github.com/markstephenguy-bit/woodops
+
+Branch used for development:
+
+main
+
+The GitHub repository is the **authoritative source of truth** for:
+
+- architecture
+- project structure
+- documentation
+- code
+- configuration
+- development standards
+
+AI assistants must treat the repository contents as the primary reference when answering questions or generating code.
+
+---
+
+## AI Interaction Policy
+
+When assisting with development of **WoodOps**, the AI should follow this workflow:
+
+1. Inspect the repository structure.
+2. Read relevant files from the repository.
+3. Base all recommendations on the existing architecture.
+4. Avoid inventing structures that conflict with the repository.
+
+The assistant should prefer:
+
+- existing code patterns
+- existing project layout
+- existing documentation
+
+over speculative designs.
+
+---
+
+## Primary Documentation Sources
+
+The following files should be consulted first when reasoning about the system:
+
+
+docs/42010-ArchitectureDescription.md
+README.md
+CONTRIBUTING.md
+
+
+These documents describe:
+
+- system architecture
+- development workflow
+- project intent
+
+---
+
+## Architectural Authority
+
+The architecture description follows:
+
+ISO/IEC/IEEE 42010 â€” Architecture Description.
+
+Primary architecture file:
+
+
+docs/42010-ArchitectureDescription.md
+
+
+All system design discussions should remain consistent with this architecture description.
+
+---
+
+## Repository Structure
+
+The repository currently contains:
+
+
+woodops
+â”‚
+â”œâ”€â”€ docs/
+â”‚ â””â”€â”€ 42010-ArchitectureDescription.md
+â”‚
+â”œâ”€â”€ WoodOps.Portal/
+â”‚
+â”œâ”€â”€ .editorconfig
+â”œâ”€â”€ .gitignore
+â”œâ”€â”€ .gitattributes
+â”œâ”€â”€ README.md
+â””â”€â”€ WoodOps.slnx
+
+
+Future components may include additional services, integrations, and operational modules.
+
+---
+
+## AI Behavior Guidelines
+
+When assisting in development:
+
+The AI should:
+
+- read repository documentation first
+- align suggestions with existing architecture
+- avoid proposing unrelated frameworks or redesigns
+- treat the GitHub repository as the canonical context
+
+If repository information conflicts with chat discussion, **the repository wins**.
+
+---
+
+## Purpose of WoodOps
+
+WoodOps is an operational software platform intended to support wood products manufacturing operations.
+
+The system will evolve to include:
+
+- operational dashboards
+- process monitoring
+- quality management tools
+- integration with mill systems
+- analytics and decision support
+
+The repository is the evolving implementation of that system.
+
+---
+
+## Maintenance
+
+If repository structure or architecture changes, update this document to reflect the new authoritative sources.
+
+
+========================================
+
+FILE: docs\KERNEL_MODEL.md
+
+SIZE: 12515 bytes
+
+MODIFIED: 2026-03-09 09:25:54
+
+========================================
+
+# KERNEL_MODEL.md
+
+## Purpose
+
+This document defines the canonical kernel object model for WoodOps.
+
+It describes the generic structures that all platform components operate on.
+
+This model is intentionally **domain-agnostic**.
+
+It does not define business modules or business entities.
+Instead, it defines the generic object system that allows business meaning to emerge through:
+
+- payload
+- classification
+- provenance
+- relationships
+- projection
+- interpretation
+
+This document is the foundation for:
+
+- integrations
+- persistence
+- processing
+- projection
+- intelligence
+- portal interaction
+
+If this model is changed carelessly, the platform architecture will drift.
+
+---
+
+## Core Principle
+
+WoodOps operates on **generic kernel objects**.
+
+Conceptually:
+
+```text
+Envelope<T>
+
+Where:
+
+the envelope contains system-level context
+
+the payload contains arbitrary operational content
+
+The kernel manipulates envelopes generically.
+Business meaning is derived from the payload plus its contextual metadata.
+
+Primary Kernel Objects
+
+The platform should begin with a small number of irreducible kernel objects.
+
+These are the initial canonical object families:
+
+Envelope
+
+Edge
+
+Event
+
+Schema
+
+FormDefinition
+
+GridDefinition
+
+QueryDefinition
+
+WorkflowDefinition
+
+RuleDefinition
+
+ViewDefinition
+
+AttachmentReference
+
+Not all of these must be implemented immediately, but they are the intended kernel object space.
+
+Envelope
+
+The envelope is the primary object wrapper in WoodOps.
+
+Everything entering or being created inside the platform should ultimately be represented as an envelope or as another kernel object linked to an envelope.
+
+Conceptual structure
+Envelope<T>
+Envelope responsibilities
+
+An envelope contains the context needed for the kernel to process an object without requiring knowledge of the business meaning of the payload.
+
+Minimum conceptual fields
+Id
+Kind
+Classification
+SchemaRef
+Source
+Authority
+Scope
+CreatedAt
+ModifiedAt
+EffectiveAt
+Payload
+Provenance
+Relationships
+Annotations
+Version
+Access
+Tags
+Envelope Field Semantics
+Id
+
+A stable platform identity for the object.
+
+Purpose:
+
+unique reference
+
+relationship targeting
+
+persistence key
+
+audit traceability
+
+Kind
+
+The kernel-level type of object.
+
+Examples:
+
+Document
+
+Event
+
+Schema
+
+FormDefinition
+
+GridDefinition
+
+QueryDefinition
+
+WorkflowDefinition
+
+ViewDefinition
+
+Kind is a structural category, not a business domain.
+
+Classification
+
+A flexible classification layer used to describe interpretation.
+
+Examples:
+
+Inspection
+
+MachineState
+
+ShiftReport
+
+KnowledgeArticle
+
+TrainingRecord
+
+SensorObservation
+
+Classification is allowed to carry domain meaning.
+The kernel should not depend on specific classifications.
+
+SchemaRef
+
+Reference to the schema that governs the payload shape or interpretation.
+
+This allows domain meaning to be attached without changing kernel structure.
+
+Source
+
+The originating source of the object.
+
+Examples:
+
+MES
+
+ERP
+
+Moodle
+
+WikiJS
+
+Manual
+
+SensorGateway
+
+WoodOps
+
+Source is descriptive only.
+It must not shape kernel behavior directly.
+
+Authority
+
+Indicates which system is authoritative for the object or payload.
+
+Examples:
+
+External
+
+WoodOps
+
+Derived
+
+Mixed
+
+This matters for governance, writeback, and reconciliation.
+
+Scope
+
+Defines the contextual boundary in which the object exists.
+
+Examples:
+
+Site
+
+Mill
+
+Line
+
+Machine
+
+Team
+
+Shift
+
+Course
+
+KnowledgeDomain
+
+Scope provides contextual containment without forcing business modules.
+
+CreatedAt / ModifiedAt / EffectiveAt
+
+Timestamps describing lifecycle and temporal meaning.
+
+Use:
+
+CreatedAt for object creation
+
+ModifiedAt for last mutation
+
+EffectiveAt for domain-effective time if different
+
+Payload
+
+The actual content body.
+
+Conceptually:
+
+T
+
+Payload is intentionally unrestricted at the kernel level.
+
+Examples:
+
+JSON-like structured content
+
+normalized foreign record
+
+user-entered form content
+
+derived analysis result
+
+The payload carries operational meaning.
+The envelope carries system context.
+
+Provenance
+
+Describes how the object came to exist.
+
+Examples:
+
+imported from source system
+
+user-created in WoodOps
+
+derived by processor
+
+generated by intelligence workflow
+
+Provenance should support traceability and reasoning.
+
+Relationships
+
+A set of references or edges connecting this object to other objects.
+
+Relationships are first-class.
+They must not be treated as optional decoration.
+
+Annotations
+
+Supplementary metadata added without changing the payload.
+
+Examples:
+
+human notes
+
+AI notes
+
+processing flags
+
+review comments
+
+Annotations allow incremental enrichment.
+
+Version
+
+Represents the version of the envelope or payload.
+
+Needed for:
+
+concurrency
+
+audit
+
+historical reconstruction
+
+document evolution
+
+Access
+
+Represents access constraints or visibility metadata.
+
+Examples:
+
+role restrictions
+
+site restrictions
+
+sensitivity markers
+
+Access metadata belongs in the envelope, not in the payload.
+
+Tags
+
+Free-form or controlled tags used for search, grouping, or processing hints.
+
+Edge
+
+Edges represent first-class relationships between kernel objects.
+
+WoodOps should treat relationships as their own canonical structure, not as loose references buried in payloads.
+
+Conceptual structure
+Edge
+Minimum conceptual fields
+Id
+FromId
+ToId
+RelationshipType
+Source
+Authority
+CreatedAt
+Metadata
+Examples
+
+references
+
+derived-from
+
+attached-to
+
+belongs-to
+
+evidence-for
+
+precedes
+
+supersedes
+
+observed-at
+
+Edges allow the platform to behave as a document + graph hybrid.
+
+Event
+
+Events represent state-relevant occurrences.
+
+An event may be represented either:
+
+as an envelope with Kind = Event
+
+or as a dedicated kernel object family if needed later
+
+Early on, treat events as envelopes unless separation becomes necessary.
+
+Examples:
+
+import completed
+
+processor failed
+
+inspection submitted
+
+anomaly detected
+
+workflow advanced
+
+Schema
+
+Schemas define how payloads are expected to be structured or interpreted.
+
+Schemas are not just validation artifacts.
+They are interpretation contracts.
+
+A schema may define:
+
+fields
+
+types
+
+required structure
+
+validation rules
+
+rendering hints
+
+relationship expectations
+
+Schemas allow domain-specific meaning to be layered over kernel objects without changing kernel architecture.
+
+FormDefinition
+
+Defines how a schema-backed object is captured or edited through UI.
+
+A form definition should be generic.
+
+It may define:
+
+layout
+
+sections
+
+controls
+
+labels
+
+validation bindings
+
+visibility rules
+
+Forms are not business modules.
+They are generic interaction artifacts.
+
+GridDefinition
+
+Defines how object collections are displayed and interacted with.
+
+A grid definition may define:
+
+columns
+
+sort behavior
+
+filters
+
+grouping
+
+batch actions
+
+linked navigation behavior
+
+Grids are generic interaction surfaces over envelopes.
+
+QueryDefinition
+
+Represents a reusable query contract over kernel objects.
+
+A query definition may describe:
+
+filter logic
+
+scope restrictions
+
+classification filters
+
+relationship traversal
+
+sort/group behavior
+
+projection targets
+
+This allows queries to be stored and reused as kernel objects.
+
+WorkflowDefinition
+
+Represents a generic workflow over kernel objects.
+
+A workflow should not be tied to a business module.
+
+It may define:
+
+states
+
+transitions
+
+triggers
+
+approvals
+
+routing behavior
+
+automation hooks
+
+RuleDefinition
+
+Represents reusable rules that can be applied to objects, forms, workflows, or processing pipelines.
+
+Examples:
+
+validation rule
+
+routing rule
+
+escalation rule
+
+derivation rule
+
+Rules must remain generic and declarative where possible.
+
+ViewDefinition
+
+Represents a derived view over envelopes and edges.
+
+A view may describe:
+
+dashboard composition
+
+grouped projections
+
+filtered subsets
+
+analytical arrangements
+
+operational summaries
+
+Business-facing capabilities often emerge through view definitions.
+
+AttachmentReference
+
+Represents an attachment linked to an object without embedding binary content in the envelope.
+
+Examples:
+
+file link
+
+image reference
+
+document storage pointer
+
+external blob identifier
+
+Interpretation Layers
+
+The kernel model supports four distinct layers of meaning.
+
+Layer 1 â€” Kernel Object
+
+The structural object type.
+
+Examples:
+
+Envelope
+
+Edge
+
+Schema
+
+QueryDefinition
+
+Layer 2 â€” Classification
+
+The interpreted class of content.
+
+Examples:
+
+Inspection
+
+ShiftReport
+
+KnowledgeArticle
+
+Observation
+
+Layer 3 â€” Payload
+
+The actual operational content.
+
+Layer 4 â€” Projection
+
+A business-facing arrangement or view of the object.
+
+This separation prevents business functions from becoming architecture.
+
+Authority Model
+
+Every object should carry authority semantics.
+
+Authority answers:
+
+who owns truth
+
+who may edit
+
+whether WoodOps may write back
+
+whether the object is external, internal, or derived
+
+Suggested authority categories:
+
+External
+
+WoodOps
+
+Derived
+
+Mixed
+
+This should be formalized early because it affects persistence and reconciliation.
+
+Provenance Model
+
+Every important object should be traceable.
+
+Provenance should describe:
+
+origin system
+
+origin identifier
+
+import method
+
+processor chain
+
+derivation lineage
+
+actor if user-created
+
+timestamp trail
+
+This is critical for trust, reconciliation, and AI reasoning.
+
+Relationship Model
+
+Relationships are first-class and should support:
+
+references
+
+hierarchy
+
+lineage
+
+evidence
+
+contextual linkage
+
+dependency
+
+Payloads may contain lightweight references, but canonical relationships should be materializable as edges.
+
+Persistence Guidance
+
+Persistence must preserve:
+
+envelope metadata
+
+payload
+
+relationships
+
+version history
+
+provenance
+
+access metadata
+
+The persistence layer should not force business-specific table shapes before the kernel object model is stable.
+
+Processing Guidance
+
+Processing should operate generically on kernel objects.
+
+Typical processing actions:
+
+normalize
+
+enrich
+
+derive
+
+validate
+
+classify
+
+relate
+
+project
+
+Processors should not require domain-specific architecture.
+
+Projection Guidance
+
+Projections are business-facing arrangements of kernel objects.
+
+Examples:
+
+quality dashboard
+
+operational queue
+
+shift summary
+
+reconciliation view
+
+knowledge browser
+
+These are not architectural primitives.
+They are derived views over generic objects.
+
+Integration Guidance
+
+External systems must translate foreign data into kernel objects.
+
+The integration boundary must output:
+
+envelopes
+
+edges
+
+optional schema references
+
+provenance metadata
+
+Integrations must not introduce foreign system structures directly into the kernel.
+
+Intelligence Guidance
+
+Intelligence services should consume and enrich kernel objects.
+
+They may:
+
+classify envelopes
+
+generate annotations
+
+summarize payloads
+
+infer relationships
+
+assist query and view generation
+
+But they must not redefine kernel structure.
+
+Initial Implementation Priority
+
+The first implementation work should focus on the following primitives:
+
+Envelope
+
+Edge
+
+Provenance
+
+Classification
+
+SchemaRef
+
+Version
+
+AttachmentReference
+
+These are the minimum irreversible kernel decisions.
+
+Guardrails
+
+The following rules must be enforced:
+
+Rule 1
+
+Do not create business entities as kernel primitives.
+
+Rule 2
+
+Everything meaningful should become an envelope, edge, or other kernel object.
+
+Rule 3
+
+Relationships are first-class.
+
+Rule 4
+
+External systems must normalize into kernel objects.
+
+Rule 5
+
+Business capabilities emerge through processing and projection, not architecture.
+
+Summary
+
+WoodOps is built on a generic kernel object model.
+
+The central mechanism is:
+
+Envelope<T>
+
+The envelope carries:
+
+system context
+
+provenance
+
+authority
+
+relationships
+
+access semantics
+
+The payload carries:
+
+operational meaning
+
+Everything else in the platform is built by operating on these generic kernel objects.
+
+
+========================================
+
+FILE: docs\MASTER_PLAN.md
+
+SIZE: 12013 bytes
+
+MODIFIED: 2026-03-09 05:28:38
+
+========================================
+
+# MASTER_PLAN.md
+
+## Purpose
+
+This document is the working master plan for the early development of WoodOps.
+
+It exists to guide greenfield development before the system has matured enough for detailed roadmaps, stable domain boundaries, or extensive project decomposition.
+
+This file should help answer:
+
+- what WoodOps is intended to become
+- what problem space it serves
+- how early work should be prioritized
+- what constraints should govern decisions
+- what has been decided
+- what remains intentionally open
+
+This document is expected to be appended over time.
+Earlier entries are part of the historical reasoning trail.
+Newer entries may refine direction, but should not silently erase prior intent.
+
+---
+
+## Role of WoodOps
+
+WoodOps is a lightweight operational application platform for wood products manufacturing operations.
+
+It is intended to fill ad hoc and underserved needs that are not well handled by existing enterprise systems.
+
+WoodOps is not the system of record for the major business domains already covered by enterprise platforms.
+
+Instead, it provides targeted applications, utilities, workflows, and decision-support tools that can integrate with those systems where needed.
+
+---
+
+## Existing Enterprise System Context
+
+WoodOps exists alongside established systems such as:
+
+- MES
+- ERP
+- O365 suite
+- CMMS
+- vendor or machine-specific systems
+- plant databases and exports
+
+These systems remain authoritative in their own domains.
+
+WoodOps should integrate with them when useful, but should not casually duplicate their responsibilities.
+
+### Authority boundaries
+
+Typical default understanding:
+
+- MES is authoritative for production execution and plant operational state where implemented
+- ERP is authoritative for business, inventory, and planning functions
+- CMMS is authoritative for maintenance management
+- O365 is authoritative for collaboration, forms, and general office workflows
+- vendor systems are authoritative for their specialized machine or process areas unless replaced deliberately
+
+WoodOps should only take on responsibility where there is a clear operational gap, integration need, engineering need, or custom utility need.
+
+---
+
+## What WoodOps Is Not
+
+WoodOps should not begin by trying to become:
+
+- a replacement MES
+- a replacement ERP
+- a replacement CMMS
+- a generic workflow engine
+- a large internal framework without proven need
+- a speculative platform built ahead of real use cases
+
+If the system starts absorbing broad responsibilities already owned elsewhere, that is architectural drift and should be challenged directly.
+
+---
+
+## Greenfield Development Posture
+
+Early development should be disciplined by the following principles:
+
+1. Build for real operational gaps
+2. Prefer narrow useful tools over broad speculative platforms
+3. Keep integration boundaries explicit
+4. Keep UI, application logic, and integration concerns separate
+5. Preserve the ability to grow without forcing premature architecture
+6. Let real use cases reveal reusable patterns
+7. Promote stable patterns only after repetition proves them necessary
+
+WoodOps should start as a small number of well-aimed capabilities, not as a theoretical enterprise platform.
+
+---
+
+## Initial Strategic Objective
+
+The first stage of WoodOps should establish a stable base for building operational tools that:
+
+- solve real ad hoc problems
+- integrate with existing systems when needed
+- can be delivered quickly
+- do not create uncontrolled architectural debt
+- can accumulate into a coherent platform over time
+
+The early objective is not scale for its own sake.
+The objective is disciplined usefulness.
+
+---
+
+## Early Success Criteria
+
+WoodOps is succeeding in the early stage if it can do the following:
+
+- host one or more useful operational tools
+- connect to external systems in a controlled way
+- avoid duplicating enterprise responsibilities
+- maintain a clean enough structure that new tools do not become chaos
+- support incremental extension without major rewrites
+- preserve enough architectural clarity for later formalization
+
+---
+
+## First Principles for Prioritization
+
+When deciding whether WoodOps should own a capability, prefer work that meets one or more of these conditions:
+
+- existing enterprise systems do not solve it well
+- the solution is highly site-specific or process-specific
+- the need is urgent but too small for enterprise prioritization
+- the work mainly requires integration, visibility, or light workflow support
+- the users are operational, engineering, quality, or technical support roles needing focused tools
+- the solution can be built and validated incrementally
+
+Avoid work that primarily belongs in another enterprise platform unless WoodOps is serving only as a bridge, view, or utility layer.
+
+---
+
+## Initial Architectural Intent
+
+At the beginning, WoodOps should be developed as a small application platform with clear internal boundaries.
+
+The exact project structure should remain aligned with the repository and architecture documentation, but the conceptual model should remain close to:
+
+- host application / portal
+- shared tool surface
+- integration boundary
+- common supporting services
+- optional lightweight persistence where needed
+
+The architecture should support multiple tools without requiring every tool to become its own separate system.
+
+At the same time, the architecture should avoid over-centralizing logic into one uncontrolled application layer.
+
+---
+
+## Tool-First Development Model
+
+WoodOps should initially grow through tools or capabilities that are:
+
+- operationally meaningful
+- bounded in scope
+- integration-aware
+- independently understandable
+- valuable on their own
+
+Each tool should answer:
+
+- what operational problem it solves
+- who uses it
+- what systems it reads from
+- what systems it writes to, if any
+- what data it owns, if any
+- what system remains authoritative for the underlying domain
+
+A tool should not be added unless these points can be stated clearly.
+
+---
+
+## Integration Philosophy
+
+Integration should be treated as a first-class concern.
+
+WoodOps will often be valuable because it can connect systems that do not naturally work together in the way operations or engineering needs.
+
+Integration design expectations:
+
+- external system boundaries should be explicit
+- adapters/connectors should not silently absorb business rules
+- the authoritative source for each data element should be understood
+- local caching or persistence should be justified, not assumed
+- writeback behavior should be deliberate and constrained
+- temporary imports and exports should still be designed cleanly
+
+---
+
+## Data Ownership Guidance
+
+Before storing or generating data in WoodOps, determine which category applies:
+
+### External authoritative data
+Data owned by MES, ERP, CMMS, O365, or a vendor system.
+WoodOps may read, transform, display, correlate, or lightly annotate it, but should not silently become the new source of truth.
+
+### WoodOps-managed operational data
+Data that exists only because WoodOps provides a capability not covered elsewhere.
+Examples may include tool settings, user annotations, derived analysis state, reconciliation state, or workflow support records.
+
+### Derived data
+Computed results, views, alerts, rollups, correlations, and diagnostics created by WoodOps from external or mixed sources.
+
+The category should be understood early for each feature.
+
+---
+
+## Early Repository Working Rules
+
+Until the architecture matures further, early repository work should follow these rules:
+
+- prefer incremental additions over structural churn
+- keep responsibilities separated
+- do not introduce large frameworks without repeated evidence of need
+- use repository documentation as the authoritative reference
+- preserve naming consistency
+- keep tools understandable and independently testable
+- document important architectural decisions when they change the project direction
+
+---
+
+## Recommended Early Work Sequence
+
+### Stage 1 â€” Establish working baseline
+- confirm the repository builds and runs
+- confirm the portal or host application is the usable starting shell
+- confirm current architecture documents and AI guidance documents are in place
+
+### Stage 2 â€” Define the first real tool candidates
+For each candidate, capture:
+- problem
+- users
+- source systems
+- outputs
+- authority boundaries
+- expected value
+
+### Stage 3 â€” Establish integration pattern
+Define how WoodOps will connect to:
+- databases
+- APIs
+- files
+- manual input
+- background jobs if needed
+
+This should be simple and explicit.
+
+### Stage 4 â€” Build the first tool end-to-end
+Choose one bounded operational need and implement it fully enough to validate:
+- host structure
+- integration pattern
+- deployment approach
+- maintainability of the code organization
+
+### Stage 5 â€” Generalize only where repetition exists
+After one or two tools exist, identify repeated patterns and promote only those into shared abstractions.
+
+---
+
+## Candidate Early Tool Types
+
+These are categories, not commitments:
+
+- engineering analysis tools
+- process troubleshooting dashboards
+- quality investigation utilities
+- ad hoc operational reporting tools
+- reconciliation or exception tracking tools
+- data extraction and transformation utilities
+- visibility layers over existing system data
+- targeted workflow aids for operational gaps
+
+A candidate is stronger if it solves a clear pain point without overlapping heavily with enterprise system ownership.
+
+---
+
+## Decision Filter for New Work
+
+Before starting a new feature or tool, answer:
+
+1. What exact problem is being solved?
+2. Who is the user?
+3. Why is this not already best handled in MES, ERP, CMMS, O365, or the vendor system?
+4. What systems must WoodOps integrate with?
+5. What data is authoritative externally?
+6. What data, if any, will WoodOps own?
+7. Is this a one-off utility, a reusable capability, or the start of a broader module?
+8. What is the smallest useful version?
+
+If these questions cannot be answered, the work is not yet ready.
+
+---
+
+## Architectural Guardrails
+
+The following should be challenged immediately if they appear:
+
+- WoodOps taking ownership of major domains already covered elsewhere
+- portal/UI code absorbing deep operational logic
+- integration adapters becoming unbounded business logic containers
+- speculative abstractions created before repeated need
+- storing large replicated copies of enterprise data without clear purpose
+- building a framework before proving real tool demand
+- broad platform language without an actual operational use case behind it
+
+---
+
+## Open Questions
+
+This section should be appended as real uncertainty becomes visible.
+
+Examples:
+- What kinds of operational tools are expected most often?
+- Will most tools be read-only, read-mostly, or transactional?
+- Is there a preferred deployment target for the earliest usable versions?
+- What authentication and authorization assumptions should govern early internal use?
+- What degree of shared UI shell should tools have?
+- What degree of local persistence is justified in phase 1?
+
+Do not force answers too early.
+Capture the questions and resolve them when evidence exists.
+
+---
+
+## Decisions Log
+
+Append decisions here in compact form.
+
+### Decision template
+
+- Date:
+- Topic:
+- Decision:
+- Reason:
+- Impact:
+
+### Entries
+
+- Date:
+- Topic:
+- Decision:
+- Reason:
+- Impact:
+
+---
+
+## Near-Term Plan
+
+This section should reflect the current working horizon only.
+
+Initial near-term intent:
+
+- establish the repository baseline
+- define the first real tool candidates
+- choose one bounded tool for first implementation
+- establish the minimum integration pattern needed to support that tool
+- validate that WoodOps can host and deliver small operational capabilities cleanly
+
+This section can be revised as work progresses.
+
+---
+
+## Append-Only Working Notes
+
+Use this section for short planning increments that should remain part of the reasoning trail.
+
+### Entry template
+
+- Date:
+- Context:
+- Observation:
+- Action:
+- Follow-up:
+
+
+
+========================================
+
+FILE: docs\OBJECT_ENVELOPE_SPEC.md
+
+SIZE: 7314 bytes
+
+MODIFIED: 2026-03-09 10:02:14
+
+========================================
+
+# OBJECT_ENVELOPE_SPEC.md
+
+## Purpose
+
+This document defines the **canonical envelope structure** used throughout the WoodOps platform.
+
+All operational data entering, created within, or derived by the platform must ultimately be represented as an **Envelope**.
+
+The envelope provides system context around arbitrary payload data.
+
+Conceptually:
+
+Envelope<T>
+
+The envelope is responsible for:
+
+- identity
+- provenance
+- authority
+- classification
+- relationships
+- access control
+- versioning
+- temporal semantics
+
+The payload contains the operational content.
+
+The envelope contains the **platform context required to safely operate on that content**.
+
+---
+
+# Canonical Envelope Structure
+
+Minimum conceptual structure:
+
+
+Envelope
+{
+Id
+Kind
+Classification
+SchemaRef
+Source
+Authority
+Scope
+CreatedAt
+ModifiedAt
+EffectiveAt
+Payload
+Provenance
+Relationships
+Annotations
+Version
+Access
+Tags
+}
+
+
+This structure must remain stable once platform persistence begins.
+
+---
+
+# Envelope Field Definitions
+
+## Id
+
+Unique identifier for the object.
+
+Requirements:
+
+- globally unique
+- stable for object lifetime
+- suitable for persistence key
+- suitable for relationship targeting
+
+Recommended implementation:
+
+
+GUID / ULID
+
+
+Id must never be reused.
+
+---
+
+## Kind
+
+Defines the structural category of the object.
+
+Examples:
+
+
+Document
+Event
+Schema
+FormDefinition
+GridDefinition
+QueryDefinition
+WorkflowDefinition
+ViewDefinition
+AttachmentReference
+
+
+Kind determines how the platform treats the object structurally.
+
+Kind is **not business domain meaning**.
+
+---
+
+## Classification
+
+Classification expresses domain interpretation.
+
+Examples:
+
+
+Inspection
+ShiftReport
+MachineObservation
+QualityFinding
+KnowledgeArticle
+TrainingRecord
+OperationalEvent
+
+
+Classification is flexible and may evolve.
+
+The kernel must not depend on specific classification values.
+
+---
+
+## SchemaRef
+
+Reference to the schema that governs payload structure.
+
+Purpose:
+
+- validation
+- interpretation
+- UI rendering
+- transformation
+
+Example reference formats:
+
+
+schema://inspection/v1
+schema://machine-observation/v2
+schema://knowledge-article/v1
+
+
+Schemas should themselves exist as kernel objects.
+
+---
+
+## Source
+
+Indicates the originating system.
+
+Examples:
+
+
+MES
+ERP
+CMMS
+PLC
+FileImport
+SensorGateway
+ManualEntry
+WoodOps
+
+
+Source is informational.
+
+It must not affect kernel processing rules.
+
+---
+
+## Authority
+
+Indicates the authoritative system for the object.
+
+Values:
+
+
+External
+WoodOps
+Derived
+Mixed
+
+
+Authority determines:
+
+- whether the object may be edited
+- whether synchronization is required
+- whether reconciliation is needed
+
+---
+
+## Scope
+
+Defines the contextual boundary in which the object exists.
+
+Examples:
+
+
+Site
+Mill
+Line
+Machine
+Shift
+Team
+Department
+KnowledgeDomain
+Course
+
+
+Scope allows grouping without enforcing rigid domain models.
+
+---
+
+## CreatedAt
+
+Timestamp representing object creation.
+
+This represents **platform creation**, not necessarily source creation.
+
+---
+
+## ModifiedAt
+
+Timestamp representing the last mutation of the envelope.
+
+Used for:
+
+- synchronization
+- caching
+- projections
+
+---
+
+## EffectiveAt
+
+Domain-effective timestamp.
+
+Examples:
+
+- inspection time
+- machine observation time
+- report time
+
+EffectiveAt allows temporal interpretation independent of ingestion time.
+
+---
+
+## Payload
+
+The operational content.
+
+Conceptually:
+
+
+T
+
+
+Payload should normally be represented as structured JSON-like data.
+
+The kernel must treat payload as opaque.
+
+Examples:
+
+Inspection payload
+
+
+{
+inspector: "A. Smith",
+boardCount: 250,
+defectsObserved: 3
+}
+
+
+Sensor observation payload
+
+
+{
+sensorId: "MM-102",
+moisture: 17.2,
+temperature: 98.1
+}
+
+
+---
+
+## Provenance
+
+Provenance describes **how the object came to exist**.
+
+Example structure:
+
+
+Provenance
+{
+OriginSystem
+OriginIdentifier
+ImportMethod
+ProcessorChain
+Actor
+ImportedAt
+}
+
+
+Provenance must support full traceability.
+
+This is critical for:
+
+- audit
+- reconciliation
+- AI reasoning
+
+---
+
+## Relationships
+
+References to related objects.
+
+Relationships should normally be materialized through **Edges**.
+
+Example references:
+
+
+belongs-to
+attached-to
+derived-from
+evidence-for
+observed-at
+precedes
+supersedes
+
+
+Relationships must remain first-class.
+
+Do not bury relationships inside payloads.
+
+---
+
+## Annotations
+
+Supplemental metadata that does not alter payload.
+
+Examples:
+
+
+human review notes
+AI summaries
+processing flags
+review comments
+classification hints
+
+
+Annotations allow incremental enrichment without payload mutation.
+
+---
+
+## Version
+
+Envelope version.
+
+Purpose:
+
+- concurrency control
+- audit history
+- document evolution
+
+Version should increment when the envelope or payload changes.
+
+---
+
+## Access
+
+Access metadata describing visibility and permissions.
+
+Examples:
+
+
+roles allowed
+site restrictions
+sensitivity markers
+classification security
+
+
+Access rules should be interpreted by the Host security layer.
+
+---
+
+## Tags
+
+Free-form labels used for grouping and discovery.
+
+Examples:
+
+
+kiln
+inspection
+shift-report
+training
+safety
+maintenance
+
+
+Tags should not replace classification.
+
+---
+
+# Envelope Lifecycle
+
+Typical lifecycle:
+
+
+Acquire
+Normalize
+Create Envelope
+Persist
+Process
+Enrich
+Relate
+Project
+Consume
+
+
+Envelopes may evolve through processing pipelines but should retain identity.
+
+---
+
+# Envelope Creation Sources
+
+Envelopes may originate from several sources.
+
+## Integration
+
+External systems.
+
+Examples:
+
+
+MES
+ERP
+CMMS
+PLC
+Files
+
+
+---
+
+## User Interaction
+
+Objects created through forms in the portal.
+
+Examples:
+
+
+inspection forms
+shift notes
+quality findings
+knowledge entries
+
+
+---
+
+## Derived Processing
+
+Objects generated through processing pipelines.
+
+Examples:
+
+
+analysis results
+aggregations
+alerts
+AI interpretations
+
+
+Authority should typically be **Derived**.
+
+---
+
+# Persistence Guidance
+
+Persistence systems must store:
+
+
+Envelope metadata
+Payload
+Provenance
+Relationships
+Access metadata
+Version history
+
+
+Persistence technology is intentionally not mandated by this specification.
+
+---
+
+# Design Constraints
+
+The envelope structure must obey several rules.
+
+## Rule 1
+
+Envelope structure must remain **small and stable**.
+
+## Rule 2
+
+Domain meaning belongs in **classification and payload**, not the kernel.
+
+## Rule 3
+
+Relationships must be first-class.
+
+## Rule 4
+
+External systems must normalize into envelopes.
+
+## Rule 5
+
+Business capabilities emerge from **processing and projection**, not envelope specialization.
+
+---
+
+# Summary
+
+The Envelope is the fundamental object of the WoodOps platform.
+
+Conceptually:
+
+
+Envelope<T>
+
+
+The envelope provides:
+
+- identity
+- provenance
+- authority
+- context
+- relationships
+- access control
+
+The payload carries operational meaning.
+
+All platform processing operates on envelopes and their relationships.
+
+
+========================================
+
+FILE: docs\PLATFORM_CONTEXT.md
+
+SIZE: 6495 bytes
+
+MODIFIED: 2026-03-09 09:04:54
+
+========================================
+
+# PLATFORM_CONTEXT.md
+
+## Platform
+WoodOps
+
+---
+
+## Purpose
+
+WoodOps is a **generic operational platform** designed to fill capability gaps that exist outside established enterprise systems.
+
+Typical enterprise environments already contain systems such as:
+
+â€¢ MES  
+â€¢ ERP  
+â€¢ CMMS  
+â€¢ O365 collaboration tools  
+â€¢ learning systems  
+â€¢ knowledge systems  
+â€¢ analytics platforms  
+
+These systems solve important problems but leave **integration gaps, workflow gaps, insight gaps, and operational tooling gaps**.
+
+WoodOps exists to fill those gaps.
+
+It does **not replace existing enterprise systems**.  
+Instead, it connects to them and builds capabilities on top of them.
+
+---
+
+## Architectural Philosophy
+
+WoodOps is built as a **generic capability platform**, not a domain application.
+
+The platform does not define business modules such as:
+
+â€¢ MES module  
+â€¢ QMS module  
+â€¢ LMS module  
+â€¢ document module  
+
+Instead, the platform operates on **generic operational objects** and allows capabilities to emerge from how those objects are processed and viewed.
+
+Business functions are therefore **views over generic structures**, not separate systems.
+
+---
+
+## Core Idea: Generic Objects
+
+The platform operates on **generic envelopes of data** rather than domain-specific entities.
+
+Conceptually this resembles:
+
+
+Envelope<T>
+
+
+Where `T` represents arbitrary operational content.
+
+The envelope provides context such as:
+
+â€¢ identity  
+â€¢ provenance  
+â€¢ timestamps  
+â€¢ relationships  
+â€¢ classification  
+â€¢ metadata  
+
+The payload (`T`) contains the specific content.
+
+Because the envelope structure is generic, the platform can represent:
+
+â€¢ MES records  
+â€¢ documents  
+â€¢ training materials  
+â€¢ logs  
+â€¢ sensor measurements  
+â€¢ operational notes  
+â€¢ inspection results  
+â€¢ analytical results  
+â€¢ AI outputs  
+
+without requiring different system modules.
+
+---
+
+## External Systems
+
+External systems remain the **authoritative source** for their own domains.
+
+Examples include:
+
+â€¢ MES systems  
+â€¢ ERP systems  
+â€¢ Moodle  
+â€¢ Wiki.js  
+â€¢ analytics tools such as Superset  
+â€¢ file systems  
+â€¢ APIs  
+â€¢ databases  
+
+WoodOps connects to these systems through **integration adapters**.
+
+External data is translated into the platform's generic structures so it can be processed uniformly.
+
+This allows the platform to work with many systems without embedding their semantics into the core architecture.
+
+---
+
+## Capability Emergence
+
+Capabilities inside WoodOps arise from combinations of:
+
+â€¢ integrations  
+â€¢ processing pipelines  
+â€¢ projections  
+â€¢ intelligence layers  
+â€¢ user interfaces  
+
+For example:
+
+A capability such as *quality inspection tracking* might emerge from:
+
+
+inspection data (integration)
+â†’ normalized envelopes
+â†’ processing pipeline
+â†’ projection
+â†’ portal dashboard
+
+
+No dedicated "inspection module" is required.
+
+Capabilities are **constructed**, not predefined.
+
+---
+
+## Platform Components
+
+The platform is composed of several major architectural layers.
+
+### Kernel Layer
+
+The kernel defines the generic structures and processing mechanisms used across the platform.
+
+Project:
+
+
+WoodOps.Core
+
+
+Responsibilities include:
+
+â€¢ canonical model structures  
+â€¢ processing primitives  
+â€¢ projections  
+â€¢ configuration  
+â€¢ security primitives  
+â€¢ observability hooks  
+
+The kernel must remain **generic and domain-agnostic**.
+
+---
+
+### Runtime Hosts
+
+Executable projects that run the platform.
+
+
+WoodOps.Host
+WoodOps.Workers
+WoodOps.Portal
+
+
+Roles:
+
+Host
+
+â€¢ API surface
+â€¢ runtime composition
+â€¢ platform entry point
+
+Workers
+
+â€¢ background processing
+â€¢ ingestion pipelines
+â€¢ scheduled jobs
+
+Portal
+
+â€¢ user interface
+â€¢ dashboards
+â€¢ operational interaction
+
+---
+
+### Integration Layer
+
+The integration layer connects the platform to external systems.
+
+Project:
+
+
+WoodOps.Integrations
+
+
+Responsibilities include:
+
+â€¢ communicating with external systems  
+â€¢ retrieving and submitting data  
+â€¢ translating foreign payloads  
+â€¢ protecting the kernel from external semantics  
+
+External systems are always translated into **platform objects** before further processing.
+
+---
+
+### Intelligence Layer
+
+The intelligence layer enables reasoning and enrichment capabilities.
+
+Project:
+
+
+WoodOps.Intelligence
+
+
+Responsibilities include:
+
+â€¢ LLM orchestration  
+â€¢ semantic analysis  
+â€¢ retrieval pipelines  
+â€¢ knowledge enrichment  
+â€¢ AI-assisted workflows  
+
+This layer operates on platform objects but does not define them.
+
+---
+
+## Platform Boundary
+
+A critical rule of the platform:
+
+External systems must **never directly influence kernel architecture**.
+
+All external data must pass through the integration boundary where it is translated into generic platform structures.
+
+This protects the platform from coupling to specific vendors or technologies.
+
+---
+
+## Capability Hosting
+
+WoodOps acts as a **capability host**.
+
+When an operational gap is discovered, a capability can be implemented using the platform.
+
+Examples might include:
+
+â€¢ operational dashboards  
+â€¢ inspection workflows  
+â€¢ anomaly detection tools  
+â€¢ knowledge discovery tools  
+â€¢ integration bridges between systems  
+
+These capabilities should always be constructed using the platform primitives rather than adding new system modules.
+
+---
+
+## Long-Term Goal
+
+The long-term goal of WoodOps is to provide a **flexible operational substrate** capable of supporting any capability required by wood products manufacturing operations.
+
+The system should allow new capabilities to be built quickly without requiring new standalone systems.
+
+The platform therefore prioritizes:
+
+â€¢ generic structures  
+â€¢ extensibility  
+â€¢ integration flexibility  
+â€¢ operational adaptability  
+
+over rigid domain modeling.
+
+---
+
+## Summary
+
+WoodOps is not a traditional enterprise application.
+
+It is a **platform for constructing operational capabilities** by combining:
+
+â€¢ integrations  
+â€¢ generic operational objects  
+â€¢ processing pipelines  
+â€¢ projections  
+â€¢ intelligence services  
+â€¢ user interfaces  
+
+This approach allows the platform to evolve organically as operational needs emerge.
+
+
+========================================
+
+FILE: docs\PLATFORM_RUNTIME.md
+
+SIZE: 7000 bytes
+
+MODIFIED: 2026-03-09 09:40:12
+
+========================================
+
+# PLATFORM_RUNTIME.md
+
+## Purpose
+
+This document describes the runtime architecture of the WoodOps platform.
+
+While other documents define:
+
+- platform philosophy
+- kernel object model
+- integration boundaries
+
+this document explains **how the system executes in operation**.
+
+The runtime architecture defines how:
+
+- services start
+- workloads are executed
+- integrations run
+- processing pipelines operate
+- external platform services are orchestrated
+
+---
+
+# Runtime Overview
+
+WoodOps is designed as a **platform control plane** that orchestrates:
+
+- platform objects
+- processing pipelines
+- integrations
+- external capability services
+
+The runtime consists of several cooperating executables.
+
+
+WoodOps.Host
+WoodOps.Workers
+WoodOps.Portal
+
+
+These executables operate on top of the **Core kernel**.
+
+         Portal
+           â”‚
+           â–¼
+      WoodOps.Host
+           â”‚
+           â–¼
+       WoodOps.Core
+           â”‚
+  â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”
+  â–¼                 â–¼
+
+WoodOps.Workers Integrations
+
+
+---
+
+# Runtime Components
+
+## Host
+
+Project:
+
+
+WoodOps.Host
+
+
+The Host is the **primary runtime coordinator**.
+
+Responsibilities:
+
+- exposes the platform API
+- manages configuration
+- initializes platform services
+- coordinates processing requests
+- acts as the entry point for external systems
+- controls runtime composition
+
+The Host should remain lightweight and orchestration-focused.
+
+It should not contain heavy processing logic.
+
+---
+
+## Workers
+
+Project:
+
+
+WoodOps.Workers
+
+
+Workers perform **background processing tasks**.
+
+Examples:
+
+- ingestion pipelines
+- object normalization
+- enrichment processors
+- classification tasks
+- scheduled jobs
+- intelligence workflows
+
+Workers operate independently of the host API.
+
+They should be designed to run as **scalable background executables**.
+
+---
+
+## Portal
+
+Project:
+
+
+WoodOps.Portal
+
+
+The portal provides the **human interaction surface** for the platform.
+
+Responsibilities:
+
+- operational dashboards
+- object exploration
+- form-based interaction
+- workflow participation
+- analytics views
+
+The portal communicates with the platform through the Host API.
+
+The portal must not bypass the Host to access platform data.
+
+---
+
+# Core Runtime Layer
+
+Project:
+
+
+WoodOps.Core
+
+
+The core runtime layer contains the **kernel primitives** used by all executables.
+
+Responsibilities include:
+
+- kernel object model
+- processing primitives
+- projection mechanisms
+- classification structures
+- provenance handling
+- relationship management
+- configuration primitives
+- security primitives
+- observability primitives
+
+The core must remain **dependency-free from runtime hosts**.
+
+---
+
+# Integration Runtime
+
+Project:
+
+
+WoodOps.Integrations
+
+
+Integrations provide runtime communication with external systems.
+
+Two categories exist.
+
+## Adapters
+
+Adapters translate external records into platform objects.
+
+Examples:
+
+
+MES adapter
+ERP adapter
+CMMS adapter
+file ingestion adapter
+API ingestion adapter
+
+
+Adapters produce kernel envelopes.
+
+---
+
+## Services
+
+Services connect to external capability providers.
+
+Examples:
+
+
+LLM runtime
+NiFi pipelines
+Superset analytics
+Vector databases
+knowledge systems
+training systems
+
+
+These systems perform work on behalf of the platform.
+
+---
+
+# Processing Model
+
+Processing is executed by **workers operating on kernel objects**.
+
+Typical pipeline:
+
+
+External System
+â†“
+Integration Adapter
+â†“
+Envelope Created
+â†“
+Worker Processing
+â†“
+Normalization
+â†“
+Enrichment
+â†“
+Relationship Creation
+â†“
+Projection
+â†“
+Portal or API Consumption
+
+
+Workers should be stateless whenever possible.
+
+Persistent state belongs in the persistence layer.
+
+---
+
+# External Platform Services
+
+WoodOps relies on external services for specialized capabilities.
+
+Examples:
+
+| Service | Purpose |
+|------|------|
+NiFi | data pipelines |
+Superset | analytics dashboards |
+LLM runtime | reasoning and interpretation |
+Vector database | semantic search |
+MongoDB | document storage |
+WikiJS | knowledge management |
+Moodle | training |
+
+These services run **outside the WoodOps application runtime**.
+
+The platform interacts with them via APIs.
+
+---
+
+# Deployment Model
+
+The platform is designed to run in containerized environments.
+
+Typical deployment topology:
+
+
+woodops-host
+woodops-workers
+woodops-portal
+
+postgres
+mongodb
+vector-db
+ollama
+nifi
+superset
+wikijs
+moodle
+
+
+WoodOps services communicate with external services through network APIs.
+
+The platform does not embed these systems.
+
+---
+
+# Runtime Scaling
+
+Scaling should occur at the worker layer.
+
+
+workers = horizontally scalable
+host = moderate scale
+portal = scale based on user load
+
+
+Workers can run multiple instances for:
+
+- ingestion throughput
+- pipeline processing
+- AI workloads
+
+---
+
+# Configuration
+
+Runtime configuration should be provided through:
+
+- environment variables
+- configuration files
+- secret providers
+
+Configuration must not be embedded in code.
+
+---
+
+# Observability
+
+All runtime components must support:
+
+- structured logging
+- tracing
+- metrics emission
+
+Observability primitives should be defined in:
+
+
+WoodOps.Core
+
+
+but implemented by runtime hosts.
+
+---
+
+# Security Model
+
+Security enforcement occurs primarily in the Host.
+
+Key responsibilities:
+
+- authentication
+- authorization
+- access filtering
+- API protection
+
+Workers operate with internal trust and platform permissions.
+
+External access must pass through the Host.
+
+---
+
+# Failure Model
+
+Runtime components should be resilient to failure.
+
+Key principles:
+
+- workers may crash without data loss
+- pipelines should be restartable
+- integrations should retry safely
+- platform services should degrade gracefully
+
+External services must not be assumed to be always available.
+
+---
+
+# Runtime Philosophy
+
+The runtime architecture follows several principles.
+
+### Control Plane
+
+WoodOps acts as the orchestration control plane.
+
+### Capability Composition
+
+Capabilities emerge from combinations of:
+
+- objects
+- processors
+- projections
+- services
+
+### External Leverage
+
+The platform prefers leveraging mature external systems rather than reimplementing them.
+
+### Kernel Stability
+
+The kernel object model must remain stable while runtime services evolve.
+
+---
+
+# Summary
+
+WoodOps runtime consists of several cooperating executables operating on a shared kernel object model.
+
+Core runtime components:
+
+
+Host
+Workers
+Portal
+Core
+Integrations
+Intelligence
+
+
+These components orchestrate processing pipelines and external capability services to construct operational capabilities for wood products manufacturing environments.
+
+
+========================================
+
+FILE: docs\PLATFORM_SERVICES.md
+
+SIZE: 4712 bytes
+
+MODIFIED: 2026-03-09 09:38:06
+
+========================================
+
+# PLATFORM_SERVICES.md
+
+## Purpose
+
+This document explains how WoodOps interacts with external operational software that provides capabilities rather than raw data.
+
+Examples include:
+
+- NiFi
+- Superset
+- local LLM runtimes
+- vector databases
+- MongoDB
+- Wiki.js
+- Moodle
+
+These systems are referred to as **Platform Services**.
+
+They are not internal subsystems of WoodOps and they are not traditional data integrations.
+
+Instead they are **external capability providers that WoodOps orchestrates**.
+
+---
+
+## Architectural Distinction
+
+WoodOps interacts with two types of external systems.
+
+### External Data Systems
+
+These systems provide operational data.
+
+Examples:
+
+- MES
+- ERP
+- CMMS
+- PLC gateways
+- sensor systems
+- file repositories
+
+Interaction pattern:
+
+
+External System
+â†“
+Integration Adapter
+â†“
+WoodOps Kernel Objects
+
+
+These systems are treated as **sources of records**.
+
+---
+
+### Platform Services
+
+These systems provide **processing or operational capabilities**.
+
+Examples:
+
+- data pipelines
+- analytics
+- AI reasoning
+- document storage
+- knowledge systems
+- training systems
+
+Interaction pattern:
+
+
+WoodOps
+â†“
+Service Client
+â†“
+External Capability
+
+
+Examples:
+
+
+WoodOps â†’ NiFi â†’ ingestion pipelines
+WoodOps â†’ Superset â†’ analytics dashboards
+WoodOps â†’ LLM runtime â†’ reasoning tasks
+WoodOps â†’ Vector DB â†’ semantic search
+WoodOps â†’ WikiJS â†’ knowledge management
+WoodOps â†’ Moodle â†’ training systems
+
+
+These systems perform work **on behalf of the platform**.
+
+---
+
+## Why This Distinction Exists
+
+If all external systems are treated as integrations, the architecture becomes confused.
+
+Data ingestion code and capability orchestration code become mixed.
+
+Separating them clarifies responsibilities:
+
+| Category | Role |
+|---|---|
+Adapters | translate external records into WoodOps objects |
+Services | provide processing power or functionality |
+
+---
+
+## Integration Layer Structure
+
+The integration layer should internally distinguish between:
+
+
+WoodOps.Integrations.Adapters
+WoodOps.Integrations.Services
+
+
+### Adapters
+
+Responsible for translating external records into platform objects.
+
+Examples:
+
+
+MES adapter
+ERP adapter
+CMMS adapter
+PLC adapter
+File ingestion
+
+
+These adapters normalize foreign records into **WoodOps kernel objects**.
+
+---
+
+### Services
+
+Responsible for communicating with external capability providers.
+
+Examples:
+
+
+LLM client
+NiFi orchestration client
+Superset API client
+Vector database client
+WikiJS client
+Moodle client
+
+
+Services expose operational capabilities to the platform runtime.
+
+They do not directly translate records into kernel objects.
+
+---
+
+## Platform Runtime Relationship
+
+WoodOps acts as a **control plane** over external capability services.
+
+Typical interaction flow:
+
+
+Portal / API
+â†“
+Host
+â†“
+Workers
+â†“
+Core Kernel
+â†“
+Integrations Layer
+â†“
+Adapters OR Services
+â†“
+External Systems
+
+
+Adapters ingest data.
+
+Services execute capability operations.
+
+---
+
+## Deployment Model
+
+External platform services are expected to run independently, typically as containerized services.
+
+Example deployment topology:
+
+
+woodops-host
+woodops-workers
+
+postgres
+mongodb
+vector-db
+ollama
+nifi
+superset
+wikijs
+moodle
+
+
+WoodOps communicates with these services through network APIs.
+
+The platform **does not embed or reimplement these systems**.
+
+---
+
+## Repository Layout Guidance
+
+Infrastructure used to run platform services should be isolated from application code.
+
+Recommended repository layout:
+
+
+infrastructure/
+
+docker/
+docker-compose.yml
+
+services/
+nifi/
+superset/
+ollama/
+vector-db/
+
+
+Application code should remain inside:
+
+
+src/
+
+
+This separation prevents infrastructure concerns from leaking into application projects.
+
+---
+
+## Architectural Principle
+
+WoodOps should focus on:
+
+- object normalization
+- operational orchestration
+- capability composition
+
+It should not attempt to rebuild mature systems that already exist.
+
+Instead the platform composes capabilities from:
+
+- its kernel object system
+- external platform services
+- processing pipelines
+- projections and user interfaces
+
+---
+
+## Summary
+
+External systems interacting with WoodOps fall into two categories:
+
+### Data Adapters
+
+Systems that provide operational records.
+
+### Platform Services
+
+Systems that provide operational capabilities.
+
+Maintaining this distinction ensures the platform architecture remains clear and scalable as additional integrations and services are added.
+
+
+========================================
+
+FILE: docs\README.md
+
+SIZE: 339 bytes
+
+MODIFIED: 2026-03-09 05:28:38
+
+========================================
+
+# WoodOps Documentation
+
+## Architecture
+
+docs/42010-ArchitectureDescription.md
+
+System architecture following ISO/IEC/IEEE 42010.
+
+## AI Guidance
+
+docs/AI-Repository-Source.md  
+Defines the repository as the canonical project source.
+
+docs/AI-Development-Guidelines.md  
+Defines how AI assistants should generate code and propose changes.
+
+
+========================================
+
+FILE: export-solution.ps1
+
+SIZE: 2505 bytes
+
+MODIFIED: 2026-02-06 16:05:10
+
+========================================
+
+# export-solution.ps1
+param(
+    [string]$OutputFile = "solution_export_$(Get-Date -Format 'yyyyMMdd_HHmmss').txt"
+)
+
+$includeExtensions = @(
+    "*.cs", "*.razor", "*.cshtml",
+    "*.csproj", "*.sln", "*.slnx",
+    "*.json", "*.config", "*.xml", "*.jsonl",
+    "*.ps1", "*.md", "*.yaml", "*.yml", "*.sh",
+    "*.props", "*.targets", "*.editorconfig"
+)
+$excludeDirs = @("bin", "obj", ".vs", ".git", "node_modules", "packages")
+$excludeFiles = @("solution_export_*.txt")
+
+$output = @()
+$output += "=== SOLUTION EXPORT ==="
+$output += "Generated: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
+$output += "Root: $PWD"
+$output += "`n=== DIRECTORY STRUCTURE ===`n"
+
+# All directories including empty
+Get-ChildItem -Recurse -Directory | Where-Object {
+    $dir = $_
+    -not ($excludeDirs | Where-Object { $dir.FullName -like "*\$_\*" -or $dir.Name -eq $_ })
+} | Sort-Object FullName | ForEach-Object {
+    $relativePath = $_.FullName.Substring($PWD.Path.Length + 1)
+    $depth = ($relativePath -split '\\').Count - 1
+    $isEmpty = (Get-ChildItem $_.FullName -File -Recurse | Measure-Object).Count -eq 0
+    $marker = if ($isEmpty) { "[DIR-EMPTY]" } else { "[DIR]" }
+    $output += ("  " * $depth) + "$marker $($_.Name)"
+}
+
+$output += "`n=== FILES ===`n"
+
+# Collect matching files
+Get-ChildItem -Recurse -Include $includeExtensions | Where-Object {
+    $file = $_
+    $excluded = $false
+    
+    # Check excluded directories
+    foreach ($exDir in $excludeDirs) {
+        if ($file.FullName -like "*\$exDir\*" -or $file.Directory.Name -eq $exDir) {
+            $excluded = $true
+            break
+        }
+    }
+    
+    # Check excluded file patterns
+    foreach ($exFile in $excludeFiles) {
+        if ($file.Name -like $exFile) {
+            $excluded = $true
+            break
+        }
+    }
+    
+    -not $excluded
+} | Sort-Object FullName | ForEach-Object {
+    $relativePath = $_.FullName.Substring($PWD.Path.Length + 1)
+    $output += "`n`n========================================`n"
+    $output += "FILE: $relativePath`n"
+    $output += "SIZE: $($_.Length) bytes`n"
+    $output += "MODIFIED: $($_.LastWriteTime.ToString('yyyy-MM-dd HH:mm:ss'))`n"
+    $output += "========================================`n"
+    $output += Get-Content $_.FullName -Raw
+}
+
+$output | Out-File -FilePath $OutputFile -Encoding UTF8
+Write-Host "Exported to: $OutputFile"
+Write-Host "File count: $(($output | Select-String -Pattern '^FILE:').Matches.Count)"
+
+
+========================================
+
+FILE: global.json
+
+SIZE: 93 bytes
+
+MODIFIED: 2026-03-09 06:46:30
+
+========================================
+
+{    "sdk": {        "version": "10.0.100",        "rollForward": "latestFeature"    }}
+
+
+
+========================================
+
+FILE: README.md
+
+SIZE: 404 bytes
+
+MODIFIED: 2026-03-09 05:28:38
+
+========================================
+
+# WoodOps
+
+Operational software platform for wood products manufacturing.
+
+## Purpose
+WoodOps provides tools for mill operations such as process monitoring,
+quality tracking, and operational dashboards.
+
+## Components
+- WoodOps.Portal â€” web interface
+- future modules planned for operations and data integration
+
+## Development
+
+Requirements:
+- .NET 9 SDK
+
+Run:
+
+dotnet run --project src/WoodOps.Portal
+
+
+========================================
+
+FILE: src\WoodOps.Core\Class1.cs
+
+SIZE: 67 bytes
+
+MODIFIED: 2026-03-09 06:52:51
+
+========================================
+
+namespace WoodOps.Core
+{
+    public class Class1
+    {
+
+    }
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Core\PROJECT_CONTEXT.md
+
+SIZE: 4668 bytes
+
+MODIFIED: 2026-03-09 09:00:31
+
+========================================
+
+# PROJECT_CONTEXT.md
+
+## Project
+WoodOps.Core
+
+## Purpose
+WoodOps.Core contains the foundational platform capabilities used by the WoodOps system.  
+It provides the generic structures and operational primitives that all other components of the platform rely upon.
+
+This project defines the canonical WoodOps model and the core processing capabilities that operate on it.
+
+WoodOps.Core must remain **generic and domain-agnostic**.  
+It is not responsible for implementing business workflows or specific operational capabilities.
+
+---
+
+## Architectural Role
+WoodOps.Core acts as the **kernel library** of the WoodOps platform.
+
+It provides:
+
+â€¢ the canonical data structures used across the platform  
+â€¢ core orchestration primitives  
+â€¢ processing and projection mechanisms  
+â€¢ foundational services used by runtime hosts and integrations  
+
+All other WoodOps components depend on this project.
+
+WoodOps.Core must never depend on:
+
+â€¢ Integrations  
+â€¢ Intelligence  
+â€¢ UI projects  
+â€¢ runtime hosts  
+
+This ensures the kernel remains stable and reusable.
+
+---
+
+## Owns
+WoodOps.Core owns the following architectural responsibilities:
+
+### Canonical Model
+Generic data structures used across the platform.
+
+Examples:
+
+- Envelope<T>
+- Identity
+- Metadata
+- Provenance
+- Classification
+- Relationships
+- Payload containers
+
+These structures allow WoodOps to represent arbitrary operational data without embedding business semantics into the architecture.
+
+---
+
+### Kernel Coordination
+Core orchestration primitives used by runtime hosts.
+
+Examples:
+
+- capability registration
+- processing orchestration
+- pipeline coordination
+- system lifecycle support
+
+---
+
+### Processing Primitives
+Generic mechanisms that operate on model objects.
+
+Examples:
+
+- processors
+- transformation primitives
+- evaluation pipelines
+- workflow steps
+
+Processing must remain generic and reusable.
+
+---
+
+### Projection Primitives
+Structures for creating derived representations of model objects.
+
+Examples:
+
+- read models
+- analytical views
+- materialized projections
+- reporting structures
+
+Projections organize generic data for consumption but must not embed domain logic.
+
+---
+
+### Platform Services
+Cross-cutting services required by the platform.
+
+Examples:
+
+- security primitives
+- configuration structures
+- observability hooks
+- diagnostics interfaces
+
+---
+
+## Does Not Own
+
+WoodOps.Core must **never contain**:
+
+â€¢ integrations with external systems  
+â€¢ UI components  
+â€¢ API controllers  
+â€¢ background job implementations  
+â€¢ LLM integrations  
+â€¢ external service clients  
+â€¢ business-specific modules  
+
+These responsibilities belong to other projects.
+
+---
+
+## Inputs
+WoodOps.Core receives:
+
+â€¢ normalized model objects produced by integrations  
+â€¢ processing requests from runtime hosts  
+â€¢ execution requests from workers  
+â€¢ configuration supplied by runtime hosts
+
+---
+
+## Outputs
+WoodOps.Core provides:
+
+â€¢ model definitions used across the platform  
+â€¢ processing and projection primitives  
+â€¢ platform service interfaces  
+â€¢ orchestration mechanisms used by hosts and workers
+
+---
+
+## Allowed Dependencies
+
+WoodOps.Core may depend on:
+
+â€¢ .NET standard libraries  
+â€¢ minimal foundational utility libraries
+
+Dependencies must remain lightweight.
+
+---
+
+## Dependency Restrictions
+
+WoodOps.Core must **never depend on**:
+
+â€¢ WoodOps.Integrations  
+â€¢ WoodOps.Intelligence  
+â€¢ WoodOps.Host  
+â€¢ WoodOps.Portal  
+â€¢ WoodOps.Workers  
+
+These projects depend on the core kernel â€” never the reverse.
+
+---
+
+## Internal Namespace Guidance
+
+Typical namespace layout inside this project should resemble:
+
+WoodOps.Core.Model  
+WoodOps.Core.Kernel  
+WoodOps.Core.Persistence  
+WoodOps.Core.Processing  
+WoodOps.Core.Projection  
+WoodOps.Core.Security  
+WoodOps.Core.Configuration  
+WoodOps.Core.Observability
+
+Namespaces should remain **structural and capability-based**, not domain-based.
+
+---
+
+## Change Guidance
+
+Changes to this project should be conservative.
+
+Guidelines:
+
+â€¢ avoid embedding domain knowledge  
+â€¢ avoid coupling to external technologies  
+â€¢ prioritize stability and reuse  
+â€¢ prefer extension points over specialization  
+
+Most feature work should occur in:
+
+â€¢ Integrations  
+â€¢ Intelligence  
+â€¢ Workers  
+â€¢ Host
+
+---
+
+## Notes
+
+WoodOps.Core is the **long-term stability anchor** of the platform.
+
+If designed correctly, the kernel should evolve slowly while capabilities expand around it.
+
+
+
+========================================
+
+FILE: src\WoodOps.Core\WoodOps.Core.csproj
+
+SIZE: 218 bytes
+
+MODIFIED: 2026-03-09 06:52:50
+
+========================================
+
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>
+
+
+
+========================================
+
+FILE: src\WoodOps.Host\appsettings.Development.json
+
+SIZE: 127 bytes
+
+MODIFIED: 2026-03-09 06:01:50
+
+========================================
+
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  }
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Host\appsettings.json
+
+SIZE: 151 bytes
+
+MODIFIED: 2026-03-09 06:01:50
+
+========================================
+
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*"
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Host\Controllers\WeatherForecastController.cs
+
+SIZE: 1046 bytes
+
+MODIFIED: 2026-03-09 06:01:51
+
+========================================
+
+using Microsoft.AspNetCore.Mvc;
+
+namespace WoodOps.Host.Controllers
+{
+    [ApiController]
+    [Route("[controller]")]
+    public class WeatherForecastController : ControllerBase
+    {
+        private static readonly string[] Summaries = new[]
+        {
+            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+        };
+
+        private readonly ILogger<WeatherForecastController> _logger;
+
+        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        {
+            _logger = logger;
+        }
+
+        [HttpGet(Name = "GetWeatherForecast")]
+        public IEnumerable<WeatherForecast> Get()
+        {
+            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            {
+                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+                TemperatureC = Random.Shared.Next(-20, 55),
+                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+            })
+            .ToArray();
+        }
+    }
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Host\Program.cs
+
+SIZE: 718 bytes
+
+MODIFIED: 2026-03-09 06:01:51
+
+========================================
+
+
+namespace WoodOps.Host
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
+
+            // Add services to the container.
+
+            builder.Services.AddControllers();
+            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+            builder.Services.AddOpenApi();
+
+            var app = builder.Build();
+
+            // Configure the HTTP request pipeline.
+            if (app.Environment.IsDevelopment())
+            {
+                app.MapOpenApi();
+            }
+
+            app.UseAuthorization();
+
+
+            app.MapControllers();
+
+            app.Run();
+        }
+    }
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Host\PROJECT_CONTEXT.md
+
+SIZE: 4570 bytes
+
+MODIFIED: 2026-03-09 08:49:23
+
+========================================
+
+# PROJECT_CONTEXT.md
+
+## Project
+WoodOps.Host
+
+## Purpose
+WoodOps.Host is the primary runtime host for the WoodOps platform.
+
+It provides the API surface and runtime composition environment in which the
+WoodOps kernel, integrations, intelligence systems, and workers operate.
+
+This project exposes the platform capabilities through network interfaces
+while delegating actual platform behavior to WoodOps.Core.
+
+WoodOps.Host is responsible for *hosting*, not implementing, platform logic.
+
+---
+
+## Architectural Role
+WoodOps.Host functions as the **platform service host**.
+
+Responsibilities include:
+
+â€¢ exposing platform APIs  
+â€¢ composing platform services via dependency injection  
+â€¢ initializing the WoodOps kernel  
+â€¢ registering integrations and processors  
+â€¢ coordinating runtime infrastructure  
+â€¢ exposing endpoints for external systems  
+
+WoodOps.Host is typically deployed as a **Docker container**.
+
+It acts as the primary entry point for:
+
+â€¢ the Portal UI  
+â€¢ external applications  
+â€¢ automation scripts  
+â€¢ analytics tools  
+â€¢ integration systems  
+
+---
+
+## Owns
+
+### API Surface
+Defines the external API interface to the platform.
+
+Examples:
+
+- REST endpoints
+- future gRPC endpoints
+- system status endpoints
+- ingestion endpoints
+- projection/query endpoints
+
+Controllers should remain thin and delegate all logic to platform services.
+
+---
+
+### Runtime Composition
+Responsible for wiring the platform together.
+
+Examples:
+
+- dependency injection configuration
+- module registration
+- integration registration
+- configuration loading
+- startup lifecycle management
+
+---
+
+### Platform Bootstrapping
+Initializes core platform components.
+
+Examples:
+
+- loading configuration
+- initializing persistence services
+- registering processors
+- enabling integrations
+- initializing observability systems
+
+---
+
+### External Entry Point
+Provides access to WoodOps functionality for:
+
+- user interfaces
+- integration tools
+- automation systems
+- analytics platforms
+
+---
+
+## Does Not Own
+
+WoodOps.Host must **never contain**:
+
+â€¢ domain logic  
+â€¢ kernel model definitions  
+â€¢ integration translation logic  
+â€¢ processing algorithms  
+â€¢ projection logic  
+â€¢ LLM orchestration  
+
+Those responsibilities belong to:
+
+â€¢ WoodOps.Core  
+â€¢ WoodOps.Integrations  
+â€¢ WoodOps.Intelligence  
+â€¢ WoodOps.Workers  
+
+The host only exposes them.
+
+---
+
+## Inputs
+
+WoodOps.Host receives:
+
+â€¢ API requests from clients  
+â€¢ configuration from environment variables or configuration providers  
+â€¢ normalized model objects submitted by integrations  
+â€¢ runtime service registrations
+
+Clients may include:
+
+â€¢ WoodOps.Portal  
+â€¢ automation systems  
+â€¢ analytics tools  
+â€¢ integration services  
+â€¢ external applications
+
+---
+
+## Outputs
+
+WoodOps.Host provides:
+
+â€¢ API responses  
+â€¢ platform service endpoints  
+â€¢ ingestion interfaces  
+â€¢ query and projection endpoints  
+â€¢ system diagnostics endpoints
+
+These outputs expose platform capabilities without embedding domain logic.
+
+---
+
+## Allowed Dependencies
+
+WoodOps.Host may depend on:
+
+â€¢ WoodOps.Core  
+â€¢ WoodOps.Integrations  
+â€¢ WoodOps.Intelligence  
+â€¢ standard ASP.NET runtime libraries
+
+These dependencies allow the host to compose the platform.
+
+---
+
+## Dependency Restrictions
+
+WoodOps.Host must **not be referenced by**:
+
+â€¢ WoodOps.Core  
+â€¢ WoodOps.Integrations  
+â€¢ WoodOps.Intelligence  
+
+The host sits at the runtime edge of the system.
+
+Kernel libraries must remain host-agnostic.
+
+---
+
+## Internal Namespace Guidance
+
+Typical namespace layout:
+
+WoodOps.Host.Api  
+WoodOps.Host.Controllers  
+WoodOps.Host.Configuration  
+WoodOps.Host.Composition  
+WoodOps.Host.Diagnostics  
+
+Controllers should remain thin and delegate work to platform services.
+
+---
+
+## Change Guidance
+
+Changes to this project should focus on:
+
+â€¢ improving API structure  
+â€¢ improving platform composition  
+â€¢ improving runtime configuration  
+â€¢ improving operational diagnostics  
+
+Avoid adding platform logic here.
+
+If logic begins accumulating inside the host, it likely belongs in:
+
+â€¢ WoodOps.Core  
+â€¢ WoodOps.Integrations  
+â€¢ WoodOps.Intelligence
+
+---
+
+## Notes
+
+WoodOps.Host is the **platform runtime shell**.
+
+Its role is to make the WoodOps platform accessible without embedding
+the platform's intelligence directly into the host itself.
+
+
+
+========================================
+
+FILE: src\WoodOps.Host\Properties\launchSettings.json
+
+SIZE: 358 bytes
+
+MODIFIED: 2026-03-09 06:01:51
+
+========================================
+
+{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "applicationUrl": "http://localhost:5248",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Host\WeatherForecast.cs
+
+SIZE: 279 bytes
+
+MODIFIED: 2026-03-09 06:01:51
+
+========================================
+
+namespace WoodOps.Host
+{
+    public class WeatherForecast
+    {
+        public DateOnly Date { get; set; }
+
+        public int TemperatureC { get; set; }
+
+        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+
+        public string? Summary { get; set; }
+    }
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Host\WoodOps.Host.csproj
+
+SIZE: 334 bytes
+
+MODIFIED: 2026-03-09 06:01:51
+
+========================================
+
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.12" />
+  </ItemGroup>
+
+</Project>
+
+
+
+========================================
+
+FILE: src\WoodOps.Integrations\Class1.cs
+
+SIZE: 75 bytes
+
+MODIFIED: 2026-03-09 06:53:22
+
+========================================
+
+namespace WoodOps.Integrations
+{
+    public class Class1
+    {
+
+    }
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Integrations\PROJECT_CONTEXT.md
+
+SIZE: 4698 bytes
+
+MODIFIED: 2026-03-09 09:00:31
+
+========================================
+
+# PROJECT_CONTEXT.md
+
+## Project
+WoodOps.Integrations
+
+## Purpose
+WoodOps.Integrations provides the boundary between the WoodOps platform and external systems.
+
+This project is responsible for interacting with external software, services, and data sources and translating those interactions into the generic structures used by the WoodOps platform.
+
+The integrations layer ensures that external system semantics do not leak into the WoodOps kernel.
+
+---
+
+## Architectural Role
+WoodOps.Integrations functions as the **anti-corruption boundary** of the platform.
+
+Responsibilities include:
+
+â€¢ communicating with external systems  
+â€¢ retrieving and submitting external data  
+â€¢ translating foreign payloads into WoodOps model objects  
+â€¢ managing external authentication and protocols  
+â€¢ isolating platform code from external system complexity  
+
+This layer protects the platform kernel from coupling to external technologies.
+
+---
+
+## Owns
+
+### External System Adapters
+Implements connectors to external systems.
+
+Examples may include:
+
+- MES systems
+- ERP systems
+- Moodle
+- Wiki.js
+- Superset
+- file systems
+- REST APIs
+- databases
+- message queues
+
+Each adapter should be isolated and focused on a specific external protocol or system.
+
+---
+
+### Protocol Handling
+Responsible for communicating with external systems using appropriate protocols.
+
+Examples:
+
+- HTTP / REST
+- database queries
+- file ingestion
+- message queue consumption
+- webhook handling
+
+---
+
+### External Authentication
+Handles credentials and authentication mechanisms required to interact with external systems.
+
+Examples:
+
+- API keys
+- OAuth
+- service credentials
+- token exchange
+
+Credential storage should be delegated to configuration systems where possible.
+
+---
+
+### Data Translation
+Transforms external payloads into WoodOps model structures.
+
+Examples:
+
+- converting external JSON/XML to model envelopes
+- mapping external identifiers to internal identities
+- translating timestamps and metadata
+
+The final output should always be compatible with the canonical structures defined in WoodOps.Core.
+
+---
+
+## Does Not Own
+
+WoodOps.Integrations must **never contain**:
+
+â€¢ platform model definitions  
+â€¢ kernel orchestration logic  
+â€¢ processing algorithms  
+â€¢ projection logic  
+â€¢ UI components  
+â€¢ LLM orchestration logic  
+
+Those responsibilities belong to:
+
+â€¢ WoodOps.Core  
+â€¢ WoodOps.Intelligence  
+â€¢ WoodOps.Host  
+â€¢ WoodOps.Workers  
+â€¢ WoodOps.Portal  
+
+This layer only communicates with external systems and translates their data.
+
+---
+
+## Inputs
+
+WoodOps.Integrations receives:
+
+â€¢ instructions from workers or host services  
+â€¢ configuration for external connections  
+â€¢ requests to retrieve or push external data  
+
+External inputs may include:
+
+â€¢ API responses  
+â€¢ database records  
+â€¢ file contents  
+â€¢ webhook payloads  
+â€¢ message queue events
+
+---
+
+## Outputs
+
+WoodOps.Integrations produces:
+
+â€¢ normalized model objects  
+â€¢ ingestion events  
+â€¢ translated data ready for processing  
+
+Outputs should be compatible with the canonical model structures defined by the platform kernel.
+
+---
+
+## Allowed Dependencies
+
+WoodOps.Integrations may depend on:
+
+â€¢ WoodOps.Core  
+â€¢ external SDKs or client libraries required to communicate with external systems  
+
+Dependencies should remain limited to communication concerns.
+
+---
+
+## Dependency Restrictions
+
+WoodOps.Integrations must **not be referenced by**:
+
+â€¢ WoodOps.Core  
+â€¢ WoodOps.Intelligence  
+
+Kernel components must remain independent of external systems.
+
+Integrations exist at the platform boundary.
+
+---
+
+## Internal Namespace Guidance
+
+Typical namespace layout:
+
+WoodOps.Integrations.Adapters  
+WoodOps.Integrations.Connectors  
+WoodOps.Integrations.Protocols  
+WoodOps.Integrations.Translators  
+WoodOps.Integrations.Authentication  
+
+External system adapters should be isolated to avoid cross-contamination between integrations.
+
+---
+
+## Change Guidance
+
+Changes should focus on:
+
+â€¢ improving reliability of external connections  
+â€¢ improving translation accuracy  
+â€¢ improving resilience to external system changes  
+â€¢ maintaining clear separation between platform logic and external semantics
+
+Avoid embedding business logic inside integration adapters.
+
+---
+
+## Notes
+
+WoodOps.Integrations protects the internal platform architecture from external system complexity.
+
+It ensures that WoodOps remains generic and adaptable regardless of which external systems are connected to it.
+
+
+
+========================================
+
+FILE: src\WoodOps.Integrations\WoodOps.Integrations.csproj
+
+SIZE: 218 bytes
+
+MODIFIED: 2026-03-09 06:53:21
+
+========================================
+
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>
+
+
+
+========================================
+
+FILE: src\WoodOps.Intelligence\Class1.cs
+
+SIZE: 75 bytes
+
+MODIFIED: 2026-03-09 06:38:58
+
+========================================
+
+namespace WoodOps.Intelligence
+{
+    public class Class1
+    {
+
+    }
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Intelligence\PROJECT_CONTEXT.md
+
+SIZE: 4826 bytes
+
+MODIFIED: 2026-03-09 09:00:31
+
+========================================
+
+                         # PROJECT_CONTEXT.md
+
+## Project
+WoodOps.Intelligence
+
+## Purpose
+WoodOps.Intelligence provides advanced reasoning, enrichment, and analysis capabilities for the WoodOps platform.
+
+This project hosts intelligence services such as large language model (LLM) orchestration, semantic processing, retrieval pipelines, and knowledge augmentation.
+
+The intelligence layer allows the platform to derive insight from platform data and external knowledge sources without embedding these concerns in the kernel.
+
+---
+
+## Architectural Role
+WoodOps.Intelligence functions as the **reasoning and semantic augmentation layer** of the platform.
+
+Responsibilities include:
+
+â€¢ orchestrating LLM interactions  
+â€¢ performing semantic analysis of platform data  
+â€¢ building retrieval and enrichment pipelines  
+â€¢ generating insights or structured interpretations  
+â€¢ enabling AI-assisted workflows  
+
+The intelligence layer operates on normalized platform data but does not define the canonical data structures themselves.
+
+---
+
+## Owns
+
+### LLM Orchestration
+Coordinates interactions with local or remote large language models.
+
+Examples:
+
+- prompt construction
+- model invocation
+- context assembly
+- response parsing
+- result evaluation
+
+LLM integrations may include local models, hosted APIs, or containerized inference services.
+
+---
+
+### Retrieval Pipelines
+Supports retrieval-augmented reasoning.
+
+Examples:
+
+- document retrieval
+- context assembly
+- embedding search
+- semantic similarity evaluation
+
+Retrieval pipelines may interact with document stores, vector databases, or indexed platform content.
+
+---
+
+### Knowledge Enrichment
+Provides mechanisms to augment platform data with derived insights.
+
+Examples:
+
+- summarization
+- classification
+- semantic tagging
+- structured interpretation
+
+Enrichment results should ultimately produce normalized model objects compatible with the platform.
+
+---
+
+### AI-Assisted Workflows
+Enables automated or assisted reasoning tasks.
+
+Examples:
+
+- knowledge discovery
+- operational recommendations
+- anomaly interpretation
+- document analysis
+
+These workflows may be invoked by workers, APIs, or future automation systems.
+
+---
+
+## Does Not Own
+
+WoodOps.Intelligence must **never contain**:
+
+â€¢ canonical model definitions  
+â€¢ kernel orchestration logic  
+â€¢ external system adapters  
+â€¢ UI components  
+â€¢ runtime host configuration  
+
+These responsibilities belong to:
+
+â€¢ WoodOps.Core  
+â€¢ WoodOps.Integrations  
+â€¢ WoodOps.Host  
+â€¢ WoodOps.Workers  
+â€¢ WoodOps.Portal  
+
+The intelligence layer only consumes and enriches platform data.
+
+---
+
+## Inputs
+
+WoodOps.Intelligence receives:
+
+â€¢ normalized platform data  
+â€¢ documents or artifacts retrieved through integrations  
+â€¢ user requests requiring analysis  
+â€¢ prompts or reasoning tasks initiated by workers or APIs
+
+Inputs may originate from:
+
+â€¢ platform projections  
+â€¢ document repositories  
+â€¢ external knowledge sources  
+â€¢ user queries
+
+---
+
+## Outputs
+
+WoodOps.Intelligence produces:
+
+â€¢ enriched model objects  
+â€¢ semantic annotations  
+â€¢ classification metadata  
+â€¢ reasoning results  
+â€¢ derived insights
+
+Outputs should be compatible with the platform model and persistable through platform persistence mechanisms.
+
+---
+
+## Allowed Dependencies
+
+WoodOps.Intelligence may depend on:
+
+â€¢ WoodOps.Core  
+â€¢ external AI or ML libraries  
+â€¢ model inference clients  
+â€¢ embedding or vector database clients
+
+Dependencies related to AI infrastructure are expected here.
+
+---
+
+## Dependency Restrictions
+
+WoodOps.Intelligence must **not be referenced by**:
+
+â€¢ WoodOps.Core  
+
+The kernel must remain independent of AI capabilities.
+
+Other projects may optionally depend on this layer when intelligence features are required.
+
+---
+
+## Internal Namespace Guidance
+
+Typical namespace layout:
+
+WoodOps.Intelligence.Models  
+WoodOps.Intelligence.Prompts  
+WoodOps.Intelligence.Retrieval  
+WoodOps.Intelligence.Analysis  
+WoodOps.Intelligence.Pipelines  
+
+Namespaces should reflect intelligence capabilities rather than external model providers.
+
+---
+
+## Change Guidance
+
+Changes should focus on:
+
+â€¢ improving reasoning pipelines  
+â€¢ improving context construction  
+â€¢ improving semantic accuracy  
+â€¢ enabling additional intelligence workflows  
+
+Avoid tightly coupling logic to specific AI providers where possible.
+
+Prefer abstractions that allow model providers to be swapped.
+
+---
+
+## Notes
+
+WoodOps.Intelligence extends the platform with reasoning capabilities while preserving the separation between platform infrastructure and analytical intelligence.
+
+
+
+========================================
+
+FILE: src\WoodOps.Intelligence\WoodOps.Intelligence.csproj
+
+SIZE: 218 bytes
+
+MODIFIED: 2026-03-09 06:38:58
+
+========================================
+
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>
+
+
+
+========================================
+
+FILE: src\WoodOps.Portal\appsettings.Development.json
+
+SIZE: 127 bytes
+
+MODIFIED: 2026-03-09 05:26:54
+
+========================================
+
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  }
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Portal\appsettings.json
+
+SIZE: 151 bytes
+
+MODIFIED: 2026-03-09 05:26:54
+
+========================================
+
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*"
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Portal\Components\_Imports.razor
+
+SIZE: 445 bytes
+
+MODIFIED: 2026-03-09 05:26:54
+
+========================================
+
+@using System.Net.Http
+@using System.Net.Http.Json
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using static Microsoft.AspNetCore.Components.Web.RenderMode
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.JSInterop
+@using MudBlazor
+@using MudBlazor.Services
+@using WoodOps.Portal
+@using WoodOps.Portal.Components
+
+
+
+========================================
+
+FILE: src\WoodOps.Portal\Components\App.razor
+
+SIZE: 726 bytes
+
+MODIFIED: 2026-03-09 05:26:54
+
+========================================
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />  
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <link href=@Assets["_content/MudBlazor/MudBlazor.min.css"] rel="stylesheet" />
+    <ImportMap />
+    <link rel="icon" type="image/ico" href="favicon.ico" />
+    <HeadOutlet @rendermode="InteractiveServer" />
+</head>
+
+<body>
+    <Routes @rendermode="InteractiveServer" />
+    <script src="_framework/blazor.web.js"></script>
+    <script src=@Assets["_content/MudBlazor/MudBlazor.min.js"]></script>
+</body>
+
+</html>
+
+
+
+========================================
+
+FILE: src\WoodOps.Portal\Components\Layout\MainLayout.razor
+
+SIZE: 3086 bytes
+
+MODIFIED: 2026-03-09 05:26:54
+
+========================================
+
+@inherits LayoutComponentBase
+
+<MudThemeProvider Theme="@_theme" IsDarkMode="_isDarkMode" />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+<MudLayout>
+    <MudAppBar Elevation="1">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudText Typo="Typo.h5" Class="ml-3">Application</MudText>
+        <MudSpacer />
+        <MudIconButton Icon="@(DarkLightModeButtonIcon)" Color="Color.Inherit" OnClick="@DarkModeToggle" />
+        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
+    </MudAppBar>
+    <MudDrawer id="nav-drawer" @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+        <NavMenu />
+    </MudDrawer>
+    <MudMainContent Class="pt-16 pa-4">
+        @Body
+    </MudMainContent>
+</MudLayout>
+
+
+<div id="blazor-error-ui" data-nosnippet>
+    An unhandled error has occurred.
+    <a href="." class="reload">Reload</a>
+    <span class="dismiss">🗙</span>
+</div>
+
+@code {
+    private bool _drawerOpen = true;
+    private bool _isDarkMode = true;
+    private MudTheme? _theme = null;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        _theme = new()
+        {
+            PaletteLight = _lightPalette,
+            PaletteDark = _darkPalette,
+            LayoutProperties = new LayoutProperties()
+        };
+    }
+
+    private void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+
+    private void DarkModeToggle()
+    {
+        _isDarkMode = !_isDarkMode;
+    }
+
+    private readonly PaletteLight _lightPalette = new()
+    {
+        Black = "#110e2d",
+        AppbarText = "#424242",
+        AppbarBackground = "rgba(255,255,255,0.8)",
+        DrawerBackground = "#ffffff",
+        GrayLight = "#e8e8e8",
+        GrayLighter = "#f9f9f9",
+    };
+
+    private readonly PaletteDark _darkPalette = new()
+    {
+        Primary = "#7e6fff",
+        Surface = "#1e1e2d",
+        Background = "#1a1a27",
+        BackgroundGray = "#151521",
+        AppbarText = "#92929f",
+        AppbarBackground = "rgba(26,26,39,0.8)",
+        DrawerBackground = "#1a1a27",
+        ActionDefault = "#74718e",
+        ActionDisabled = "#9999994d",
+        ActionDisabledBackground = "#605f6d4d",
+        TextPrimary = "#b2b0bf",
+        TextSecondary = "#92929f",
+        TextDisabled = "#ffffff33",
+        DrawerIcon = "#92929f",
+        DrawerText = "#92929f",
+        GrayLight = "#2a2833",
+        GrayLighter = "#1e1e2d",
+        Info = "#4a86ff",
+        Success = "#3dcb6c",
+        Warning = "#ffb545",
+        Error = "#ff3f5f",
+        LinesDefault = "#33323e",
+        TableLines = "#33323e",
+        Divider = "#292838",
+        OverlayLight = "#1e1e2d80",
+    };
+
+    public string DarkLightModeButtonIcon => _isDarkMode switch
+    {
+        true => Icons.Material.Rounded.AutoMode,
+        false => Icons.Material.Outlined.DarkMode,
+    };
+}
+
+
+
+
+
+========================================
+
+FILE: src\WoodOps.Portal\Components\Layout\NavMenu.razor
+
+SIZE: 380 bytes
+
+MODIFIED: 2026-03-09 05:26:54
+
+========================================
+
+
+<MudNavMenu>
+    <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
+    <MudNavLink Href="counter" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">Counter</MudNavLink>
+    
+    <MudNavLink Href="weather" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Weather</MudNavLink>
+
+</MudNavMenu>
+
+
+
+
+
+========================================
+
+FILE: src\WoodOps.Portal\Components\Pages\Counter.razor
+
+SIZE: 435 bytes
+
+MODIFIED: 2026-03-09 05:26:54
+
+========================================
+
+@page "/counter"
+
+<PageTitle>Counter</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Counter</MudText>
+
+<MudText Typo="Typo.body1" Class="mb-4">Current count: @currentCount</MudText>
+
+<MudButton Color="Color.Primary" Variant="Variant.Filled" @onclick="IncrementCount">Click me</MudButton>
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Portal\Components\Pages\Error.razor
+
+SIZE: 1215 bytes
+
+MODIFIED: 2026-03-09 05:26:54
+
+========================================
+
+@page "/Error"
+@using System.Diagnostics
+
+<PageTitle>Error</PageTitle>
+
+<h1 class="text-danger">Error.</h1>
+<h2 class="text-danger">An error occurred while processing your request.</h2>
+
+@if (ShowRequestId)
+{
+    <p>
+        <strong>Request ID:</strong> <code>@RequestId</code>
+    </p>
+}
+
+<h3>Development Mode</h3>
+<p>
+    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
+</p>
+<p>
+    <strong>The Development environment shouldn't be enabled for deployed applications.</strong>
+    It can result in displaying sensitive information from exceptions to end users.
+    For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
+    and restarting the app.
+</p>
+
+@code{
+    [CascadingParameter]
+    private HttpContext? HttpContext { get; set; }
+
+    private string? RequestId { get; set; }
+    private bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+
+    protected override void OnInitialized() =>
+        RequestId = Activity.Current?.Id ?? HttpContext?.TraceIdentifier;
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Portal\Components\Pages\Home.razor
+
+SIZE: 3040 bytes
+
+MODIFIED: 2026-03-09 05:26:54
+
+========================================
+
+@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Hello, world!</MudText>
+<MudText Class="mb-8">Welcome to your new app, powered by MudBlazor and the .NET 9 Template!</MudText>
+
+<MudAlert Severity="Severity.Normal" ContentAlignment="HorizontalAlignment.Start">
+    You can find documentation and examples on our website here:
+    <MudLink Href="https://mudblazor.com" Target="_blank" Typo="Typo.body2" Color="Color.Primary">
+        <b>www.mudblazor.com</b>
+    </MudLink>
+</MudAlert>
+
+<br />
+<MudText Typo="Typo.h5" GutterBottom="true">Interactivity in this Template</MudText>
+<br />
+<MudText Typo="Typo.body2">
+    When you opt for the "Global" Interactivity Location, <br />
+    the render modes are defined in App.razor and consequently apply to all child components.<br />
+    In this case, providers are globally set in the MainLayout.<br />
+    <br />
+    On the other hand, if you choose the "Per page/component" Interactivity Location,<br />
+    it is necessary to include the <br />
+    <br />
+    &lt;MudPopoverProvider /&gt; <br />
+    &lt;MudDialogProvider /&gt; <br />
+    &lt;MudSnackbarProvider /&gt; <br />
+    <br />
+    components on every interactive page.<br />
+    <br />
+    If a render mode is not specified for a page, it defaults to Server-Side Rendering (SSR),<br />
+    similar to this page. While MudBlazor allows pages to be rendered in SSR,<br />
+    please note that interactive features, such as buttons and dropdown menus, will not be functional.
+</MudText>
+
+<br />
+<MudText Typo="Typo.h5" GutterBottom="true">What's New in Blazor with the Release of .NET 9</MudText>
+<br />
+
+<MudText Typo="Typo.h6" GutterBottom="true">Prerendering</MudText>
+<MudText Typo="Typo.body2" GutterBottom="true">
+    If you're exploring the features of .NET 9 Blazor,<br /> you might be pleasantly surprised to learn that each page is prerendered on the server,<br /> regardless of the selected render mode.<br /><br />
+    This means that you'll need to inject all necessary services on the server,<br /> even when opting for the wasm (WebAssembly) render mode.<br /><br />
+    This prerendering functionality is crucial to ensuring that WebAssembly mode feels fast and responsive,<br /> especially when it comes to initial page load times.<br /><br />
+    For more information on how to detect prerendering and leverage the RenderContext, you can refer to the following link:
+    <MudLink Href="https://github.com/dotnet/aspnetcore/issues/51468#issuecomment-1783568121" Target="_blank" Typo="Typo.body2" Color="Color.Primary">
+        More details
+    </MudLink>
+</MudText>
+
+<br />
+<MudText Typo="Typo.h6" GutterBottom="true">InteractiveAuto</MudText>
+<MudText Typo="Typo.body2">
+    A discussion on how to achieve this can be found here:
+    <MudLink Href="https://github.com/dotnet/aspnetcore/issues/51468#issue-1950424116" Target="_blank" Typo="Typo.body2" Color="Color.Primary">
+        More details
+    </MudLink>
+</MudText>
+
+
+
+========================================
+
+FILE: src\WoodOps.Portal\Components\Pages\Weather.razor
+
+SIZE: 2525 bytes
+
+MODIFIED: 2026-03-09 05:26:54
+
+========================================
+
+@page "/weather"
+
+
+
+<PageTitle>Weather</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Weather forecast</MudText>
+<MudText Typo="Typo.body1" Class="mb-8">This component demonstrates fetching data from the server.</MudText>
+
+@if (forecasts == null)
+{
+    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
+}
+else
+{
+  <MudTable Items="forecasts" Hover="true" SortLabel="Sort By" Elevation="0" AllowUnsorted="false">
+        <HeaderContent>
+            <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<WeatherForecast, object>(x=>x.Date)">Date</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<WeatherForecast, object>(x=>x.TemperatureC)">Temp. (C)</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<WeatherForecast, object>(x=>x.TemperatureF)">Temp. (F)</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<WeatherForecast, object>(x=>x.Summary!)">Summary</MudTableSortLabel></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Date">@context.Date</MudTd>
+            <MudTd DataLabel="Temp. (C)">@context.TemperatureC</MudTd>
+            <MudTd DataLabel="Temp. (F)">@context.TemperatureF</MudTd>
+            <MudTd DataLabel="Summary">@context.Summary</MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager PageSizeOptions="new int[]{50, 100}" />
+        </PagerContent>
+    </MudTable>
+}
+
+@code {
+    private WeatherForecast[]? forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Simulate asynchronous loading to demonstrate a loading indicator
+        await Task.Delay(500);
+
+        var startDate = DateOnly.FromDateTime(DateTime.Now);
+        var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
+        forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
+        {
+            Date = startDate.AddDays(index),
+            TemperatureC = Random.Shared.Next(-20, 55),
+            Summary = summaries[Random.Shared.Next(summaries.Length)]
+        }).ToArray();
+    }
+
+    private class WeatherForecast
+    {
+        public DateOnly Date { get; set; }
+        public int TemperatureC { get; set; }
+        public string? Summary { get; set; }
+        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    }
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Portal\Components\Routes.razor
+
+SIZE: 262 bytes
+
+MODIFIED: 2026-03-09 05:26:54
+
+========================================
+
+<Router AppAssembly="typeof(Program).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)" />
+        <FocusOnNavigate RouteData="routeData" Selector="h1" />
+    </Found>
+</Router>
+
+
+
+========================================
+
+FILE: src\WoodOps.Portal\Program.cs
+
+SIZE: 935 bytes
+
+MODIFIED: 2026-03-09 05:26:54
+
+========================================
+
+using MudBlazor.Services;
+using WoodOps.Portal.Components;
+
+namespace WoodOps.Portal
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
+
+            // Add MudBlazor services
+            builder.Services.AddMudServices();
+
+            // Add services to the container.
+            builder.Services.AddRazorComponents()
+                .AddInteractiveServerComponents();
+
+            var app = builder.Build();
+
+            // Configure the HTTP request pipeline.
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseExceptionHandler("/Error");
+            }
+
+            app.UseAntiforgery();
+
+            app.MapStaticAssets();
+            app.MapRazorComponents<App>()
+                .AddInteractiveServerRenderMode();
+
+            app.Run();
+        }
+    }
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Portal\PROJECT_CONTEXT.md
+
+SIZE: 4032 bytes
+
+MODIFIED: 2026-03-09 08:53:24
+
+========================================
+
+# PROJECT_CONTEXT.md
+
+## Project
+WoodOps.Portal
+
+## Purpose
+WoodOps.Portal provides the primary user interface for interacting with the WoodOps platform.
+
+This project implements the web-based experience for users to view, manage, and operate capabilities exposed by the WoodOps platform.
+
+The Portal is a **consumer of platform capabilities**, not the owner of business logic.
+
+All operational behavior must originate from the platform services exposed by WoodOps.Host.
+
+---
+
+## Architectural Role
+WoodOps.Portal is the **presentation layer** of the WoodOps platform.
+
+Responsibilities include:
+
+â€¢ user interaction
+â€¢ navigation and layout
+â€¢ dashboards and operational views
+â€¢ data entry and control surfaces
+â€¢ visualization of projections and analytics
+
+The Portal communicates with the WoodOps platform primarily through APIs exposed by WoodOps.Host.
+
+The Portal must remain independent of the internal kernel implementation.
+
+---
+
+## Owns
+
+### User Interface
+Defines the user-facing experience of WoodOps.
+
+Examples:
+
+- navigation structure
+- dashboards
+- operational screens
+- management panels
+- visualization components
+
+---
+
+### Interaction Workflows
+Implements UI-level workflows.
+
+Examples:
+
+- submitting requests to the platform
+- viewing operational state
+- browsing projections and analytics
+- managing operational artifacts
+
+These workflows coordinate user interaction but do not implement platform logic.
+
+---
+
+### Visualization
+Responsible for presenting platform information to users.
+
+Examples:
+
+- charts
+- tables
+- dashboards
+- status indicators
+- operational summaries
+
+Visualization may integrate with external analytics platforms such as Superset when appropriate.
+
+---
+
+## Does Not Own
+
+WoodOps.Portal must **never contain**:
+
+â€¢ business logic
+â€¢ platform processing logic
+â€¢ integration logic
+â€¢ persistence logic
+â€¢ model definitions
+â€¢ LLM orchestration
+
+These responsibilities belong to:
+
+â€¢ WoodOps.Core
+â€¢ WoodOps.Integrations
+â€¢ WoodOps.Intelligence
+â€¢ WoodOps.Host
+â€¢ WoodOps.Workers
+
+The Portal only interacts with these through APIs.
+
+---
+
+## Inputs
+
+WoodOps.Portal receives:
+
+â€¢ API responses from WoodOps.Host
+â€¢ projection data from platform queries
+â€¢ configuration values supplied by the host environment
+
+User interaction is translated into API requests.
+
+---
+
+## Outputs
+
+WoodOps.Portal produces:
+
+â€¢ API requests to WoodOps.Host
+â€¢ UI events initiated by users
+â€¢ visualization and reporting surfaces
+
+The Portal does not directly communicate with platform subsystems.
+
+All communication should flow through the host.
+
+---
+
+## Allowed Dependencies
+
+WoodOps.Portal may depend on:
+
+â€¢ ASP.NET / Blazor UI frameworks
+â€¢ HTTP client libraries
+â€¢ UI component libraries
+
+Direct references to kernel libraries should be avoided unless absolutely required.
+
+The preferred interaction path is through the platform API.
+
+---
+
+## Dependency Restrictions
+
+WoodOps.Portal must **not be referenced by**:
+
+â€¢ WoodOps.Core
+â€¢ WoodOps.Integrations
+â€¢ WoodOps.Intelligence
+â€¢ WoodOps.Workers
+
+The UI layer must remain isolated.
+
+---
+
+## Internal Namespace Guidance
+
+Typical namespace layout:
+
+WoodOps.Portal.Pages  
+WoodOps.Portal.Components  
+WoodOps.Portal.Services  
+WoodOps.Portal.Layout  
+WoodOps.Portal.Shared  
+
+Pages should focus on presentation while services handle API communication.
+
+---
+
+## Change Guidance
+
+Changes should prioritize:
+
+â€¢ clarity of user workflows
+â€¢ operational usability
+â€¢ clear visualization of platform state
+â€¢ minimal coupling with platform internals
+
+Avoid introducing platform logic in UI code.
+
+---
+
+## Notes
+
+WoodOps.Portal represents the **operational face of the WoodOps platform**.
+
+Its responsibility is to make platform capabilities accessible and understandable to users without embedding the platformâ€™s internal mechanics into the UI.
+
+
+
+========================================
+
+FILE: src\WoodOps.Portal\Properties\launchSettings.json
+
+SIZE: 378 bytes
+
+MODIFIED: 2026-03-09 05:26:54
+
+========================================
+
+{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+    "profiles": {
+      "http": {
+        "commandName": "Project",
+        "dotnetRunMessages": true,
+        "launchBrowser": true,
+        "applicationUrl": "http://localhost:5086",
+        "environmentVariables": {
+          "ASPNETCORE_ENVIRONMENT": "Development"
+        }
+      }
+    }
+  }
+
+
+
+========================================
+
+FILE: src\WoodOps.Portal\WoodOps.Portal.csproj
+
+SIZE: 310 bytes
+
+MODIFIED: 2026-03-09 05:26:54
+
+========================================
+
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="MudBlazor" Version="8.*" />
+  </ItemGroup>
+</Project>
+
+
+========================================
+
+FILE: src\WoodOps.Workers\appsettings.Development.json
+
+SIZE: 137 bytes
+
+MODIFIED: 2026-03-09 06:05:30
+
+========================================
+
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  }
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Workers\appsettings.json
+
+SIZE: 137 bytes
+
+MODIFIED: 2026-03-09 06:05:30
+
+========================================
+
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  }
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Workers\Program.cs
+
+SIZE: 318 bytes
+
+MODIFIED: 2026-03-09 06:05:30
+
+========================================
+
+namespace WoodOps.Workers
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = Host.CreateApplicationBuilder(args);
+            builder.Services.AddHostedService<Worker>();
+
+            var host = builder.Build();
+            host.Run();
+        }
+    }
+}
+
+
+========================================
+
+FILE: src\WoodOps.Workers\PROJECT_CONTEXT.md
+
+SIZE: 4506 bytes
+
+MODIFIED: 2026-03-09 08:58:07
+
+========================================
+
+# PROJECT_CONTEXT.md
+
+## Project
+WoodOps.Workers
+
+## Purpose
+WoodOps.Workers hosts background execution for the WoodOps platform.
+
+This project runs asynchronous and scheduled processing tasks that operate on the WoodOps platform model and processing pipeline.
+
+Workers enable continuous platform activity without requiring direct user interaction.
+
+Examples include ingestion pipelines, polling integrations, scheduled processing, and long-running computations.
+
+---
+
+## Architectural Role
+WoodOps.Workers functions as the **background execution host** of the platform.
+
+Responsibilities include:
+
+â€¢ executing background processors  
+â€¢ running ingestion pipelines  
+â€¢ polling external systems  
+â€¢ scheduling recurring tasks  
+â€¢ reacting to events generated by the platform  
+
+Workers execute logic provided by the platform kernel and integrations but should not define the platformâ€™s model or core capabilities.
+
+This project is typically deployed as a **separate Docker container**.
+
+---
+
+## Owns
+
+### Background Processing Host
+Provides the runtime environment for executing background tasks.
+
+Examples:
+
+- processor execution loops
+- scheduled jobs
+- long-running operations
+- batch processing
+
+---
+
+### Ingestion Pipelines
+Runs ingestion and synchronization processes that retrieve information from external systems.
+
+Examples:
+
+- polling external APIs
+- consuming file drops
+- scheduled data imports
+- webhook processing
+
+These pipelines typically rely on code from WoodOps.Integrations and WoodOps.Core.
+
+---
+
+### Event-Driven Processing
+Handles asynchronous tasks triggered by events in the system.
+
+Examples:
+
+- processing newly ingested data
+- recalculating projections
+- triggering downstream processing pipelines
+
+---
+
+### Operational Automation
+Supports automated operational tasks.
+
+Examples:
+
+- system maintenance jobs
+- background analysis
+- automated data enrichment
+
+---
+
+## Does Not Own
+
+WoodOps.Workers must **never contain**:
+
+â€¢ platform model definitions  
+â€¢ integration translation logic  
+â€¢ core processing primitives  
+â€¢ UI components  
+â€¢ API controllers  
+â€¢ LLM orchestration logic  
+
+These responsibilities belong to:
+
+â€¢ WoodOps.Core  
+â€¢ WoodOps.Integrations  
+â€¢ WoodOps.Intelligence  
+â€¢ WoodOps.Host  
+â€¢ WoodOps.Portal  
+
+Workers execute logic but should not define platform architecture.
+
+---
+
+## Inputs
+
+WoodOps.Workers receives:
+
+â€¢ work requests from the platform kernel  
+â€¢ scheduled job definitions  
+â€¢ ingestion instructions  
+â€¢ configuration supplied by the runtime environment  
+
+Inputs may originate from:
+
+â€¢ the host service  
+â€¢ integration triggers  
+â€¢ scheduled execution
+
+---
+
+## Outputs
+
+WoodOps.Workers produces:
+
+â€¢ processed model objects  
+â€¢ new or updated projections  
+â€¢ background task results  
+â€¢ operational events and diagnostics
+
+Results are typically written through the platform persistence layer.
+
+---
+
+## Allowed Dependencies
+
+WoodOps.Workers may depend on:
+
+â€¢ WoodOps.Core  
+â€¢ WoodOps.Integrations  
+â€¢ WoodOps.Intelligence  
+
+These dependencies provide the logic that workers execute.
+
+---
+
+## Dependency Restrictions
+
+WoodOps.Workers must **not be referenced by**:
+
+â€¢ WoodOps.Core  
+â€¢ WoodOps.Integrations  
+â€¢ WoodOps.Intelligence  
+
+Workers exist at the runtime edge of the system.
+
+Kernel libraries must remain independent of the execution host.
+
+---
+
+## Internal Namespace Guidance
+
+Typical namespace layout:
+
+WoodOps.Workers.Jobs  
+WoodOps.Workers.Pipelines  
+WoodOps.Workers.Schedulers  
+WoodOps.Workers.Host  
+
+Jobs should be thin execution wrappers that call processing primitives from the platform kernel.
+
+---
+
+## Change Guidance
+
+Changes should focus on:
+
+â€¢ improving background processing reliability  
+â€¢ improving scheduling and orchestration  
+â€¢ improving ingestion throughput  
+â€¢ improving operational observability  
+
+Avoid embedding platform logic inside workers.
+
+If platform logic begins appearing here, it likely belongs in:
+
+â€¢ WoodOps.Core  
+â€¢ WoodOps.Integrations  
+â€¢ WoodOps.Intelligence
+
+---
+
+## Notes
+
+WoodOps.Workers represents the **asynchronous execution engine** of the WoodOps platform.
+
+It allows the platform to continuously process data, synchronize with external systems, and run automated operations independent of user interaction.
+
+
+
+========================================
+
+FILE: src\WoodOps.Workers\Properties\launchSettings.json
+
+SIZE: 284 bytes
+
+MODIFIED: 2026-03-09 06:05:30
+
+========================================
+
+{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "WoodOps.Workers": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Workers\WoodOps.Workers.csproj
+
+SIZE: 431 bytes
+
+MODIFIED: 2026-03-09 06:05:30
+
+========================================
+
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-WoodOps.Workers-22f136d0-4cfc-4209-98e8-1c018e7dd758</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.12" />
+  </ItemGroup>
+</Project>
+
+
+
+========================================
+
+FILE: src\WoodOps.Workers\Worker.cs
+
+SIZE: 670 bytes
+
+MODIFIED: 2026-03-09 06:05:30
+
+========================================
+
+namespace WoodOps.Workers
+{
+    public class Worker : BackgroundService
+    {
+        private readonly ILogger<Worker> _logger;
+
+        public Worker(ILogger<Worker> logger)
+        {
+            _logger = logger;
+        }
+
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            while (!stoppingToken.IsCancellationRequested)
+            {
+                if (_logger.IsEnabled(LogLevel.Information))
+                {
+                    _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+                }
+                await Task.Delay(1000, stoppingToken);
+            }
+        }
+    }
+}
+
+
+
+========================================
+
+FILE: WoodOps.slnx
+
+SIZE: 668 bytes
+
+MODIFIED: 2026-03-09 07:32:34
+
+========================================
+
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="docs/42010-ArchitectureDescription.md" />
+    <File Path="docs/AI-Repository-Source.md" />
+    <File Path="docs/ChatGPT-Repository-Context.md" />
+    <File Path="global.json" />
+  </Folder>
+  <Project Path="src/WoodOps.Core/WoodOps.Core.csproj" />
+  <Project Path="src/WoodOps.Host/WoodOps.Host.csproj" />
+  <Project Path="src/WoodOps.Integrations/WoodOps.Integrations.csproj" />
+  <Project Path="src/WoodOps.Intelligence/WoodOps.Intelligence.csproj" />
+  <Project Path="src/WoodOps.Portal/WoodOps.Portal.csproj" />
+  <Project Path="src/WoodOps.Workers/WoodOps.Workers.csproj" />
+</Solution>
+
