@@ -1,831 +1,103 @@
-# KERNEL_MODEL.md
+# KERNEL_MODEL
 
-## Purpose
+The WoodOps kernel defines the **core conceptual model of the platform**.
 
-This document defines the canonical kernel object model for WoodOps.
-
-It describes the generic structures that all platform components operate on.
-
-This model is intentionally **domain-agnostic**.
-
-It does not define business modules or business entities.
-Instead, it defines the generic object system that allows business meaning to emerge through:
-
-- payload
-- classification
-- provenance
-- relationships
-- projection
-- interpretation
-
-This document is the foundation for:
-
-- integrations
-- persistence
-- processing
-- projection
-- intelligence
-- portal interaction
-
-If this model is changed carelessly, the platform architecture will drift.
+The kernel describes how the platform represents operational reality.
 
 ---
 
-## Core Principle
+# Core Concepts
 
-WoodOps operates on **generic kernel objects**.
+The kernel operates on several fundamental concepts.
 
-Conceptually:
 
-```text
-Envelope<T>
-
-Where:
-
-the envelope contains system-level context
-
-the payload contains arbitrary operational content
-
-The kernel manipulates envelopes generically.
-Business meaning is derived from the payload plus its contextual metadata.
-
-Primary Kernel Objects
-
-The platform should begin with a small number of irreducible kernel objects.
-
-These are the initial canonical object families:
-
+Object
 Envelope
-
-Edge
-
 Event
-
+Relationship
 Schema
 
-FormDefinition
 
-GridDefinition
+---
 
-QueryDefinition
+# Object
 
-WorkflowDefinition
-
-RuleDefinition
-
-ViewDefinition
-
-AttachmentReference
-
-Not all of these must be implemented immediately, but they are the intended kernel object space.
-
-Envelope
-
-The envelope is the primary object wrapper in WoodOps.
-
-Everything entering or being created inside the platform should ultimately be represented as an envelope or as another kernel object linked to an envelope.
-
-Conceptual structure
-Envelope<T>
-Envelope responsibilities
-
-An envelope contains the context needed for the kernel to process an object without requiring knowledge of the business meaning of the payload.
-
-Minimum conceptual fields
-Id
-Kind
-Classification
-SchemaRef
-Source
-Authority
-Scope
-CreatedAt
-ModifiedAt
-EffectiveAt
-Payload
-Provenance
-Relationships
-Annotations
-Version
-Access
-Tags
-Envelope Field Semantics
-Id
-
-A stable platform identity for the object.
-
-Purpose:
-
-unique reference
-
-relationship targeting
-
-persistence key
-
-audit traceability
-
-Kind
-
-The kernel-level type of object.
+An object represents a real-world entity.
 
 Examples:
 
-Document
+- machine
+- order
+- log
+- sensor
+- shipment.
 
-Event
+Objects exist independently of systems.
 
-Schema
+---
 
-FormDefinition
+# Envelope
 
-GridDefinition
+An envelope wraps an object with platform metadata.
 
-QueryDefinition
+Envelope responsibilities:
 
-WorkflowDefinition
+- identity
+- source system
+- timestamps
+- schema reference.
 
-ViewDefinition
+Envelopes allow the platform to manage objects consistently across systems.
 
-Kind is a structural category, not a business domain.
+---
 
-Classification
+# Event
 
-A flexible classification layer used to describe interpretation.
-
-Examples:
-
-Inspection
-
-MachineState
-
-ShiftReport
-
-KnowledgeArticle
-
-TrainingRecord
-
-SensorObservation
-
-Classification is allowed to carry domain meaning.
-The kernel should not depend on specific classifications.
-
-SchemaRef
-
-Reference to the schema that governs the payload shape or interpretation.
-
-This allows domain meaning to be attached without changing kernel structure.
-
-Source
-
-The originating source of the object.
+Events represent changes in the state of objects.
 
 Examples:
 
-MES
+- machine started
+- order completed
+- shipment created.
 
-ERP
+Events drive processing pipelines.
 
-Moodle
+---
 
-WikiJS
+# Relationship
 
-Manual
-
-SensorGateway
-
-WoodOps
-
-Source is descriptive only.
-It must not shape kernel behavior directly.
-
-Authority
-
-Indicates which system is authoritative for the object or payload.
+Objects are connected through relationships.
 
 Examples:
 
-External
 
-WoodOps
+Machine → Process
+Order → Product
+Product → Specification
 
-Derived
 
-Mixed
+Relationships allow the platform to build operational graphs.
 
-This matters for governance, writeback, and reconciliation.
+---
 
-Scope
+# Schema
 
-Defines the contextual boundary in which the object exists.
+Schemas define the structure of envelopes and objects.
 
-Examples:
+Schemas allow:
 
-Site
+- validation
+- versioning
+- compatibility across systems.
 
-Mill
+---
 
-Line
+# Kernel Responsibility
 
-Machine
+The kernel provides the foundation for:
 
-Team
-
-Shift
-
-Course
-
-KnowledgeDomain
-
-Scope provides contextual containment without forcing business modules.
-
-CreatedAt / ModifiedAt / EffectiveAt
-
-Timestamps describing lifecycle and temporal meaning.
-
-Use:
-
-CreatedAt for object creation
-
-ModifiedAt for last mutation
-
-EffectiveAt for domain-effective time if different
-
-Payload
-
-The actual content body.
-
-Conceptually:
-
-T
-
-Payload is intentionally unrestricted at the kernel level.
-
-Examples:
-
-JSON-like structured content
-
-normalized foreign record
-
-user-entered form content
-
-derived analysis result
-
-The payload carries operational meaning.
-The envelope carries system context.
-
-Provenance
-
-Describes how the object came to exist.
-
-Examples:
-
-imported from source system
-
-user-created in WoodOps
-
-derived by processor
-
-generated by intelligence workflow
-
-Provenance should support traceability and reasoning.
-
-Relationships
-
-A set of references or edges connecting this object to other objects.
-
-Relationships are first-class.
-They must not be treated as optional decoration.
-
-Annotations
-
-Supplementary metadata added without changing the payload.
-
-Examples:
-
-human notes
-
-AI notes
-
-processing flags
-
-review comments
-
-Annotations allow incremental enrichment.
-
-Version
-
-Represents the version of the envelope or payload.
-
-Needed for:
-
-concurrency
-
-audit
-
-historical reconstruction
-
-document evolution
-
-Access
-
-Represents access constraints or visibility metadata.
-
-Examples:
-
-role restrictions
-
-site restrictions
-
-sensitivity markers
-
-Access metadata belongs in the envelope, not in the payload.
-
-Tags
-
-Free-form or controlled tags used for search, grouping, or processing hints.
-
-Edge
-
-Edges represent first-class relationships between kernel objects.
-
-WoodOps should treat relationships as their own canonical structure, not as loose references buried in payloads.
-
-Conceptual structure
-Edge
-Minimum conceptual fields
-Id
-FromId
-ToId
-RelationshipType
-Source
-Authority
-CreatedAt
-Metadata
-Examples
-
-references
-
-derived-from
-
-attached-to
-
-belongs-to
-
-evidence-for
-
-precedes
-
-supersedes
-
-observed-at
-
-Edges allow the platform to behave as a document + graph hybrid.
-
-Event
-
-Events represent state-relevant occurrences.
-
-An event may be represented either:
-
-as an envelope with Kind = Event
-
-or as a dedicated kernel object family if needed later
-
-Early on, treat events as envelopes unless separation becomes necessary.
-
-Examples:
-
-import completed
-
-processor failed
-
-inspection submitted
-
-anomaly detected
-
-workflow advanced
-
-Schema
-
-Schemas define how payloads are expected to be structured or interpreted.
-
-Schemas are not just validation artifacts.
-They are interpretation contracts.
-
-A schema may define:
-
-fields
-
-types
-
-required structure
-
-validation rules
-
-rendering hints
-
-relationship expectations
-
-Schemas allow domain-specific meaning to be layered over kernel objects without changing kernel architecture.
-
-FormDefinition
-
-Defines how a schema-backed object is captured or edited through UI.
-
-A form definition should be generic.
-
-It may define:
-
-layout
-
-sections
-
-controls
-
-labels
-
-validation bindings
-
-visibility rules
-
-Forms are not business modules.
-They are generic interaction artifacts.
-
-GridDefinition
-
-Defines how object collections are displayed and interacted with.
-
-A grid definition may define:
-
-columns
-
-sort behavior
-
-filters
-
-grouping
-
-batch actions
-
-linked navigation behavior
-
-Grids are generic interaction surfaces over envelopes.
-
-QueryDefinition
-
-Represents a reusable query contract over kernel objects.
-
-A query definition may describe:
-
-filter logic
-
-scope restrictions
-
-classification filters
-
-relationship traversal
-
-sort/group behavior
-
-projection targets
-
-This allows queries to be stored and reused as kernel objects.
-
-WorkflowDefinition
-
-Represents a generic workflow over kernel objects.
-
-A workflow should not be tied to a business module.
-
-It may define:
-
-states
-
-transitions
-
-triggers
-
-approvals
-
-routing behavior
-
-automation hooks
-
-RuleDefinition
-
-Represents reusable rules that can be applied to objects, forms, workflows, or processing pipelines.
-
-Examples:
-
-validation rule
-
-routing rule
-
-escalation rule
-
-derivation rule
-
-Rules must remain generic and declarative where possible.
-
-ViewDefinition
-
-Represents a derived view over envelopes and edges.
-
-A view may describe:
-
-dashboard composition
-
-grouped projections
-
-filtered subsets
-
-analytical arrangements
-
-operational summaries
-
-Business-facing capabilities often emerge through view definitions.
-
-AttachmentReference
-
-Represents an attachment linked to an object without embedding binary content in the envelope.
-
-Examples:
-
-file link
-
-image reference
-
-document storage pointer
-
-external blob identifier
-
-Interpretation Layers
-
-The kernel model supports four distinct layers of meaning.
-
-Layer 1 — Kernel Object
-
-The structural object type.
-
-Examples:
-
-Envelope
-
-Edge
-
-Schema
-
-QueryDefinition
-
-Layer 2 — Classification
-
-The interpreted class of content.
-
-Examples:
-
-Inspection
-
-ShiftReport
-
-KnowledgeArticle
-
-Observation
-
-Layer 3 — Payload
-
-The actual operational content.
-
-Layer 4 — Projection
-
-A business-facing arrangement or view of the object.
-
-This separation prevents business functions from becoming architecture.
-
-Authority Model
-
-Every object should carry authority semantics.
-
-Authority answers:
-
-who owns truth
-
-who may edit
-
-whether WoodOps may write back
-
-whether the object is external, internal, or derived
-
-Suggested authority categories:
-
-External
-
-WoodOps
-
-Derived
-
-Mixed
-
-This should be formalized early because it affects persistence and reconciliation.
-
-Provenance Model
-
-Every important object should be traceable.
-
-Provenance should describe:
-
-origin system
-
-origin identifier
-
-import method
-
-processor chain
-
-derivation lineage
-
-actor if user-created
-
-timestamp trail
-
-This is critical for trust, reconciliation, and AI reasoning.
-
-Relationship Model
-
-Relationships are first-class and should support:
-
-references
-
-hierarchy
-
-lineage
-
-evidence
-
-contextual linkage
-
-dependency
-
-Payloads may contain lightweight references, but canonical relationships should be materializable as edges.
-
-Persistence Guidance
-
-Persistence must preserve:
-
-envelope metadata
-
-payload
-
-relationships
-
-version history
-
-provenance
-
-access metadata
-
-The persistence layer should not force business-specific table shapes before the kernel object model is stable.
-
-Processing Guidance
-
-Processing should operate generically on kernel objects.
-
-Typical processing actions:
-
-normalize
-
-enrich
-
-derive
-
-validate
-
-classify
-
-relate
-
-project
-
-Processors should not require domain-specific architecture.
-
-Projection Guidance
-
-Projections are business-facing arrangements of kernel objects.
-
-Examples:
-
-quality dashboard
-
-operational queue
-
-shift summary
-
-reconciliation view
-
-knowledge browser
-
-These are not architectural primitives.
-They are derived views over generic objects.
-
-Integration Guidance
-
-External systems must translate foreign data into kernel objects.
-
-The integration boundary must output:
-
-envelopes
-
-edges
-
-optional schema references
-
-provenance metadata
-
-Integrations must not introduce foreign system structures directly into the kernel.
-
-Intelligence Guidance
-
-Intelligence services should consume and enrich kernel objects.
-
-They may:
-
-classify envelopes
-
-generate annotations
-
-summarize payloads
-
-infer relationships
-
-assist query and view generation
-
-But they must not redefine kernel structure.
-
-Initial Implementation Priority
-
-The first implementation work should focus on the following primitives:
-
-Envelope
-
-Edge
-
-Provenance
-
-Classification
-
-SchemaRef
-
-Version
-
-AttachmentReference
-
-These are the minimum irreversible kernel decisions.
-
-Guardrails
-
-The following rules must be enforced:
-
-Rule 1
-
-Do not create business entities as kernel primitives.
-
-Rule 2
-
-Everything meaningful should become an envelope, edge, or other kernel object.
-
-Rule 3
-
-Relationships are first-class.
-
-Rule 4
-
-External systems must normalize into kernel objects.
-
-Rule 5
-
-Business capabilities emerge through processing and projection, not architecture.
-
-Summary
-
-WoodOps is built on a generic kernel object model.
-
-The central mechanism is:
-
-Envelope<T>
-
-The envelope carries:
-
-system context
-
-provenance
-
-authority
-
-relationships
-
-access semantics
-
-The payload carries:
-
-operational meaning
-
-Everything else in the platform is built by operating on these generic kernel objects.
+- platform identity
+- event flow
+- object representation
+- relationship mapping.

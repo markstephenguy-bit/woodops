@@ -1,12 +1,15 @@
 <Solution>
   <Folder Name="/Solution Items/">
-    <File Path="assistant_continuity_schema_version.yaml" />
-    <File Path="assistant_reconstitution_schema_version.yaml" />
-    <File Path="docs/42010-ArchitectureDescription.md" />
-    <File Path="docs/AI-Repository-Source.md" />
-    <File Path="docs/ChatGPT-Repository-Context.md" />
+    <File Path="AI_ASSISTANT_WORKFLOW.md" />
+    <File Path="AI_WORKING_MODEL.md" />
+    <File Path="ARCHITECTURE.md" />
     <File Path="global.json" />
+    <File Path="KERNEL_MODEL.md" />
     <File Path="PLATFORM_CAPABILITY_MODEL.md" />
+    <File Path="PLATFORM_OVERVIEW.md" />
+    <File Path="PROCESSING_MODEL.md" />
+    <File Path="PROJECT_STRUCTURE.md" />
+    <File Path="SOLUTION_COMPOSITION.md" />
     <File Path="SOLUTION_COMPOSITION_MODEL.md" />
     <File Path="WOODOPS_CAPABILITY_FIRST_MODEL.md" />
   </Folder>
