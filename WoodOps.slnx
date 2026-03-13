@@ -7,11 +7,13 @@
     <File Path="KERNEL_MODEL.md" />
     <File Path="PLATFORM_CAPABILITY_MODEL.md" />
     <File Path="PLATFORM_OVERVIEW.md" />
+    <File Path="PLATFORM_RUNTIME_ROLES.md" />
     <File Path="PROCESSING_MODEL.md" />
     <File Path="PROJECT_STRUCTURE.md" />
     <File Path="SOLUTION_COMPOSITION.md" />
     <File Path="SOLUTION_COMPOSITION_MODEL.md" />
     <File Path="WOODOPS_CAPABILITY_FIRST_MODEL.md" />
+    <File Path="WOODOPS_OSS_STACK.md" />
   </Folder>
   <Project Path="src/WoodOps.Host/WoodOps.Host.csproj" />
   <Project Path="src/WoodOps.Portal/WoodOps.Portal.csproj" />

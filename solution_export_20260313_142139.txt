@@ -1,0 +1,3306 @@
+﻿=== SOLUTION EXPORT ===
+Generated: 2026-03-13 14:21:39
+Root: C:\Users\MGUY\source\repos\markstephenguy-bit\woodops
+
+=== DIRECTORY STRUCTURE ===
+
+[DIR] .github
+  [DIR] workflows
+[DIR] docs
+[DIR] src
+  [DIR] WoodOps.Host
+    [DIR] Controllers
+    [DIR] Properties
+  [DIR] WoodOps.Portal
+    [DIR] Components
+      [DIR] Layout
+      [DIR] Pages
+    [DIR] Properties
+    [DIR] wwwroot
+  [DIR] WoodOps.Shared
+  [DIR] WoodOps.Workers
+    [DIR] Properties
+
+=== FILES ===
+
+
+
+========================================
+
+FILE: .editorconfig
+
+SIZE: 114 bytes
+
+MODIFIED: 2026-03-09 05:28:38
+
+========================================
+
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 4
+end_of_line = lf
+insert_final_newline = true
+
+
+========================================
+
+FILE: .github\workflows\dotnet.yml
+
+SIZE: 384 bytes
+
+MODIFIED: 2026-03-09 05:28:38
+
+========================================
+
+name: .NET Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0.x
+
+    - name: Restore
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore
+
+
+========================================
+
+FILE: CONTRIBUTING.md
+
+SIZE: 153 bytes
+
+MODIFIED: 2026-03-09 05:28:38
+
+========================================
+
+# Contributing
+
+## Branching
+Feature branches from main.
+
+## Commit messages
+Short imperative description.
+
+## Pull Requests
+Require review before merge.
+
+
+========================================
+
+FILE: docs\AI_WORKING_MODEL.md
+
+SIZE: 1151 bytes
+
+MODIFIED: 2026-03-13 14:11:09
+
+========================================
+
+# AI_WORKING_MODEL
+
+This document defines how AI assistants are used in the WoodOps project.
+
+AI is used as a development assistant and sounding board.
+
+AI does not control platform architecture.
+
+---
+
+# AI Responsibilities
+
+AI can assist with:
+
+- code scaffolding
+- documentation generation
+- test creation
+- algorithm refinement
+- design critique.
+
+---
+
+# AI Limitations
+
+AI must not:
+
+- redefine architecture
+- introduce new frameworks without approval
+- restructure the repository.
+
+---
+
+# Repository as Source of Truth
+
+The GitHub repository is authoritative.
+
+AI suggestions must follow repository structure and documentation.
+
+---
+
+# Recommended AI Workflow
+
+
+Architecture Context
+â†“
+Atomic Task Definition
+â†“
+AI Draft
+â†“
+Human Review
+â†“
+Integration
+
+
+---
+
+# Prompt Structure
+
+Effective prompts include:
+
+
+Context
+Task
+Constraints
+Expected Output
+
+
+Example:
+
+
+Context:
+docs/ARCHITECTURE.md
+
+Task:
+Generate worker processing logic.
+
+Constraints:
+C#
+No external libraries.
+
+Output:
+Single file.
+
+
+---
+
+# Goal
+
+AI should accelerate development while preserving architectural discipline.
+
+The developer remains responsible for final decisions.
+
+
+
+========================================
+
+FILE: docs\ARCHITECTURE.md
+
+SIZE: 1464 bytes
+
+MODIFIED: 2026-03-13 14:11:09
+
+========================================
+
+# ARCHITECTURE
+
+This document defines the structural architecture of the WoodOps platform.
+
+---
+
+# Runtime Components
+
+The system consists of three runtime components.
+
+
+Portal
+Host
+Workers
+
+
+All shared logic exists in the platform library:
+
+
+WoodOps.Shared
+
+
+---
+
+# Component Responsibilities
+
+## Portal
+
+Human interaction layer.
+
+Provides:
+
+- dashboards
+- administrative interfaces
+- operational tooling.
+
+---
+
+## Host
+
+Primary platform runtime.
+
+Responsibilities:
+
+- platform initialization
+- service composition
+- runtime orchestration
+- API hosting.
+
+---
+
+## Workers
+
+Background execution runtime.
+
+Responsibilities:
+
+- pipeline processing
+- integration polling
+- transformation jobs
+- asynchronous processing.
+
+Workers execute platform capabilities defined in Shared.
+
+---
+
+# Shared Platform Library
+
+All platform logic exists in:
+
+
+WoodOps.Shared
+
+
+Examples:
+
+- platform abstractions
+- object envelopes
+- integration adapters
+- domain contracts
+- processing pipelines.
+
+---
+
+# Architectural Layers
+
+
+Portal
+â†“
+Host
+â†“
+Workers
+â†“
+Shared Platform Kernel
+
+
+Shared is the lowest layer.
+
+---
+
+# Key Architectural Constraints
+
+Shared must remain:
+
+- runtime independent
+- infrastructure independent
+- framework minimal.
+
+Runtimes implement:
+
+- hosting
+- scheduling
+- orchestration.
+
+---
+
+# Architectural Goal
+
+Maintain a **clean separation between capability logic and runtime execution**.
+
+Capabilities live in Shared.
+
+Execution happens in Host and Workers.
+
+
+
+========================================
+
+FILE: docs\KERNEL_MODEL.md
+
+SIZE: 1350 bytes
+
+MODIFIED: 2026-03-13 14:11:09
+
+========================================
+
+# KERNEL_MODEL
+
+The WoodOps kernel defines the **core conceptual model of the platform**.
+
+The kernel describes how the platform represents operational reality.
+
+---
+
+# Core Concepts
+
+The kernel operates on several fundamental concepts.
+
+
+Object
+Envelope
+Event
+Relationship
+Schema
+
+
+---
+
+# Object
+
+An object represents a real-world entity.
+
+Examples:
+
+- machine
+- order
+- log
+- sensor
+- shipment.
+
+Objects exist independently of systems.
+
+---
+
+# Envelope
+
+An envelope wraps an object with platform metadata.
+
+Envelope responsibilities:
+
+- identity
+- source system
+- timestamps
+- schema reference.
+
+Envelopes allow the platform to manage objects consistently across systems.
+
+---
+
+# Event
+
+Events represent changes in the state of objects.
+
+Examples:
+
+- machine started
+- order completed
+- shipment created.
+
+Events drive processing pipelines.
+
+---
+
+# Relationship
+
+Objects are connected through relationships.
+
+Examples:
+
+
+Machine â†’ Process
+Order â†’ Product
+Product â†’ Specification
+
+
+Relationships allow the platform to build operational graphs.
+
+---
+
+# Schema
+
+Schemas define the structure of envelopes and objects.
+
+Schemas allow:
+
+- validation
+- versioning
+- compatibility across systems.
+
+---
+
+# Kernel Responsibility
+
+The kernel provides the foundation for:
+
+- platform identity
+- event flow
+- object representation
+- relationship mapping.
+
+
+
+========================================
+
+FILE: docs\PLATFORM_OVERVIEW.md
+
+SIZE: 1843 bytes
+
+MODIFIED: 2026-03-13 14:11:09
+
+========================================
+
+# PLATFORM_OVERVIEW
+
+WoodOps is a **generic operational platform** designed to fill capability gaps between enterprise systems.
+
+Examples of connected systems:
+
+- ERP
+- MES
+- CMMS
+- O365
+- analytics platforms
+- industrial control systems
+
+WoodOps does not replace these systems.
+
+Instead it:
+
+- integrates with them
+- normalizes operational data
+- provides missing operational capabilities
+- enables automation and intelligence.
+
+---
+
+# Core Concept
+
+WoodOps is a **capability-first platform**.
+
+Traditional enterprise software is built around:
+
+
+applications
+features
+modules
+
+
+WoodOps is built around:
+
+
+capabilities
+relationships
+events
+data normalization
+
+
+Capabilities exist independently of any specific business problem.
+
+When a new problem appears, the platform capabilities are used to solve it.
+
+---
+
+# Platform Role
+
+WoodOps acts as an operational layer between systems.
+
+
+Enterprise Systems
+â†“
+WoodOps
+â†“
+Operational Solutions
+
+
+The platform provides:
+
+- data normalization
+- integration pipelines
+- operational automation
+- intelligence services
+- platform APIs.
+
+---
+
+# Design Philosophy
+
+Key principles:
+
+**Capability First**
+
+Platform capabilities exist before specific applications.
+
+**Integration Oriented**
+
+Most operational data originates outside the platform.
+
+**Event Driven**
+
+Operational systems change through events.
+
+**Composable Solutions**
+
+Solutions are composed from existing capabilities.
+
+---
+
+# System Boundaries
+
+WoodOps does not replace:
+
+- ERP systems
+- MES systems
+- maintenance systems
+- corporate reporting systems.
+
+WoodOps fills **operational capability gaps** between them.
+
+---
+
+# Intended Outcomes
+
+The platform enables:
+
+- faster operational solution development
+- unified operational data
+- automation of manual processes
+- integration between disconnected systems
+- operational intelligence.
+
+
+
+========================================
+
+FILE: docs\PLATFORM_RUNTIME_ROLES.md
+
+SIZE: 5152 bytes
+
+MODIFIED: 2026-03-13 14:20:59
+
+========================================
+
+# PLATFORM_RUNTIME_ROLES
+
+This document defines the responsibilities and boundaries of the runtime components in the WoodOps platform.
+
+These definitions replace the per-project `PROJECT_CONTEXT.md` files and act as the authoritative reference for runtime responsibilities.
+
+---
+
+# Runtime Components
+
+The WoodOps platform is executed through three runtime components:
+
+Portal  
+Host  
+Workers
+
+All platform capabilities and core abstractions are implemented in:
+
+WoodOps.Shared
+
+The runtime components host and execute those capabilities.
+
+---
+
+# WoodOps.Host
+
+WoodOps.Host is the **primary runtime host of the platform**.
+
+It exposes platform capabilities to external systems and user interfaces.
+
+## Responsibilities
+
+Host is responsible for:
+
+- exposing platform APIs
+- composing platform services through dependency injection
+- initializing the platform runtime
+- loading configuration
+- registering integrations and processors
+- exposing operational endpoints
+- coordinating runtime infrastructure
+
+Host acts as the **entry point to the platform** for:
+
+- the Portal UI
+- external automation
+- analytics systems
+- integration tools
+- operational scripts
+
+Controllers should remain thin and delegate logic to platform services implemented in `WoodOps.Shared`.
+
+## Boundary
+
+Host must **not implement platform logic**.
+
+Host should not contain:
+
+- domain models
+- integration translation logic
+- processing algorithms
+- projection logic
+- business workflows
+
+These belong to the shared platform capability layer.
+
+Host is responsible for **exposing and composing capabilities**, not implementing them.
+
+---
+
+# WoodOps.Portal
+
+WoodOps.Portal is the **presentation layer** of the platform.
+
+It provides the primary user interface for interacting with platform capabilities.
+
+## Responsibilities
+
+Portal is responsible for:
+
+- dashboards
+- operational visualization
+- navigation and layout
+- user interaction workflows
+- operational control surfaces
+- data visualization
+
+Portal translates user interaction into API requests directed to the platform host.
+
+## Boundary
+
+Portal must **not contain platform logic**.
+
+Portal should not implement:
+
+- business processing
+- platform models
+- persistence logic
+- integration logic
+- processing pipelines
+
+All operational behavior originates from services exposed by `WoodOps.Host`.
+
+Portal is a **consumer of platform capabilities**.
+
+---
+
+# WoodOps.Workers
+
+WoodOps.Workers is the **background execution runtime** of the platform.
+
+Workers execute asynchronous and scheduled processing tasks.
+
+## Responsibilities
+
+Workers execute:
+
+- ingestion pipelines
+- scheduled jobs
+- integration polling
+- background data processing
+- event-driven processing
+- operational automation tasks
+
+Workers allow the platform to operate continuously without user interaction.
+
+## Boundary
+
+Workers should **execute platform capabilities but not define them**.
+
+Workers should not implement:
+
+- platform kernel models
+- core capability primitives
+- integration translation logic
+- UI behavior
+- API controllers
+
+Workers run processing logic defined in the shared platform capability layer.
+
+---
+
+# WoodOps.Shared
+
+WoodOps.Shared is the **platform capability library**.
+
+It contains the reusable primitives and mechanisms used by all runtime components.
+
+## Responsibilities
+
+Shared provides:
+
+- platform kernel primitives
+- object and envelope structures
+- processing contracts
+- integration adapters
+- projection mechanisms
+- intelligence capabilities
+- governance and policy enforcement
+- observability mechanisms
+
+All runtime projects depend on this library.
+
+Shared contains **no runtime entrypoints**.
+
+---
+
+# Kernel Layer
+
+Inside the shared library exists a **protected kernel layer**.
+
+This layer defines the most stable primitives of the platform.
+
+Examples include:
+
+- identity primitives
+- envelope structures
+- relationship models
+- event records
+- processing contracts
+- projection contracts
+
+Kernel components must remain:
+
+- stable
+- domain neutral
+- dependency light
+
+Other platform capabilities may depend on the kernel, but the kernel must not depend on them.
+
+---
+
+# Capability Areas
+
+The shared library organizes platform functionality into capability areas.
+
+Typical areas include:
+
+Kernel  
+Model  
+Relationships  
+Processing  
+Projection  
+Integrations  
+Intelligence  
+Security  
+Observability
+
+These are logical partitions implemented through namespaces and folders.
+
+They are **not separate assemblies**.
+
+---
+
+# Dependency Direction
+
+Dependency flow inside the platform must follow this direction:
+
+Shared  
+â†‘  
+Workers  
+â†‘  
+Host  
+â†‘  
+Portal
+
+Rules:
+
+Shared must not depend on runtime projects.
+
+Workers may depend on Shared.
+
+Host may depend on Shared and Workers.
+
+Portal should interact with the platform primarily through Host APIs.
+
+---
+
+# Architectural Principle
+
+WoodOps is a **capability-first platform**.
+
+Platform capabilities are implemented in the shared library.
+
+Runtime components exist only to host, execute, and expose those capabilities.
+
+New operational problems should be solved by **composing existing platform capabilities** rather than creating separate applications.
+
+
+
+========================================
+
+FILE: docs\PROCESSING_MODEL.md
+
+SIZE: 1241 bytes
+
+MODIFIED: 2026-03-13 14:11:09
+
+========================================
+
+# PROCESSING_MODEL
+
+This document defines how data moves and transforms inside the WoodOps platform.
+
+---
+
+# Processing Pipeline
+
+Data moves through a pipeline of stages.
+
+
+Ingestion
+Normalization
+Processing
+Derivation
+Persistence
+
+
+---
+
+# Ingestion
+
+Data enters the platform through integrations.
+
+Examples:
+
+- APIs
+- database reads
+- file imports
+- message queues.
+
+---
+
+# Normalization
+
+Incoming data is normalized into platform envelopes.
+
+Normalization ensures consistent object representation.
+
+---
+
+# Processing
+
+Processing steps execute platform capabilities.
+
+Examples:
+
+- data validation
+- enrichment
+- relationship linking.
+
+Processing is typically executed by workers.
+
+---
+
+# Derivation
+
+Derived data may be produced from processed objects.
+
+Examples:
+
+- aggregated metrics
+- operational indicators
+- derived relationships.
+
+---
+
+# Persistence
+
+Objects and events are persisted to storage systems.
+
+Examples:
+
+- relational databases
+- document stores
+- event stores.
+
+---
+
+# Idempotency
+
+Processing steps must support safe re-execution.
+
+Pipelines should be replayable without producing duplicate results.
+
+---
+
+# Observability
+
+Processing pipelines should expose:
+
+- execution metrics
+- processing failures
+- event throughput.
+
+
+
+========================================
+
+FILE: docs\PROJECT_STRUCTURE.md
+
+SIZE: 2111 bytes
+
+MODIFIED: 2026-03-13 14:11:09
+
+========================================
+
+# PROJECT_STRUCTURE
+
+This document defines the **current WoodOps solution composition** and the responsibility of each project.
+
+It is the authoritative reference for repository structure.
+
+---
+
+# Solution Layout
+
+
+src/
+
+WoodOps.Host
+WoodOps.Portal
+WoodOps.Workers
+WoodOps.Shared
+
+
+---
+
+# Project Responsibilities
+
+## WoodOps.Host
+
+Runtime host for the platform.
+
+Responsibilities:
+
+- platform runtime bootstrapping
+- service composition
+- configuration loading
+- environment setup
+- infrastructure initialization
+
+The host is responsible for **starting the platform runtime**.
+
+---
+
+## WoodOps.Portal
+
+User interface for interacting with the platform.
+
+Responsibilities:
+
+- operational dashboards
+- platform configuration
+- platform data visualization
+- human interaction with platform capabilities
+
+The portal does **not implement platform capabilities**.
+
+It consumes services exposed by the platform.
+
+---
+
+## WoodOps.Workers
+
+Background processing runtime.
+
+Responsibilities:
+
+- asynchronous processing
+- data transformation
+- pipeline execution
+- integration polling
+- event processing
+
+Workers execute **platform capabilities defined in Shared**.
+
+---
+
+## WoodOps.Shared
+
+Shared platform kernel and capability library.
+
+Responsibilities:
+
+- core platform abstractions
+- envelope definitions
+- contracts
+- integration adapters
+- capability implementations
+
+Shared contains **no runtime entrypoints**.
+
+It is a pure platform library.
+
+---
+
+# Internal Structure of Shared
+
+Example internal organization:
+
+
+WoodOps.Shared/
+
+Kernel/
+Platform/
+Contracts/
+Envelopes/
+Integrations/
+Intelligence/
+
+
+These are **namespaces and folders**, not separate projects.
+
+---
+
+# Dependency Direction
+
+Allowed dependency flow:
+
+
+Shared
+â†‘
+Workers
+â†‘
+Host
+â†‘
+Portal
+
+
+Rules:
+
+- Shared must not depend on other projects
+- Workers may depend on Shared
+- Host may depend on Shared and Workers
+- Portal may depend on platform APIs only
+
+---
+
+# Architectural Principle
+
+WoodOps is a **capability platform**.
+
+Capabilities are implemented in:
+
+
+WoodOps.Shared
+
+
+Runtimes execute those capabilities through:
+
+
+Host
+Workers
+Portal
+
+
+
+========================================
+
+FILE: docs\SOLUTION_COMPOSITION.md
+
+SIZE: 773 bytes
+
+MODIFIED: 2026-03-13 14:11:09
+
+========================================
+
+# SOLUTION_COMPOSITION
+
+Solutions in WoodOps are built by composing existing platform capabilities.
+
+The platform does not create new applications for each problem.
+
+Instead solutions combine existing capabilities.
+
+---
+
+# Composition Model
+
+Solutions are constructed from:
+
+
+Integrations
+Processing Pipelines
+Platform Capabilities
+User Interfaces
+
+
+---
+
+# Example Flow
+
+
+External System
+â†“
+Integration
+â†“
+Platform Pipeline
+â†“
+Derived Capability
+â†“
+Portal Interface
+
+
+---
+
+# Benefits
+
+This model allows:
+
+- faster solution development
+- reuse of existing capabilities
+- consistent data processing.
+
+---
+
+# Design Rule
+
+New operational problems should first attempt to use **existing capabilities**.
+
+Only when required should new capabilities be added to the platform.
+
+
+
+========================================
+
+FILE: export-solution.ps1
+
+SIZE: 2505 bytes
+
+MODIFIED: 2026-02-06 16:05:10
+
+========================================
+
+# export-solution.ps1
+param(
+    [string]$OutputFile = "solution_export_$(Get-Date -Format 'yyyyMMdd_HHmmss').txt"
+)
+
+$includeExtensions = @(
+    "*.cs", "*.razor", "*.cshtml",
+    "*.csproj", "*.sln", "*.slnx",
+    "*.json", "*.config", "*.xml", "*.jsonl",
+    "*.ps1", "*.md", "*.yaml", "*.yml", "*.sh",
+    "*.props", "*.targets", "*.editorconfig"
+)
+$excludeDirs = @("bin", "obj", ".vs", ".git", "node_modules", "packages")
+$excludeFiles = @("solution_export_*.txt")
+
+$output = @()
+$output += "=== SOLUTION EXPORT ==="
+$output += "Generated: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
+$output += "Root: $PWD"
+$output += "`n=== DIRECTORY STRUCTURE ===`n"
+
+# All directories including empty
+Get-ChildItem -Recurse -Directory | Where-Object {
+    $dir = $_
+    -not ($excludeDirs | Where-Object { $dir.FullName -like "*\$_\*" -or $dir.Name -eq $_ })
+} | Sort-Object FullName | ForEach-Object {
+    $relativePath = $_.FullName.Substring($PWD.Path.Length + 1)
+    $depth = ($relativePath -split '\\').Count - 1
+    $isEmpty = (Get-ChildItem $_.FullName -File -Recurse | Measure-Object).Count -eq 0
+    $marker = if ($isEmpty) { "[DIR-EMPTY]" } else { "[DIR]" }
+    $output += ("  " * $depth) + "$marker $($_.Name)"
+}
+
+$output += "`n=== FILES ===`n"
+
+# Collect matching files
+Get-ChildItem -Recurse -Include $includeExtensions | Where-Object {
+    $file = $_
+    $excluded = $false
+    
+    # Check excluded directories
+    foreach ($exDir in $excludeDirs) {
+        if ($file.FullName -like "*\$exDir\*" -or $file.Directory.Name -eq $exDir) {
+            $excluded = $true
+            break
+        }
+    }
+    
+    # Check excluded file patterns
+    foreach ($exFile in $excludeFiles) {
+        if ($file.Name -like $exFile) {
+            $excluded = $true
+            break
+        }
+    }
+    
+    -not $excluded
+} | Sort-Object FullName | ForEach-Object {
+    $relativePath = $_.FullName.Substring($PWD.Path.Length + 1)
+    $output += "`n`n========================================`n"
+    $output += "FILE: $relativePath`n"
+    $output += "SIZE: $($_.Length) bytes`n"
+    $output += "MODIFIED: $($_.LastWriteTime.ToString('yyyy-MM-dd HH:mm:ss'))`n"
+    $output += "========================================`n"
+    $output += Get-Content $_.FullName -Raw
+}
+
+$output | Out-File -FilePath $OutputFile -Encoding UTF8
+Write-Host "Exported to: $OutputFile"
+Write-Host "File count: $(($output | Select-String -Pattern '^FILE:').Matches.Count)"
+
+
+========================================
+
+FILE: global.json
+
+SIZE: 93 bytes
+
+MODIFIED: 2026-03-09 06:46:30
+
+========================================
+
+{    "sdk": {        "version": "10.0.100",        "rollForward": "latestFeature"    }}
+
+
+
+========================================
+
+FILE: README.md
+
+SIZE: 404 bytes
+
+MODIFIED: 2026-03-09 05:28:38
+
+========================================
+
+# WoodOps
+
+Operational software platform for wood products manufacturing.
+
+## Purpose
+WoodOps provides tools for mill operations such as process monitoring,
+quality tracking, and operational dashboards.
+
+## Components
+- WoodOps.Portal â€” web interface
+- future modules planned for operations and data integration
+
+## Development
+
+Requirements:
+- .NET 9 SDK
+
+Run:
+
+dotnet run --project src/WoodOps.Portal
+
+
+========================================
+
+FILE: src\WoodOps.Host\appsettings.Development.json
+
+SIZE: 127 bytes
+
+MODIFIED: 2026-03-09 06:01:50
+
+========================================
+
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  }
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Host\appsettings.json
+
+SIZE: 151 bytes
+
+MODIFIED: 2026-03-09 06:01:50
+
+========================================
+
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*"
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Host\Controllers\WeatherForecastController.cs
+
+SIZE: 1046 bytes
+
+MODIFIED: 2026-03-09 06:01:51
+
+========================================
+
+using Microsoft.AspNetCore.Mvc;
+
+namespace WoodOps.Host.Controllers
+{
+    [ApiController]
+    [Route("[controller]")]
+    public class WeatherForecastController : ControllerBase
+    {
+        private static readonly string[] Summaries = new[]
+        {
+            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+        };
+
+        private readonly ILogger<WeatherForecastController> _logger;
+
+        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        {
+            _logger = logger;
+        }
+
+        [HttpGet(Name = "GetWeatherForecast")]
+        public IEnumerable<WeatherForecast> Get()
+        {
+            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            {
+                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+                TemperatureC = Random.Shared.Next(-20, 55),
+                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+            })
+            .ToArray();
+        }
+    }
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Host\Program.cs
+
+SIZE: 718 bytes
+
+MODIFIED: 2026-03-09 06:01:51
+
+========================================
+
+
+namespace WoodOps.Host
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
+
+            // Add services to the container.
+
+            builder.Services.AddControllers();
+            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+            builder.Services.AddOpenApi();
+
+            var app = builder.Build();
+
+            // Configure the HTTP request pipeline.
+            if (app.Environment.IsDevelopment())
+            {
+                app.MapOpenApi();
+            }
+
+            app.UseAuthorization();
+
+
+            app.MapControllers();
+
+            app.Run();
+        }
+    }
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Host\PROJECT_CONTEXT.md
+
+SIZE: 4570 bytes
+
+MODIFIED: 2026-03-09 08:49:23
+
+========================================
+
+# PROJECT_CONTEXT.md
+
+## Project
+WoodOps.Host
+
+## Purpose
+WoodOps.Host is the primary runtime host for the WoodOps platform.
+
+It provides the API surface and runtime composition environment in which the
+WoodOps kernel, integrations, intelligence systems, and workers operate.
+
+This project exposes the platform capabilities through network interfaces
+while delegating actual platform behavior to WoodOps.Core.
+
+WoodOps.Host is responsible for *hosting*, not implementing, platform logic.
+
+---
+
+## Architectural Role
+WoodOps.Host functions as the **platform service host**.
+
+Responsibilities include:
+
+â€¢ exposing platform APIs  
+â€¢ composing platform services via dependency injection  
+â€¢ initializing the WoodOps kernel  
+â€¢ registering integrations and processors  
+â€¢ coordinating runtime infrastructure  
+â€¢ exposing endpoints for external systems  
+
+WoodOps.Host is typically deployed as a **Docker container**.
+
+It acts as the primary entry point for:
+
+â€¢ the Portal UI  
+â€¢ external applications  
+â€¢ automation scripts  
+â€¢ analytics tools  
+â€¢ integration systems  
+
+---
+
+## Owns
+
+### API Surface
+Defines the external API interface to the platform.
+
+Examples:
+
+- REST endpoints
+- future gRPC endpoints
+- system status endpoints
+- ingestion endpoints
+- projection/query endpoints
+
+Controllers should remain thin and delegate all logic to platform services.
+
+---
+
+### Runtime Composition
+Responsible for wiring the platform together.
+
+Examples:
+
+- dependency injection configuration
+- module registration
+- integration registration
+- configuration loading
+- startup lifecycle management
+
+---
+
+### Platform Bootstrapping
+Initializes core platform components.
+
+Examples:
+
+- loading configuration
+- initializing persistence services
+- registering processors
+- enabling integrations
+- initializing observability systems
+
+---
+
+### External Entry Point
+Provides access to WoodOps functionality for:
+
+- user interfaces
+- integration tools
+- automation systems
+- analytics platforms
+
+---
+
+## Does Not Own
+
+WoodOps.Host must **never contain**:
+
+â€¢ domain logic  
+â€¢ kernel model definitions  
+â€¢ integration translation logic  
+â€¢ processing algorithms  
+â€¢ projection logic  
+â€¢ LLM orchestration  
+
+Those responsibilities belong to:
+
+â€¢ WoodOps.Core  
+â€¢ WoodOps.Integrations  
+â€¢ WoodOps.Intelligence  
+â€¢ WoodOps.Workers  
+
+The host only exposes them.
+
+---
+
+## Inputs
+
+WoodOps.Host receives:
+
+â€¢ API requests from clients  
+â€¢ configuration from environment variables or configuration providers  
+â€¢ normalized model objects submitted by integrations  
+â€¢ runtime service registrations
+
+Clients may include:
+
+â€¢ WoodOps.Portal  
+â€¢ automation systems  
+â€¢ analytics tools  
+â€¢ integration services  
+â€¢ external applications
+
+---
+
+## Outputs
+
+WoodOps.Host provides:
+
+â€¢ API responses  
+â€¢ platform service endpoints  
+â€¢ ingestion interfaces  
+â€¢ query and projection endpoints  
+â€¢ system diagnostics endpoints
+
+These outputs expose platform capabilities without embedding domain logic.
+
+---
+
+## Allowed Dependencies
+
+WoodOps.Host may depend on:
+
+â€¢ WoodOps.Core  
+â€¢ WoodOps.Integrations  
+â€¢ WoodOps.Intelligence  
+â€¢ standard ASP.NET runtime libraries
+
+These dependencies allow the host to compose the platform.
+
+---
+
+## Dependency Restrictions
+
+WoodOps.Host must **not be referenced by**:
+
+â€¢ WoodOps.Core  
+â€¢ WoodOps.Integrations  
+â€¢ WoodOps.Intelligence  
+
+The host sits at the runtime edge of the system.
+
+Kernel libraries must remain host-agnostic.
+
+---
+
+## Internal Namespace Guidance
+
+Typical namespace layout:
+
+WoodOps.Host.Api  
+WoodOps.Host.Controllers  
+WoodOps.Host.Configuration  
+WoodOps.Host.Composition  
+WoodOps.Host.Diagnostics  
+
+Controllers should remain thin and delegate work to platform services.
+
+---
+
+## Change Guidance
+
+Changes to this project should focus on:
+
+â€¢ improving API structure  
+â€¢ improving platform composition  
+â€¢ improving runtime configuration  
+â€¢ improving operational diagnostics  
+
+Avoid adding platform logic here.
+
+If logic begins accumulating inside the host, it likely belongs in:
+
+â€¢ WoodOps.Core  
+â€¢ WoodOps.Integrations  
+â€¢ WoodOps.Intelligence
+
+---
+
+## Notes
+
+WoodOps.Host is the **platform runtime shell**.
+
+Its role is to make the WoodOps platform accessible without embedding
+the platform's intelligence directly into the host itself.
+
+
+
+========================================
+
+FILE: src\WoodOps.Host\Properties\launchSettings.json
+
+SIZE: 358 bytes
+
+MODIFIED: 2026-03-09 06:01:51
+
+========================================
+
+{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "applicationUrl": "http://localhost:5248",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Host\WeatherForecast.cs
+
+SIZE: 279 bytes
+
+MODIFIED: 2026-03-09 06:01:51
+
+========================================
+
+namespace WoodOps.Host
+{
+    public class WeatherForecast
+    {
+        public DateOnly Date { get; set; }
+
+        public int TemperatureC { get; set; }
+
+        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+
+        public string? Summary { get; set; }
+    }
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Host\WoodOps.Host.csproj
+
+SIZE: 334 bytes
+
+MODIFIED: 2026-03-09 06:01:51
+
+========================================
+
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.12" />
+  </ItemGroup>
+
+</Project>
+
+
+
+========================================
+
+FILE: src\WoodOps.Portal\appsettings.Development.json
+
+SIZE: 127 bytes
+
+MODIFIED: 2026-03-09 05:26:54
+
+========================================
+
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  }
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Portal\appsettings.json
+
+SIZE: 151 bytes
+
+MODIFIED: 2026-03-09 05:26:54
+
+========================================
+
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*"
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Portal\Components\_Imports.razor
+
+SIZE: 445 bytes
+
+MODIFIED: 2026-03-09 05:26:54
+
+========================================
+
+@using System.Net.Http
+@using System.Net.Http.Json
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using static Microsoft.AspNetCore.Components.Web.RenderMode
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.JSInterop
+@using MudBlazor
+@using MudBlazor.Services
+@using WoodOps.Portal
+@using WoodOps.Portal.Components
+
+
+
+========================================
+
+FILE: src\WoodOps.Portal\Components\App.razor
+
+SIZE: 726 bytes
+
+MODIFIED: 2026-03-09 05:26:54
+
+========================================
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />  
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <link href=@Assets["_content/MudBlazor/MudBlazor.min.css"] rel="stylesheet" />
+    <ImportMap />
+    <link rel="icon" type="image/ico" href="favicon.ico" />
+    <HeadOutlet @rendermode="InteractiveServer" />
+</head>
+
+<body>
+    <Routes @rendermode="InteractiveServer" />
+    <script src="_framework/blazor.web.js"></script>
+    <script src=@Assets["_content/MudBlazor/MudBlazor.min.js"]></script>
+</body>
+
+</html>
+
+
+
+========================================
+
+FILE: src\WoodOps.Portal\Components\Layout\MainLayout.razor
+
+SIZE: 3086 bytes
+
+MODIFIED: 2026-03-09 05:26:54
+
+========================================
+
+@inherits LayoutComponentBase
+
+<MudThemeProvider Theme="@_theme" IsDarkMode="_isDarkMode" />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+<MudLayout>
+    <MudAppBar Elevation="1">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudText Typo="Typo.h5" Class="ml-3">Application</MudText>
+        <MudSpacer />
+        <MudIconButton Icon="@(DarkLightModeButtonIcon)" Color="Color.Inherit" OnClick="@DarkModeToggle" />
+        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
+    </MudAppBar>
+    <MudDrawer id="nav-drawer" @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+        <NavMenu />
+    </MudDrawer>
+    <MudMainContent Class="pt-16 pa-4">
+        @Body
+    </MudMainContent>
+</MudLayout>
+
+
+<div id="blazor-error-ui" data-nosnippet>
+    An unhandled error has occurred.
+    <a href="." class="reload">Reload</a>
+    <span class="dismiss">🗙</span>
+</div>
+
+@code {
+    private bool _drawerOpen = true;
+    private bool _isDarkMode = true;
+    private MudTheme? _theme = null;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        _theme = new()
+        {
+            PaletteLight = _lightPalette,
+            PaletteDark = _darkPalette,
+            LayoutProperties = new LayoutProperties()
+        };
+    }
+
+    private void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+
+    private void DarkModeToggle()
+    {
+        _isDarkMode = !_isDarkMode;
+    }
+
+    private readonly PaletteLight _lightPalette = new()
+    {
+        Black = "#110e2d",
+        AppbarText = "#424242",
+        AppbarBackground = "rgba(255,255,255,0.8)",
+        DrawerBackground = "#ffffff",
+        GrayLight = "#e8e8e8",
+        GrayLighter = "#f9f9f9",
+    };
+
+    private readonly PaletteDark _darkPalette = new()
+    {
+        Primary = "#7e6fff",
+        Surface = "#1e1e2d",
+        Background = "#1a1a27",
+        BackgroundGray = "#151521",
+        AppbarText = "#92929f",
+        AppbarBackground = "rgba(26,26,39,0.8)",
+        DrawerBackground = "#1a1a27",
+        ActionDefault = "#74718e",
+        ActionDisabled = "#9999994d",
+        ActionDisabledBackground = "#605f6d4d",
+        TextPrimary = "#b2b0bf",
+        TextSecondary = "#92929f",
+        TextDisabled = "#ffffff33",
+        DrawerIcon = "#92929f",
+        DrawerText = "#92929f",
+        GrayLight = "#2a2833",
+        GrayLighter = "#1e1e2d",
+        Info = "#4a86ff",
+        Success = "#3dcb6c",
+        Warning = "#ffb545",
+        Error = "#ff3f5f",
+        LinesDefault = "#33323e",
+        TableLines = "#33323e",
+        Divider = "#292838",
+        OverlayLight = "#1e1e2d80",
+    };
+
+    public string DarkLightModeButtonIcon => _isDarkMode switch
+    {
+        true => Icons.Material.Rounded.AutoMode,
+        false => Icons.Material.Outlined.DarkMode,
+    };
+}
+
+
+
+
+
+========================================
+
+FILE: src\WoodOps.Portal\Components\Layout\NavMenu.razor
+
+SIZE: 380 bytes
+
+MODIFIED: 2026-03-09 05:26:54
+
+========================================
+
+
+<MudNavMenu>
+    <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
+    <MudNavLink Href="counter" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">Counter</MudNavLink>
+    
+    <MudNavLink Href="weather" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Weather</MudNavLink>
+
+</MudNavMenu>
+
+
+
+
+
+========================================
+
+FILE: src\WoodOps.Portal\Components\Pages\Counter.razor
+
+SIZE: 435 bytes
+
+MODIFIED: 2026-03-09 05:26:54
+
+========================================
+
+@page "/counter"
+
+<PageTitle>Counter</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Counter</MudText>
+
+<MudText Typo="Typo.body1" Class="mb-4">Current count: @currentCount</MudText>
+
+<MudButton Color="Color.Primary" Variant="Variant.Filled" @onclick="IncrementCount">Click me</MudButton>
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Portal\Components\Pages\Error.razor
+
+SIZE: 1215 bytes
+
+MODIFIED: 2026-03-09 05:26:54
+
+========================================
+
+@page "/Error"
+@using System.Diagnostics
+
+<PageTitle>Error</PageTitle>
+
+<h1 class="text-danger">Error.</h1>
+<h2 class="text-danger">An error occurred while processing your request.</h2>
+
+@if (ShowRequestId)
+{
+    <p>
+        <strong>Request ID:</strong> <code>@RequestId</code>
+    </p>
+}
+
+<h3>Development Mode</h3>
+<p>
+    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
+</p>
+<p>
+    <strong>The Development environment shouldn't be enabled for deployed applications.</strong>
+    It can result in displaying sensitive information from exceptions to end users.
+    For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
+    and restarting the app.
+</p>
+
+@code{
+    [CascadingParameter]
+    private HttpContext? HttpContext { get; set; }
+
+    private string? RequestId { get; set; }
+    private bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+
+    protected override void OnInitialized() =>
+        RequestId = Activity.Current?.Id ?? HttpContext?.TraceIdentifier;
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Portal\Components\Pages\Home.razor
+
+SIZE: 3040 bytes
+
+MODIFIED: 2026-03-09 05:26:54
+
+========================================
+
+@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Hello, world!</MudText>
+<MudText Class="mb-8">Welcome to your new app, powered by MudBlazor and the .NET 9 Template!</MudText>
+
+<MudAlert Severity="Severity.Normal" ContentAlignment="HorizontalAlignment.Start">
+    You can find documentation and examples on our website here:
+    <MudLink Href="https://mudblazor.com" Target="_blank" Typo="Typo.body2" Color="Color.Primary">
+        <b>www.mudblazor.com</b>
+    </MudLink>
+</MudAlert>
+
+<br />
+<MudText Typo="Typo.h5" GutterBottom="true">Interactivity in this Template</MudText>
+<br />
+<MudText Typo="Typo.body2">
+    When you opt for the "Global" Interactivity Location, <br />
+    the render modes are defined in App.razor and consequently apply to all child components.<br />
+    In this case, providers are globally set in the MainLayout.<br />
+    <br />
+    On the other hand, if you choose the "Per page/component" Interactivity Location,<br />
+    it is necessary to include the <br />
+    <br />
+    &lt;MudPopoverProvider /&gt; <br />
+    &lt;MudDialogProvider /&gt; <br />
+    &lt;MudSnackbarProvider /&gt; <br />
+    <br />
+    components on every interactive page.<br />
+    <br />
+    If a render mode is not specified for a page, it defaults to Server-Side Rendering (SSR),<br />
+    similar to this page. While MudBlazor allows pages to be rendered in SSR,<br />
+    please note that interactive features, such as buttons and dropdown menus, will not be functional.
+</MudText>
+
+<br />
+<MudText Typo="Typo.h5" GutterBottom="true">What's New in Blazor with the Release of .NET 9</MudText>
+<br />
+
+<MudText Typo="Typo.h6" GutterBottom="true">Prerendering</MudText>
+<MudText Typo="Typo.body2" GutterBottom="true">
+    If you're exploring the features of .NET 9 Blazor,<br /> you might be pleasantly surprised to learn that each page is prerendered on the server,<br /> regardless of the selected render mode.<br /><br />
+    This means that you'll need to inject all necessary services on the server,<br /> even when opting for the wasm (WebAssembly) render mode.<br /><br />
+    This prerendering functionality is crucial to ensuring that WebAssembly mode feels fast and responsive,<br /> especially when it comes to initial page load times.<br /><br />
+    For more information on how to detect prerendering and leverage the RenderContext, you can refer to the following link:
+    <MudLink Href="https://github.com/dotnet/aspnetcore/issues/51468#issuecomment-1783568121" Target="_blank" Typo="Typo.body2" Color="Color.Primary">
+        More details
+    </MudLink>
+</MudText>
+
+<br />
+<MudText Typo="Typo.h6" GutterBottom="true">InteractiveAuto</MudText>
+<MudText Typo="Typo.body2">
+    A discussion on how to achieve this can be found here:
+    <MudLink Href="https://github.com/dotnet/aspnetcore/issues/51468#issue-1950424116" Target="_blank" Typo="Typo.body2" Color="Color.Primary">
+        More details
+    </MudLink>
+</MudText>
+
+
+
+========================================
+
+FILE: src\WoodOps.Portal\Components\Pages\Weather.razor
+
+SIZE: 2525 bytes
+
+MODIFIED: 2026-03-09 05:26:54
+
+========================================
+
+@page "/weather"
+
+
+
+<PageTitle>Weather</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Weather forecast</MudText>
+<MudText Typo="Typo.body1" Class="mb-8">This component demonstrates fetching data from the server.</MudText>
+
+@if (forecasts == null)
+{
+    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
+}
+else
+{
+  <MudTable Items="forecasts" Hover="true" SortLabel="Sort By" Elevation="0" AllowUnsorted="false">
+        <HeaderContent>
+            <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<WeatherForecast, object>(x=>x.Date)">Date</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<WeatherForecast, object>(x=>x.TemperatureC)">Temp. (C)</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<WeatherForecast, object>(x=>x.TemperatureF)">Temp. (F)</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<WeatherForecast, object>(x=>x.Summary!)">Summary</MudTableSortLabel></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Date">@context.Date</MudTd>
+            <MudTd DataLabel="Temp. (C)">@context.TemperatureC</MudTd>
+            <MudTd DataLabel="Temp. (F)">@context.TemperatureF</MudTd>
+            <MudTd DataLabel="Summary">@context.Summary</MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager PageSizeOptions="new int[]{50, 100}" />
+        </PagerContent>
+    </MudTable>
+}
+
+@code {
+    private WeatherForecast[]? forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Simulate asynchronous loading to demonstrate a loading indicator
+        await Task.Delay(500);
+
+        var startDate = DateOnly.FromDateTime(DateTime.Now);
+        var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
+        forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
+        {
+            Date = startDate.AddDays(index),
+            TemperatureC = Random.Shared.Next(-20, 55),
+            Summary = summaries[Random.Shared.Next(summaries.Length)]
+        }).ToArray();
+    }
+
+    private class WeatherForecast
+    {
+        public DateOnly Date { get; set; }
+        public int TemperatureC { get; set; }
+        public string? Summary { get; set; }
+        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    }
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Portal\Components\Routes.razor
+
+SIZE: 262 bytes
+
+MODIFIED: 2026-03-09 05:26:54
+
+========================================
+
+<Router AppAssembly="typeof(Program).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)" />
+        <FocusOnNavigate RouteData="routeData" Selector="h1" />
+    </Found>
+</Router>
+
+
+
+========================================
+
+FILE: src\WoodOps.Portal\Program.cs
+
+SIZE: 935 bytes
+
+MODIFIED: 2026-03-09 05:26:54
+
+========================================
+
+using MudBlazor.Services;
+using WoodOps.Portal.Components;
+
+namespace WoodOps.Portal
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
+
+            // Add MudBlazor services
+            builder.Services.AddMudServices();
+
+            // Add services to the container.
+            builder.Services.AddRazorComponents()
+                .AddInteractiveServerComponents();
+
+            var app = builder.Build();
+
+            // Configure the HTTP request pipeline.
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseExceptionHandler("/Error");
+            }
+
+            app.UseAntiforgery();
+
+            app.MapStaticAssets();
+            app.MapRazorComponents<App>()
+                .AddInteractiveServerRenderMode();
+
+            app.Run();
+        }
+    }
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Portal\PROJECT_CONTEXT.md
+
+SIZE: 4032 bytes
+
+MODIFIED: 2026-03-09 08:53:24
+
+========================================
+
+# PROJECT_CONTEXT.md
+
+## Project
+WoodOps.Portal
+
+## Purpose
+WoodOps.Portal provides the primary user interface for interacting with the WoodOps platform.
+
+This project implements the web-based experience for users to view, manage, and operate capabilities exposed by the WoodOps platform.
+
+The Portal is a **consumer of platform capabilities**, not the owner of business logic.
+
+All operational behavior must originate from the platform services exposed by WoodOps.Host.
+
+---
+
+## Architectural Role
+WoodOps.Portal is the **presentation layer** of the WoodOps platform.
+
+Responsibilities include:
+
+â€¢ user interaction
+â€¢ navigation and layout
+â€¢ dashboards and operational views
+â€¢ data entry and control surfaces
+â€¢ visualization of projections and analytics
+
+The Portal communicates with the WoodOps platform primarily through APIs exposed by WoodOps.Host.
+
+The Portal must remain independent of the internal kernel implementation.
+
+---
+
+## Owns
+
+### User Interface
+Defines the user-facing experience of WoodOps.
+
+Examples:
+
+- navigation structure
+- dashboards
+- operational screens
+- management panels
+- visualization components
+
+---
+
+### Interaction Workflows
+Implements UI-level workflows.
+
+Examples:
+
+- submitting requests to the platform
+- viewing operational state
+- browsing projections and analytics
+- managing operational artifacts
+
+These workflows coordinate user interaction but do not implement platform logic.
+
+---
+
+### Visualization
+Responsible for presenting platform information to users.
+
+Examples:
+
+- charts
+- tables
+- dashboards
+- status indicators
+- operational summaries
+
+Visualization may integrate with external analytics platforms such as Superset when appropriate.
+
+---
+
+## Does Not Own
+
+WoodOps.Portal must **never contain**:
+
+â€¢ business logic
+â€¢ platform processing logic
+â€¢ integration logic
+â€¢ persistence logic
+â€¢ model definitions
+â€¢ LLM orchestration
+
+These responsibilities belong to:
+
+â€¢ WoodOps.Core
+â€¢ WoodOps.Integrations
+â€¢ WoodOps.Intelligence
+â€¢ WoodOps.Host
+â€¢ WoodOps.Workers
+
+The Portal only interacts with these through APIs.
+
+---
+
+## Inputs
+
+WoodOps.Portal receives:
+
+â€¢ API responses from WoodOps.Host
+â€¢ projection data from platform queries
+â€¢ configuration values supplied by the host environment
+
+User interaction is translated into API requests.
+
+---
+
+## Outputs
+
+WoodOps.Portal produces:
+
+â€¢ API requests to WoodOps.Host
+â€¢ UI events initiated by users
+â€¢ visualization and reporting surfaces
+
+The Portal does not directly communicate with platform subsystems.
+
+All communication should flow through the host.
+
+---
+
+## Allowed Dependencies
+
+WoodOps.Portal may depend on:
+
+â€¢ ASP.NET / Blazor UI frameworks
+â€¢ HTTP client libraries
+â€¢ UI component libraries
+
+Direct references to kernel libraries should be avoided unless absolutely required.
+
+The preferred interaction path is through the platform API.
+
+---
+
+## Dependency Restrictions
+
+WoodOps.Portal must **not be referenced by**:
+
+â€¢ WoodOps.Core
+â€¢ WoodOps.Integrations
+â€¢ WoodOps.Intelligence
+â€¢ WoodOps.Workers
+
+The UI layer must remain isolated.
+
+---
+
+## Internal Namespace Guidance
+
+Typical namespace layout:
+
+WoodOps.Portal.Pages  
+WoodOps.Portal.Components  
+WoodOps.Portal.Services  
+WoodOps.Portal.Layout  
+WoodOps.Portal.Shared  
+
+Pages should focus on presentation while services handle API communication.
+
+---
+
+## Change Guidance
+
+Changes should prioritize:
+
+â€¢ clarity of user workflows
+â€¢ operational usability
+â€¢ clear visualization of platform state
+â€¢ minimal coupling with platform internals
+
+Avoid introducing platform logic in UI code.
+
+---
+
+## Notes
+
+WoodOps.Portal represents the **operational face of the WoodOps platform**.
+
+Its responsibility is to make platform capabilities accessible and understandable to users without embedding the platformâ€™s internal mechanics into the UI.
+
+
+
+========================================
+
+FILE: src\WoodOps.Portal\Properties\launchSettings.json
+
+SIZE: 378 bytes
+
+MODIFIED: 2026-03-09 05:26:54
+
+========================================
+
+{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+    "profiles": {
+      "http": {
+        "commandName": "Project",
+        "dotnetRunMessages": true,
+        "launchBrowser": true,
+        "applicationUrl": "http://localhost:5086",
+        "environmentVariables": {
+          "ASPNETCORE_ENVIRONMENT": "Development"
+        }
+      }
+    }
+  }
+
+
+
+========================================
+
+FILE: src\WoodOps.Portal\WoodOps.Portal.csproj
+
+SIZE: 310 bytes
+
+MODIFIED: 2026-03-09 05:26:54
+
+========================================
+
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="MudBlazor" Version="8.*" />
+  </ItemGroup>
+</Project>
+
+
+========================================
+
+FILE: src\WoodOps.Shared\Class1.cs
+
+SIZE: 69 bytes
+
+MODIFIED: 2026-03-12 15:55:39
+
+========================================
+
+namespace WoodOps.Shared
+{
+    public class Class1
+    {
+
+    }
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Shared\PROJECT_CONTEXT.md
+
+SIZE: 6830 bytes
+
+MODIFIED: 2026-03-12 16:00:44
+
+========================================
+
+```markdown
+# WoodOps.Shared â€” PROJECT_CONTEXT.md
+
+## Purpose
+
+`WoodOps.Shared` is the **single shared library for the WoodOps platform**.
+
+It contains the reusable platform capabilities, primitives, and abstractions used by all WoodOps runtime components.
+
+All executable projects depend on this library.
+
+Examples of runtime projects that consume this library include:
+
+- `WoodOps.Host`
+- `WoodOps.Workers`
+- `WoodOps.Portal`
+
+This library represents the **platform capability layer**, not a specific application or business system.
+
+---
+
+# Architectural Role
+
+`WoodOps.Shared` provides the **generic operational capabilities** used to solve many kinds of problems across different operational domains.
+
+The platform is intentionally **not designed around specific business processes**.
+
+Instead, it provides capabilities that allow new problems to be solved through **composition of existing mechanisms** rather than building a new application.
+
+This supports the WoodOps design principle:
+
+> Solve new operational problems by composing platform capabilities, not by creating separate applications.
+
+---
+
+# Design Philosophy
+
+The library follows several architectural principles.
+
+## Capability-first platform
+
+The platform exposes reusable capabilities such as:
+
+- object modeling
+- event processing
+- worker pipelines
+- projections and views
+- integrations
+- intelligence and analysis
+- policy enforcement
+- scheduling
+- observability
+
+Solutions are constructed by combining these capabilities.
+
+---
+
+## Domain-agnostic kernel
+
+The platform core must remain **domain neutral**.
+
+The library must not encode:
+
+- lumber mill process assumptions
+- MES-specific models
+- ERP-specific logic
+- operational workflows tied to one environment
+
+Business models belong in **solution composition layers**, not the platform kernel.
+
+---
+
+## Composition over application creation
+
+When a new operational problem appears, the expected workflow is:
+
+1. Identify the required capabilities
+2. Compose them using platform mechanisms
+3. Add small extensions only if necessary
+
+Creating a completely new application should be rare.
+
+---
+
+# Internal Structure
+
+The library is organized into logical capability areas using namespaces and folders.
+
+Example structure:
+
+```
+
+WoodOps.Shared
+Kernel/
+Model/
+Relationships/
+Processing/
+Projection/
+Integrations/
+Intelligence/
+Security/
+Observability/
+
+```
+
+These represent **logical capability partitions**, not separate assemblies.
+
+---
+
+# Kernel Boundary
+
+Inside the shared library there exists a **protected kernel layer**.
+
+This layer contains the most stable and foundational primitives of the platform.
+
+Examples include:
+
+- identity primitives
+- envelope structures
+- relationship models
+- event records
+- processing contracts
+- projection contracts
+- authority and provenance models
+
+These primitives must remain:
+
+- stable
+- dependency-light
+- domain-agnostic
+
+Other capability areas may depend on the kernel, but the kernel must not depend on them.
+
+---
+
+# Integrations Capability
+
+The integrations capability provides mechanisms for interacting with external systems.
+
+Responsibilities include:
+
+- external protocol adapters
+- API clients
+- file and database connectors
+- translation of external payloads into platform objects
+
+External systems may include:
+
+- MES
+- ERP
+- CMMS
+- external APIs
+- file systems
+- message queues
+
+Integration logic should translate foreign data into platform models without allowing external semantics to contaminate the kernel.
+
+---
+
+# Intelligence Capability
+
+The intelligence capability provides mechanisms for analyzing and enriching operational data.
+
+Examples include:
+
+- statistical analysis
+- anomaly detection
+- forecasting
+- semantic enrichment
+- machine learning integration
+- AI-assisted reasoning
+
+These capabilities operate on normalized platform objects but do not define the core platform model.
+
+---
+
+# Processing Capability
+
+Processing mechanisms enable the platform to perform operational tasks.
+
+Examples include:
+
+- background workers
+- data transformation
+- event processing
+- workflow execution
+- reconciliation
+- scheduled jobs
+
+Processing capabilities are typically executed by the `WoodOps.Workers` runtime.
+
+---
+
+# Projection Capability
+
+Projection mechanisms allow the platform to create derived representations of operational data.
+
+Examples include:
+
+- queryable read models
+- analytics datasets
+- dashboards
+- operational views
+
+These projections support both the portal UI and external analytics systems.
+
+---
+
+# Security and Governance
+
+The platform must support governance features such as:
+
+- access control
+- data authority tracking
+- provenance
+- auditing
+- operational policy enforcement
+
+These mechanisms ensure operational traceability and system safety.
+
+---
+
+# Observability
+
+The platform must expose operational visibility mechanisms.
+
+Examples include:
+
+- system health metrics
+- event tracing
+- processing logs
+- audit records
+- performance telemetry
+
+These capabilities support monitoring and diagnostics of the WoodOps environment.
+
+---
+
+# Dependency Rules
+
+`WoodOps.Shared` must remain usable by all runtime components.
+
+Therefore it must avoid unnecessary dependencies.
+
+The shared library should not depend on:
+
+- UI frameworks
+- runtime host frameworks
+- application-specific logic
+
+External integrations and intelligence components may introduce dependencies, but they should remain isolated within their capability areas.
+
+---
+
+# Relationship to Runtime Projects
+
+Runtime projects host the execution environments that use the shared capabilities.
+
+Typical responsibilities:
+
+## WoodOps.Host
+
+Platform control plane and API surface.
+
+Provides:
+
+- system APIs
+- configuration
+- orchestration endpoints
+- operational health interfaces
+
+---
+
+## WoodOps.Workers
+
+Background processing environment.
+
+Executes:
+
+- ingestion pipelines
+- scheduled tasks
+- analysis workflows
+- integration processing
+
+---
+
+## WoodOps.Portal
+
+User interaction interface.
+
+Provides:
+
+- dashboards
+- operational views
+- system management tools
+- interaction surfaces for platform capabilities
+
+---
+
+# Architectural Goal
+
+Over time the WoodOps platform should accumulate a broad set of reusable operational capabilities.
+
+As capability coverage expands, the need to create new applications for individual problems should decrease.
+
+The platform becomes a **general operational problem-solving environment**.
+
+New solutions should primarily be created through **capability composition** rather than application development.
+```
+
+
+
+
+========================================
+
+FILE: src\WoodOps.Shared\WoodOps.Shared.csproj
+
+SIZE: 218 bytes
+
+MODIFIED: 2026-03-12 15:55:37
+
+========================================
+
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>
+
+
+
+========================================
+
+FILE: src\WoodOps.Workers\appsettings.Development.json
+
+SIZE: 137 bytes
+
+MODIFIED: 2026-03-09 06:05:30
+
+========================================
+
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  }
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Workers\appsettings.json
+
+SIZE: 137 bytes
+
+MODIFIED: 2026-03-09 06:05:30
+
+========================================
+
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  }
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Workers\Program.cs
+
+SIZE: 318 bytes
+
+MODIFIED: 2026-03-09 06:05:30
+
+========================================
+
+namespace WoodOps.Workers
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = Host.CreateApplicationBuilder(args);
+            builder.Services.AddHostedService<Worker>();
+
+            var host = builder.Build();
+            host.Run();
+        }
+    }
+}
+
+
+========================================
+
+FILE: src\WoodOps.Workers\PROJECT_CONTEXT.md
+
+SIZE: 4506 bytes
+
+MODIFIED: 2026-03-09 08:58:07
+
+========================================
+
+# PROJECT_CONTEXT.md
+
+## Project
+WoodOps.Workers
+
+## Purpose
+WoodOps.Workers hosts background execution for the WoodOps platform.
+
+This project runs asynchronous and scheduled processing tasks that operate on the WoodOps platform model and processing pipeline.
+
+Workers enable continuous platform activity without requiring direct user interaction.
+
+Examples include ingestion pipelines, polling integrations, scheduled processing, and long-running computations.
+
+---
+
+## Architectural Role
+WoodOps.Workers functions as the **background execution host** of the platform.
+
+Responsibilities include:
+
+â€¢ executing background processors  
+â€¢ running ingestion pipelines  
+â€¢ polling external systems  
+â€¢ scheduling recurring tasks  
+â€¢ reacting to events generated by the platform  
+
+Workers execute logic provided by the platform kernel and integrations but should not define the platformâ€™s model or core capabilities.
+
+This project is typically deployed as a **separate Docker container**.
+
+---
+
+## Owns
+
+### Background Processing Host
+Provides the runtime environment for executing background tasks.
+
+Examples:
+
+- processor execution loops
+- scheduled jobs
+- long-running operations
+- batch processing
+
+---
+
+### Ingestion Pipelines
+Runs ingestion and synchronization processes that retrieve information from external systems.
+
+Examples:
+
+- polling external APIs
+- consuming file drops
+- scheduled data imports
+- webhook processing
+
+These pipelines typically rely on code from WoodOps.Integrations and WoodOps.Core.
+
+---
+
+### Event-Driven Processing
+Handles asynchronous tasks triggered by events in the system.
+
+Examples:
+
+- processing newly ingested data
+- recalculating projections
+- triggering downstream processing pipelines
+
+---
+
+### Operational Automation
+Supports automated operational tasks.
+
+Examples:
+
+- system maintenance jobs
+- background analysis
+- automated data enrichment
+
+---
+
+## Does Not Own
+
+WoodOps.Workers must **never contain**:
+
+â€¢ platform model definitions  
+â€¢ integration translation logic  
+â€¢ core processing primitives  
+â€¢ UI components  
+â€¢ API controllers  
+â€¢ LLM orchestration logic  
+
+These responsibilities belong to:
+
+â€¢ WoodOps.Core  
+â€¢ WoodOps.Integrations  
+â€¢ WoodOps.Intelligence  
+â€¢ WoodOps.Host  
+â€¢ WoodOps.Portal  
+
+Workers execute logic but should not define platform architecture.
+
+---
+
+## Inputs
+
+WoodOps.Workers receives:
+
+â€¢ work requests from the platform kernel  
+â€¢ scheduled job definitions  
+â€¢ ingestion instructions  
+â€¢ configuration supplied by the runtime environment  
+
+Inputs may originate from:
+
+â€¢ the host service  
+â€¢ integration triggers  
+â€¢ scheduled execution
+
+---
+
+## Outputs
+
+WoodOps.Workers produces:
+
+â€¢ processed model objects  
+â€¢ new or updated projections  
+â€¢ background task results  
+â€¢ operational events and diagnostics
+
+Results are typically written through the platform persistence layer.
+
+---
+
+## Allowed Dependencies
+
+WoodOps.Workers may depend on:
+
+â€¢ WoodOps.Core  
+â€¢ WoodOps.Integrations  
+â€¢ WoodOps.Intelligence  
+
+These dependencies provide the logic that workers execute.
+
+---
+
+## Dependency Restrictions
+
+WoodOps.Workers must **not be referenced by**:
+
+â€¢ WoodOps.Core  
+â€¢ WoodOps.Integrations  
+â€¢ WoodOps.Intelligence  
+
+Workers exist at the runtime edge of the system.
+
+Kernel libraries must remain independent of the execution host.
+
+---
+
+## Internal Namespace Guidance
+
+Typical namespace layout:
+
+WoodOps.Workers.Jobs  
+WoodOps.Workers.Pipelines  
+WoodOps.Workers.Schedulers  
+WoodOps.Workers.Host  
+
+Jobs should be thin execution wrappers that call processing primitives from the platform kernel.
+
+---
+
+## Change Guidance
+
+Changes should focus on:
+
+â€¢ improving background processing reliability  
+â€¢ improving scheduling and orchestration  
+â€¢ improving ingestion throughput  
+â€¢ improving operational observability  
+
+Avoid embedding platform logic inside workers.
+
+If platform logic begins appearing here, it likely belongs in:
+
+â€¢ WoodOps.Core  
+â€¢ WoodOps.Integrations  
+â€¢ WoodOps.Intelligence
+
+---
+
+## Notes
+
+WoodOps.Workers represents the **asynchronous execution engine** of the WoodOps platform.
+
+It allows the platform to continuously process data, synchronize with external systems, and run automated operations independent of user interaction.
+
+
+
+========================================
+
+FILE: src\WoodOps.Workers\Properties\launchSettings.json
+
+SIZE: 284 bytes
+
+MODIFIED: 2026-03-09 06:05:30
+
+========================================
+
+{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "WoodOps.Workers": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
+
+
+
+========================================
+
+FILE: src\WoodOps.Workers\WoodOps.Workers.csproj
+
+SIZE: 431 bytes
+
+MODIFIED: 2026-03-09 06:05:30
+
+========================================
+
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-WoodOps.Workers-22f136d0-4cfc-4209-98e8-1c018e7dd758</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.12" />
+  </ItemGroup>
+</Project>
+
+
+
+========================================
+
+FILE: src\WoodOps.Workers\Worker.cs
+
+SIZE: 670 bytes
+
+MODIFIED: 2026-03-09 06:05:30
+
+========================================
+
+namespace WoodOps.Workers
+{
+    public class Worker : BackgroundService
+    {
+        private readonly ILogger<Worker> _logger;
+
+        public Worker(ILogger<Worker> logger)
+        {
+            _logger = logger;
+        }
+
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            while (!stoppingToken.IsCancellationRequested)
+            {
+                if (_logger.IsEnabled(LogLevel.Information))
+                {
+                    _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+                }
+                await Task.Delay(1000, stoppingToken);
+            }
+        }
+    }
+}
+
+
+
+========================================
+
+FILE: WoodOps.slnx
+
+SIZE: 886 bytes
+
+MODIFIED: 2026-03-13 14:16:24
+
+========================================
+
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="AI_ASSISTANT_WORKFLOW.md" />
+    <File Path="AI_WORKING_MODEL.md" />
+    <File Path="ARCHITECTURE.md" />
+    <File Path="global.json" />
+    <File Path="KERNEL_MODEL.md" />
+    <File Path="PLATFORM_CAPABILITY_MODEL.md" />
+    <File Path="PLATFORM_OVERVIEW.md" />
+    <File Path="PROCESSING_MODEL.md" />
+    <File Path="PROJECT_STRUCTURE.md" />
+    <File Path="SOLUTION_COMPOSITION.md" />
+    <File Path="SOLUTION_COMPOSITION_MODEL.md" />
+    <File Path="WOODOPS_CAPABILITY_FIRST_MODEL.md" />
+  </Folder>
+  <Project Path="src/WoodOps.Host/WoodOps.Host.csproj" />
+  <Project Path="src/WoodOps.Portal/WoodOps.Portal.csproj" />
+  <Project Path="src/WoodOps.Shared/WoodOps.Shared.csproj" Id="a9097b73-5c0f-45f3-b0af-bc512b68ff5a" />
+  <Project Path="src/WoodOps.Workers/WoodOps.Workers.csproj" />
+</Solution>
+
