@@ -1,0 +1,13 @@
+name: woodops
+
+services: {}
+
+networks:
+  woodops_net:
+    name: woodops_net
+    driver: bridge
+
+x-defaults: &defaults
+  restart: unless-stopped
+  networks:
+    - woodops_net

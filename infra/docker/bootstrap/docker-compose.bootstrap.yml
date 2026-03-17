@@ -1,0 +1,27 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: woodops_postgres
+    restart: unless-stopped
+    networks:
+      - woodops_net
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:?POSTGRES_USER is required}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+      POSTGRES_DB: ${POSTGRES_DB:?POSTGRES_DB is required}
+    volumes:
+      - /srv/woodops-data/postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7
+    container_name: woodops_redis
+    restart: unless-stopped
+    networks:
+      - woodops_net
+    command: ["redis-server", "--appendonly", "${REDIS_APPENDONLY:?REDIS_APPENDONLY is required}"]
+    volumes:
+      - /srv/woodops-data/redis:/data
+    ports:
+      - "6379:6379"
