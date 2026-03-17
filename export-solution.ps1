@@ -8,7 +8,7 @@ $includeExtensions = @(
     "*.csproj", "*.sln", "*.slnx",
     "*.json", "*.config", "*.xml", "*.jsonl",
     "*.ps1", "*.md", "*.yaml", "*.yml", "*.sh",
-    "*.props", "*.targets", "*.editorconfig"
+    "*.props", "*.targets", "*.editorconfig", "*.example"
 )
 $excludeDirs = @("bin", "obj", ".vs", ".git", "node_modules", "packages")
 $excludeFiles = @("solution_export_*.txt")
