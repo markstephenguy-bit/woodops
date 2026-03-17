@@ -76,4 +76,29 @@ services:
       - /srv/woodops-data/clickhouse-logs:/var/log/clickhouse-server
     ports:
       - "${CLICKHOUSE_HTTP_PORT:?CLICKHOUSE_HTTP_PORT is required}:8123"
-      - "${CLICKHOUSE_NATIVE_PORT:?CLICKHOUSE_NATIVE_PORT is required}:9000"
+      - "${CLICKHOUSE_NATIVE_PORT:?CLICKHOUSE_NATIVE_PORT is required}:9002"
+
+  opensearch:
+    image: opensearchproject/opensearch:latest
+    container_name: woodops_opensearch
+    restart: unless-stopped
+    networks:
+      - woodops_net
+    environment:
+      discovery.type: single-node
+      DISABLE_SECURITY_PLUGIN: "true"
+      DISABLE_INSTALL_DEMO_CONFIG: "true"
+      OPENSEARCH_JAVA_OPTS: ${OPENSEARCH_JAVA_OPTS:?OPENSEARCH_JAVA_OPTS is required}
+      bootstrap.memory_lock: "true"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    volumes:
+      - /srv/woodops-data/opensearch:/usr/share/opensearch/data
+    ports:
+      - "${OPENSEARCH_HTTP_PORT:?OPENSEARCH_HTTP_PORT is required}:9200"
+      - "${OPENSEARCH_METRICS_PORT:?OPENSEARCH_METRICS_PORT is required}:9600"
