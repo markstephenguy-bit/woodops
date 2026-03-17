@@ -25,3 +25,92 @@ services:
       - /srv/woodops-data/redis:/data
     ports:
       - "6379:6379"
+
+  minio:
+    image: minio/minio:latest
+    container_name: woodops_minio
+    restart: unless-stopped
+    networks:
+      - woodops_net
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:?MINIO_ROOT_USER is required}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:?MINIO_ROOT_PASSWORD is required}
+    command: server /data --console-address ":${MINIO_CONSOLE_PORT:?MINIO_CONSOLE_PORT is required}"
+    volumes:
+      - /srv/woodops-data/minio:/data
+    ports:
+      - "${MINIO_API_PORT:?MINIO_API_PORT is required}:9000"
+      - "${MINIO_CONSOLE_PORT:?MINIO_CONSOLE_PORT is required}:9001"
+
+  mongodb:
+    image: mongo:8
+    container_name: woodops_mongodb
+    restart: unless-stopped
+    networks:
+      - woodops_net
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME:?MONGO_INITDB_ROOT_USERNAME is required}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD:?MONGO_INITDB_ROOT_PASSWORD is required}
+    volumes:
+      - /srv/woodops-data/mongodb:/data/db
+    ports:
+      - "${MONGO_PORT:?MONGO_PORT is required}:27017"
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:24.12
+    container_name: woodops_clickhouse
+    restart: unless-stopped
+    networks:
+      - woodops_net
+    environment:
+      CLICKHOUSE_DB: ${CLICKHOUSE_DB:?CLICKHOUSE_DB is required}
+      CLICKHOUSE_USER: ${CLICKHOUSE_USER:?CLICKHOUSE_USER is required}
+      CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD:?CLICKHOUSE_PASSWORD is required}
+      CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+    volumes:
+      - /srv/woodops-data/clickhouse:/var/lib/clickhouse
+      - /srv/woodops-data/clickhouse-logs:/var/log/clickhouse-server
+    ports:
+      - "${CLICKHOUSE_HTTP_PORT:?CLICKHOUSE_HTTP_PORT is required}:8123"
+      - "${CLICKHOUSE_NATIVE_PORT:?CLICKHOUSE_NATIVE_PORT is required}:9000"
+
+  opensearch:
+    image: opensearchproject/opensearch:latest
+    container_name: woodops_opensearch
+    restart: unless-stopped
+    networks:
+      - woodops_net
+    environment:
+      discovery.type: single-node
+      DISABLE_SECURITY_PLUGIN: "true"
+      DISABLE_INSTALL_DEMO_CONFIG: "true"
+      OPENSEARCH_JAVA_OPTS: ${OPENSEARCH_JAVA_OPTS:?OPENSEARCH_JAVA_OPTS is required}
+      bootstrap.memory_lock: "true"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    volumes:
+      - /srv/woodops-data/opensearch:/usr/share/opensearch/data
+    ports:
+      - "${OPENSEARCH_HTTP_PORT:?OPENSEARCH_HTTP_PORT is required}:9200"
+      - "${OPENSEARCH_METRICS_PORT:?OPENSEARCH_METRICS_PORT is required}:9600"
+
+  opensearch-dashboards:
+    image: opensearchproject/opensearch-dashboards:3.5.0
+    container_name: woodops_opensearch_dashboards
+    restart: unless-stopped
+    networks:
+      - woodops_net
+    environment:
+      OPENSEARCH_HOSTS: '["http://opensearch:9200"]'
+      DISABLE_SECURITY_DASHBOARDS_PLUGIN: "true"
+    ports:
+      - "${OPENSEARCH_DASHBOARDS_PORT:?OPENSEARCH_DASHBOARDS_PORT is required}:5601"
