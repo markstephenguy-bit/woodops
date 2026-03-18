@@ -1,4 +1,39 @@
 services:
+  nifi:
+    image: ${NIFI_IMAGE}
+    container_name: woodops_nifi
+    restart: unless-stopped
+    ports:
+      - "${NIFI_PORT}:8443"
+    environment:
+      NIFI_WEB_HTTPS_PORT: "8443"
+      NIFI_WEB_HTTPS_HOST: "0.0.0.0"
+      NIFI_WEB_PROXY_HOST: "${NIFI_HOST}:${NIFI_PORT}"
+      SINGLE_USER_CREDENTIALS_USERNAME: "${NIFI_USERNAME}"
+      SINGLE_USER_CREDENTIALS_PASSWORD: "${NIFI_PASSWORD}"
+      NIFI_JVM_HEAP_INIT: "${NIFI_JVM_HEAP_INIT}"
+      NIFI_JVM_HEAP_MAX: "${NIFI_JVM_HEAP_MAX}"
+    volumes:
+      - /srv/woodops-data/nifi/content_repository:/opt/nifi/nifi-current/content_repository
+      - /srv/woodops-data/nifi/database_repository:/opt/nifi/nifi-current/database_repository
+      - /srv/woodops-data/nifi/flowfile_repository:/opt/nifi/nifi-current/flowfile_repository
+      - /srv/woodops-data/nifi/provenance_repository:/opt/nifi/nifi-current/provenance_repository
+      - /srv/woodops-data/nifi/state:/opt/nifi/nifi-current/state
+    networks:
+      - woodops_net
+  tika:
+    image: ${TIKA_IMAGE}
+    container_name: woodops_tika
+    restart: unless-stopped
+    networks:
+      - woodops_net
+    ports:
+      - "${TIKA_PORT}:9998"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:9998/tika >/dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
   postgres:
     image: postgres:16
     container_name: woodops_postgres
@@ -114,3 +149,18 @@ services:
       DISABLE_SECURITY_DASHBOARDS_PLUGIN: "true"
     ports:
       - "${OPENSEARCH_DASHBOARDS_PORT:?OPENSEARCH_DASHBOARDS_PORT is required}:5601"
+
+  pgadmin:
+    image: ${PGADMIN_IMAGE}
+    container_name: woodops_pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    ports:
+      - "${PGADMIN_PORT}:80"
+    volumes:
+      - /srv/woodops-data/pgadmin:/var/lib/pgadmin
+    networks:
+      - woodops_net
+

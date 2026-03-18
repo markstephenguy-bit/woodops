@@ -1,0 +1,62 @@
+services:
+  traefik:
+    image: traefik:v2.11
+    container_name: woodops_traefik
+    restart: unless-stopped
+    networks:
+      - woodops_net
+    command:
+      - --api.dashboard=true
+      - --api.insecure=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.file.directory=/etc/traefik/dynamic
+      - --providers.file.watch=true
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --ping=true
+      - --accesslog=true
+      - --log.level=INFO
+    ports:
+      - "${TRAEFIK_HTTP_PORT:-80}:80"
+      - "${TRAEFIK_HTTPS_PORT:-443}:443"
+      - "${TRAEFIK_DASHBOARD_PORT:-8080}:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /opt/woodops/repo/infra/docker/foundation/traefik/dynamic:/etc/traefik/dynamic:ro
+      - /srv/woodops-data/traefik/acme.json:/acme.json
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.traefik.rule=Host(`${TRAEFIK_DASHBOARD_HOST:-traefik.local}`)
+      - traefik.http.routers.traefik.entrypoints=web
+      - traefik.http.routers.traefik.service=api@internal
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.1
+    container_name: woodops_keycloak
+    restart: unless-stopped
+    networks:
+      - woodops_net
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN_USER}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://woodops_postgres:5432/${POSTGRES_DB}
+      KC_DB_USERNAME: ${WOODOPS_ADMIN_USER}
+      KC_DB_PASSWORD: ${WOODOPS_ADMIN_PASSWORD}
+      KC_HOSTNAME: ${KEYCLOAK_HOST}
+      KC_PROXY_HEADERS: xforwarded
+      KC_HTTP_ENABLED: "true"
+    command:
+      - start
+    volumes:
+      - /srv/woodops-data/keycloak:/opt/keycloak/data
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.keycloak.rule=Host(`${KEYCLOAK_HOST}`)
+      - traefik.http.routers.keycloak.entrypoints=web
+      - traefik.http.services.keycloak.loadbalancer.server.port=8080
+
+networks:
+  woodops_net:
+    external: true
