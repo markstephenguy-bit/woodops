@@ -18,6 +18,7 @@
     <File Path="WOODOPS_CAPABILITY_FIRST_MODEL.md" />
     <File Path="WOODOPS_OSS_STACK.md" />
     <File Path="WOODOPS_PHASE_1_IMPLEMENTATION_PLAN.md" />
+    <File Path="WOODOPS_VAULT_RECOVERY.md" />
   </Folder>
   <Project Path="src/WoodOps.Host/WoodOps.Host.csproj" />
   <Project Path="src/WoodOps.Portal/WoodOps.Portal.csproj" />
