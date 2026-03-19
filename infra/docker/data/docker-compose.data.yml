@@ -15,8 +15,14 @@ services:
       - AWS_SECRET_ACCESS_KEY=${MINIO_ROOT_PASSWORD}
       - S3_ENDPOINT=http://minio:9000
       - S3_PATH_STYLE_ACCESS=true
+      - CATALOG_CATALOG__IMPL=org.apache.iceberg.jdbc.JdbcCatalog
+      - CATALOG_URI=jdbc:postgresql://postgres:5432/woodops
+      - CATALOG_JDBC_USER=${POSTGRES_USER}
+      - CATALOG_JDBC_PASSWORD=${POSTGRES_PASSWORD}
+      - CATALOG_JDBC_SCHEMA=iceberg
     depends_on:
       - minio
+      - postgres
 
 networks:
   woodops_net:
