@@ -1,0 +1,22 @@
+services:
+  ocr:
+    image: hamzagbada18/ocr-microservice:latest
+    container_name: woodops_ocr
+    restart: unless-stopped
+    networks:
+      - woodops_net
+    ports:
+      - "${OCR_PORT}:8000"
+    environment:
+      TZ: "${TZ:-America/Chicago}"
+    volumes:
+      - /srv/woodops-data/ocr:/data
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8000/docs >/dev/null 2>&1 || exit 1"]
+      interval: 20s
+      timeout: 5s
+      retries: 12
+
+networks:
+  woodops_net:
+    external: true
