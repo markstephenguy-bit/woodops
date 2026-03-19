@@ -11,6 +11,7 @@ services:
       TZ: "${TZ:-America/Chicago}"
     volumes:
       - /srv/woodops-data/ocr:/data
+      - /srv/woodops-data/ocr/paddleocr:/root/.paddleocr
     healthcheck:
       test:
         [
