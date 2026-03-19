@@ -15,11 +15,7 @@ services:
     volumes:
       - /srv/woodops-data/ocr:/work
     healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "node -e \"fetch('http://127.0.0.1:8884/.well-known/health/ready').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))\""
-        ]
+      test: ["CMD-SHELL", "tesseract --version >/dev/null 2>&1 || exit 1"]
       interval: 20s
       timeout: 5s
       retries: 12
