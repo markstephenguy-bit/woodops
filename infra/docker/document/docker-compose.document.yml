@@ -1,22 +1,24 @@
 services:
   ocr:
-    image: hamzagbada18/ocr-microservice:latest
+    image: hertzg/tesseract-server:latest
     container_name: woodops_ocr
     restart: unless-stopped
     networks:
       - woodops_net
     ports:
-      - "${OCR_PORT}:8000"
+      - "${OCR_PORT}:8884"
     environment:
-      TZ: "${TZ:-America/Chicago}"
+      NODE_ENV: production
+      PORT: "8884"
+    tmpfs:
+      - /tmp:size=512m
     volumes:
-      - /srv/woodops-data/ocr:/data
-      - /srv/woodops-data/ocr/paddleocr:/root/.paddleocr
+      - /srv/woodops-data/ocr:/work
     healthcheck:
       test:
         [
           "CMD-SHELL",
-          "python -c \"import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/docs', timeout=3).read()\" >/dev/null 2>&1 || exit 1"
+          "node -e \"fetch('http://127.0.0.1:8884/.well-known/health/ready').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))\""
         ]
       interval: 20s
       timeout: 5s
