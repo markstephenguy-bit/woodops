@@ -1,0 +1,47 @@
+service	container	type	source	destination	rw
+postgres	woodops_postgres	bind	/srv/woodops-data/postgres	/var/lib/postgresql/data	true
+postgres	woodops_postgres				
+redis	woodops_redis	bind	/srv/woodops-data/redis	/data	true
+redis	woodops_redis				
+minio	woodops_minio	bind	/srv/woodops-data/minio	/data	true
+minio	woodops_minio				
+mongodb	woodops_mongodb	bind	/srv/woodops-data/mongodb	/data/db	true
+mongodb	woodops_mongodb	volume	/var/lib/docker/volumes/6db528f26f20993c001d72d018791ad6d5bb999c7e0d67c3d5862e7ee206fbbe/_data	/data/configdb	true
+mongodb	woodops_mongodb				
+clickhouse	woodops_clickhouse	bind	/srv/woodops-data/clickhouse-logs	/var/log/clickhouse-server	true
+clickhouse	woodops_clickhouse	bind	/srv/woodops-data/clickhouse	/var/lib/clickhouse	true
+clickhouse	woodops_clickhouse				
+opensearch	woodops_opensearch	bind	/srv/woodops-data/opensearch	/usr/share/opensearch/data	true
+opensearch	woodops_opensearch				
+opensearch_dashboards	woodops_opensearch_dashboards				
+traefik	woodops_traefik	bind	/var/run/docker.sock	/var/run/docker.sock	false
+traefik	woodops_traefik	bind	/opt/woodops/repo/infra/docker/foundation/traefik/dynamic	/etc/traefik/dynamic	false
+traefik	woodops_traefik	bind	/srv/woodops-data/traefik/acme.json	/acme.json	true
+traefik	woodops_traefik				
+keycloak	woodops_keycloak	bind	/srv/woodops-data/keycloak	/opt/keycloak/data	true
+keycloak	woodops_keycloak				
+vault	woodops_vault	bind	/srv/woodops-data/vault/file	/vault/file	true
+vault	woodops_vault	volume	/var/lib/docker/volumes/bcdd126c2a0247ff532191c185efb4720e7050d72d02ecfd15b5954ed08cd243/_data	/vault/logs	true
+vault	woodops_vault				
+pgbouncer	woodops_pgbouncer	bind	/opt/woodops/repo/infra/docker/foundation/pgbouncer/pgbouncer.ini	/etc/pgbouncer/pgbouncer.ini	false
+pgbouncer	woodops_pgbouncer	bind	/opt/woodops/repo/infra/docker/foundation/pgbouncer/userlist.txt	/etc/pgbouncer/userlist.txt	false
+pgbouncer	woodops_pgbouncer				
+pgadmin	woodops_pgadmin	bind	/srv/woodops-data/pgadmin	/var/lib/pgadmin	true
+pgadmin	woodops_pgadmin				
+nifi	woodops_nifi	bind	/srv/woodops-data/nifi/state	/opt/nifi/nifi-current/state	true
+nifi	woodops_nifi	volume	/var/lib/docker/volumes/9d54ad74db368a501b48d9ea8c82ed3f2a1f678cef2987fa8d13458daabccd10/_data	/opt/nifi/nifi-current/conf	true
+nifi	woodops_nifi	volume	/var/lib/docker/volumes/dea0ae073ac7b26d4cccf00594c52b4aa56073db82118af041eed1f27c95c09d/_data	/opt/nifi/nifi-current/nar_extensions	true
+nifi	woodops_nifi	bind	/srv/woodops-data/nifi/content_repository	/opt/nifi/nifi-current/content_repository	true
+nifi	woodops_nifi	bind	/srv/woodops-data/nifi/database_repository	/opt/nifi/nifi-current/database_repository	true
+nifi	woodops_nifi	bind	/srv/woodops-data/nifi/flowfile_repository	/opt/nifi/nifi-current/flowfile_repository	true
+nifi	woodops_nifi	bind	/srv/woodops-data/nifi/provenance_repository	/opt/nifi/nifi-current/provenance_repository	true
+nifi	woodops_nifi	volume	/var/lib/docker/volumes/ef71e694b58256f619ff203bf5810e4b6606af31ab9da1ef0292296af0abfb86/_data	/opt/nifi/nifi-current/logs	true
+nifi	woodops_nifi	volume	/var/lib/docker/volumes/751c8515100eeb886abf684c175ee166b0ab3d705d6cb2ab975f4584cc78e2ea/_data	/opt/nifi/nifi-current/python_extensions	true
+nifi	woodops_nifi				
+tika	woodops_tika				
+ocr	woodops_ocr	bind	/srv/woodops-data/ocr	/work	true
+ocr	woodops_ocr				
+iceberg_rest	woodops_iceberg_rest				
+trino	woodops_trino	bind	/opt/woodops/repo/infra/docker/data/trino/catalog	/etc/trino/catalog	false
+trino	woodops_trino	bind	/srv/woodops-data/trino	/var/trino/data	true
+trino	woodops_trino				
