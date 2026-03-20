@@ -1,0 +1,243 @@
+version: "3.9"
+
+networks:
+  woodops_net:
+    driver: bridge
+
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: woodops_v2_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      TZ: ${TZ}
+    volumes:
+      - /srv/woodops-data-v2/postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - woodops_net
+
+  pgbouncer:
+    image: edoburu/pgbouncer:latest
+    container_name: woodops_v2_pgbouncer
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    environment:
+      DB_HOST: postgres
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_NAME: ${POSTGRES_DB}
+      TZ: ${TZ}
+    volumes:
+      - /srv/woodops-data-v2/pgbouncer:/etc/pgbouncer
+    ports:
+      - "6432:6432"
+    networks:
+      - woodops_net
+
+  minio:
+    image: minio/minio:latest
+    container_name: woodops_v2_minio
+    restart: unless-stopped
+    command: server /data --console-address ":${MINIO_CONSOLE_PORT}"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      TZ: ${TZ}
+    volumes:
+      - /srv/woodops-data-v2/minio:/data
+    ports:
+      - "${MINIO_API_PORT}:9000"
+      - "${MINIO_CONSOLE_PORT}:9001"
+    networks:
+      - woodops_net
+
+  traefik:
+    image: traefik:v3.0
+    container_name: woodops_v2_traefik
+    restart: unless-stopped
+    command:
+      - "--api.dashboard=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+    ports:
+      - "${TRAEFIK_HTTP_PORT}:80"
+      - "${TRAEFIK_HTTPS_PORT}:443"
+      - "${TRAEFIK_DASHBOARD_PORT}:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /srv/woodops-data-v2/traefik:/etc/traefik
+    networks:
+      - woodops_net
+
+ # vault:
+ #   image: hashicorp/vault:latest
+ #   container_name: woodops_v2_vault
+ #   restart: unless-stopped
+ #   cap_add:
+ #     - IPC_LOCK
+ #   environment:
+ #     VAULT_ADDR: http://0.0.0.0:${VAULT_PORT}
+ #     TZ: ${TZ}
+ #   volumes:
+ #     - /srv/woodops-data-v2/vault:/vault/file
+ #   ports:
+ #     - "${VAULT_PORT}:8200"
+ #   networks:
+ #     - woodops_net
+
+  mongo:
+    image: mongo:7
+    container_name: woodops_v2_mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      TZ: ${TZ}
+    volumes:
+      - /srv/woodops-data-v2/mongo:/data/db
+    ports:
+      - "${MONGO_PORT}:27017"
+    networks:
+      - woodops_net
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:latest
+    container_name: woodops_v2_clickhouse
+    restart: unless-stopped
+    environment:
+      CLICKHOUSE_DB: ${CLICKHOUSE_DB}
+      CLICKHOUSE_USER: ${CLICKHOUSE_USER}
+      CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD}
+      TZ: ${TZ}
+    volumes:
+      - /srv/woodops-data-v2/clickhouse:/var/lib/clickhouse
+    ports:
+      - "${CLICKHOUSE_HTTP_PORT}:8123"
+      - "${CLICKHOUSE_NATIVE_PORT}:9000"
+    networks:
+      - woodops_net
+
+  opensearch:
+    image: opensearchproject/opensearch:latest
+    container_name: woodops_v2_opensearch
+    restart: unless-stopped
+    environment:
+      - discovery.type=single-node
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=${OPENSEARCH_INITIAL_ADMIN_PASSWORD}
+      - OPENSEARCH_JAVA_OPTS=${OPENSEARCH_JAVA_OPTS}
+      - TZ=${TZ}
+    volumes:
+      - /srv/woodops-data-v2/opensearch:/usr/share/opensearch/data
+    ports:
+      - "${OPENSEARCH_HTTP_PORT}:9200"
+      - "${OPENSEARCH_METRICS_PORT}:9600"
+    networks:
+      - woodops_net
+
+  opensearch-dashboards:
+    image: opensearchproject/opensearch-dashboards:latest
+    container_name: woodops_v2_opensearch_dashboards
+    restart: unless-stopped
+    depends_on:
+      - opensearch
+    environment:
+      OPENSEARCH_HOSTS: '["https://opensearch:9200"]'
+      OPENSEARCH_SSL_VERIFICATIONMODE: none
+      TZ: ${TZ}
+    ports:
+      - "${OPENSEARCH_DASHBOARDS_PORT}:5601"
+    networks:
+      - woodops_net
+
+  tika:
+    image: ${TIKA_IMAGE}
+    container_name: woodops_v2_tika
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ}
+    ports:
+      - "${TIKA_PORT}:9998"
+    networks:
+      - woodops_net
+
+  nifi:
+    image: ${NIFI_IMAGE}
+    container_name: woodops_v2_nifi
+    restart: unless-stopped
+    ports:
+      - "${NIFI_PORT}:8443"
+    environment:
+      NIFI_WEB_HTTPS_PORT: "8443"
+      NIFI_WEB_HTTPS_HOST: "0.0.0.0"
+      NIFI_WEB_PROXY_HOST: "woodops-host:8443,10.158.168.27:8443"
+      SINGLE_USER_CREDENTIALS_USERNAME: "${NIFI_USERNAME}"
+      SINGLE_USER_CREDENTIALS_PASSWORD: "${NIFI_PASSWORD}"
+      NIFI_JVM_HEAP_INIT: "${NIFI_JVM_HEAP_INIT}"
+      NIFI_JVM_HEAP_MAX: "${NIFI_JVM_HEAP_MAX}"
+      TZ: "${TZ}"
+    volumes:
+      - /srv/woodops-data-v2/nifi/content_repository:/opt/nifi/nifi-current/content_repository
+      - /srv/woodops-data-v2/nifi/database_repository:/opt/nifi/nifi-current/database_repository
+      - /srv/woodops-data-v2/nifi/flowfile_repository:/opt/nifi/nifi-current/flowfile_repository
+      - /srv/woodops-data-v2/nifi/provenance_repository:/opt/nifi/nifi-current/provenance_repository
+      - /srv/woodops-data-v2/nifi/state:/opt/nifi/nifi-current/state
+    networks:
+      - woodops_net
+
+  iceberg-rest:
+    image: tabulario/iceberg-rest:latest
+    container_name: woodops_v2_iceberg_rest
+    restart: unless-stopped
+    depends_on:
+      - minio
+    environment:
+      TZ: ${TZ}
+    volumes:
+      - /srv/woodops-data-v2/iceberg-rest:/config
+    ports:
+      - "${ICEBERG_REST_PORT}:8181"
+    networks:
+      - woodops_net
+
+  trino:
+    image: trinodb/trino:latest
+    container_name: woodops_v2_trino
+    restart: unless-stopped
+    depends_on:
+      - minio
+      - iceberg-rest
+    environment:
+      MINIO_ROOT_USER: "${MINIO_ROOT_USER}"
+      MINIO_ROOT_PASSWORD: "${MINIO_ROOT_PASSWORD}"
+      TZ: "${TZ}"
+    volumes:
+      - /srv/woodops-data-v2/trino:/etc/trino
+    ports:
+      - "${TRINO_PORT}:8080"
+    networks:
+      - woodops_net
+
+  pgadmin:
+    image: ${PGADMIN_IMAGE}
+    container_name: woodops_v2_pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+      TZ: ${TZ}
+    volumes:
+      - /srv/woodops-data-v2/pgadmin:/var/lib/pgadmin
+    ports:
+      - "${PGADMIN_PORT}:80"
+    networks:
+      - woodops_net
+
