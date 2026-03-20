@@ -1,0 +1,29 @@
+services:
+  vault:
+    image: hashicorp/vault:1.18
+    container_name: woodops_v2_vault
+    restart: unless-stopped
+    cap_add:
+      - IPC_LOCK
+    environment:
+      VAULT_ADDR: http://127.0.0.1:8200
+      VAULT_LOCAL_CONFIG: |
+        ui = true
+        listener "tcp" {
+          address     = "0.0.0.0:8200"
+          tls_disable = 1
+        }
+        storage "file" {
+          path = "/vault/file"
+        }
+        api_addr     = "http://vault.local"
+        cluster_addr = "http://woodops_v2_vault:8201"
+        disable_mlock = true
+    command: server
+    ports:
+      - "18200:8200"
+    volumes:
+      - /srv/woodops-data-v2/vault/file:/vault/file
+      - /opt/woodops/repo/infra_v2/volumes/vault/logs:/vault/logs
+    networks:
+      - woodops_v2_net

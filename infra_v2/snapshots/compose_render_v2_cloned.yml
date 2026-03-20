@@ -1,0 +1,327 @@
+name: woodops_v2
+services:
+  iceberg-rest:
+    container_name: woodops_v2_iceberg_rest
+    depends_on:
+      minio:
+        condition: service_started
+        required: true
+      postgres:
+        condition: service_started
+        required: true
+    environment:
+      AWS_ACCESS_KEY_ID: woodops
+      AWS_REGION: us-east-1
+      AWS_SECRET_ACCESS_KEY: WoodOps12345
+      CATALOG_CATALOG__IMPL: org.apache.iceberg.jdbc.JdbcCatalog
+      CATALOG_IO__IMPL: org.apache.iceberg.aws.s3.S3FileIO
+      CATALOG_JDBC_PASSWORD: WoodOps12345
+      CATALOG_JDBC_SCHEMA: iceberg
+      CATALOG_JDBC_USER: woodops
+      CATALOG_URI: jdbc:postgresql://postgres:5432/woodops
+      CATALOG_WAREHOUSE: s3://warehouse/
+      REST_PORT: "8181"
+      S3_ENDPOINT: http://minio:9000
+      S3_PATH_STYLE_ACCESS: "true"
+    image: tabulario/iceberg-rest:latest
+    networks:
+      woodops_v2_net: null
+    ports:
+      - mode: ingress
+        target: 8181
+        published: "18181"
+        protocol: tcp
+    restart: unless-stopped
+  minio:
+    command:
+      - server
+      - /data
+      - --console-address
+      - :9001
+    container_name: woodops_v2_minio
+    environment:
+      MINIO_ROOT_PASSWORD: WoodOps12345
+      MINIO_ROOT_USER: woodops
+    image: minio/minio:latest
+    networks:
+      woodops_v2_net: null
+    ports:
+      - mode: ingress
+        target: 9000
+        published: "19000"
+        protocol: tcp
+      - mode: ingress
+        target: 9001
+        published: "19001"
+        protocol: tcp
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /srv/woodops-data-v2/minio
+        target: /data
+        bind: {}
+  mongodb:
+    container_name: woodops_v2_mongodb
+    environment:
+      MONGO_INITDB_ROOT_PASSWORD: WoodOps12345
+      MONGO_INITDB_ROOT_USERNAME: woodops
+    image: mongo:8
+    networks:
+      woodops_v2_net: null
+    ports:
+      - mode: ingress
+        target: 27017
+        published: "37017"
+        protocol: tcp
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /srv/woodops-data-v2/mongodb
+        target: /data/db
+        bind: {}
+      - type: bind
+        source: /opt/woodops/repo/infra_v2/volumes/mongodb/configdb
+        target: /data/configdb
+        bind: {}
+  nifi:
+    container_name: woodops_v2_nifi
+    environment:
+      NIFI_JVM_HEAP_INIT: 1g
+      NIFI_JVM_HEAP_MAX: 2g
+      NIFI_WEB_HTTPS_HOST: 0.0.0.0
+      NIFI_WEB_HTTPS_PORT: "8443"
+      NIFI_WEB_PROXY_HOST: woodops-host:18443
+      SINGLE_USER_CREDENTIALS_PASSWORD: Woodops12345
+      SINGLE_USER_CREDENTIALS_USERNAME: admin
+    image: apache/nifi:2.8.0
+    networks:
+      woodops_v2_net: null
+    ports:
+      - mode: ingress
+        target: 8443
+        published: "18444"
+        protocol: tcp
+    restart: unless-stopped
+    user: 1000:1000
+    volumes:
+      - type: bind
+        source: /srv/woodops-data-v2/nifi/content_repository
+        target: /opt/nifi/nifi-current/content_repository
+        bind: {}
+      - type: bind
+        source: /srv/woodops-data-v2/nifi/database_repository
+        target: /opt/nifi/nifi-current/database_repository
+        bind: {}
+      - type: bind
+        source: /srv/woodops-data-v2/nifi/flowfile_repository
+        target: /opt/nifi/nifi-current/flowfile_repository
+        bind: {}
+      - type: bind
+        source: /srv/woodops-data-v2/nifi/provenance_repository
+        target: /opt/nifi/nifi-current/provenance_repository
+        bind: {}
+      - type: bind
+        source: /srv/woodops-data-v2/nifi/state
+        target: /opt/nifi/nifi-current/state
+        bind: {}
+      - type: bind
+        source: /opt/woodops/repo/infra_v2/volumes/nifi/logs
+        target: /opt/nifi/nifi-current/logs
+        bind: {}
+      - type: bind
+        source: /opt/woodops/repo/infra_v2/volumes/nifi/conf
+        target: /opt/nifi/nifi-current/conf
+        bind: {}
+      - type: bind
+        source: /opt/woodops/repo/infra_v2/volumes/nifi/nar_extensions
+        target: /opt/nifi/nifi-current/nar_extensions
+        bind: {}
+      - type: bind
+        source: /opt/woodops/repo/infra_v2/volumes/nifi/python_extensions
+        target: /opt/nifi/nifi-current/python_extensions
+        bind: {}
+  pgbouncer:
+    command:
+      - /usr/bin/pgbouncer
+      - /etc/pgbouncer/pgbouncer.ini
+    container_name: woodops_v2_pgbouncer
+    depends_on:
+      postgres:
+        condition: service_started
+        required: true
+    environment:
+      DB_HOST: postgres
+      DB_NAME: woodops
+      DB_PASSWORD: WoodOps12345
+      DB_USER: woodops
+    image: edoburu/pgbouncer:v1.25.1-p0
+    networks:
+      woodops_v2_net: null
+    ports:
+      - mode: ingress
+        target: 6432
+        published: "16432"
+        protocol: tcp
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /opt/woodops/repo/infra_v2/services/pgbouncer/pgbouncer.ini
+        target: /etc/pgbouncer/pgbouncer.ini
+        read_only: true
+        bind: {}
+      - type: bind
+        source: /opt/woodops/repo/infra_v2/services/pgbouncer/userlist.txt
+        target: /etc/pgbouncer/userlist.txt
+        read_only: true
+        bind: {}
+  postgres:
+    container_name: woodops_v2_postgres
+    environment:
+      PGDATA: /var/lib/postgresql/data
+      POSTGRES_DB: woodops
+      POSTGRES_PASSWORD: WoodOps12345
+      POSTGRES_USER: woodops
+    image: postgres:16
+    networks:
+      woodops_v2_net: null
+    ports:
+      - mode: ingress
+        target: 5432
+        published: "15432"
+        protocol: tcp
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /srv/woodops-data-v2/postgres
+        target: /var/lib/postgresql/data
+        bind: {}
+  traefik:
+    command:
+      - --api.dashboard=true
+      - --api.insecure=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.file.directory=/etc/traefik/dynamic
+      - --providers.file.watch=true
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --ping=true
+      - --accesslog=true
+      - --log.level=INFO
+    container_name: woodops_v2_traefik
+    image: traefik:v2.11
+    networks:
+      woodops_v2_net: null
+    ports:
+      - mode: ingress
+        target: 80
+        published: "18080"
+        protocol: tcp
+      - mode: ingress
+        target: 443
+        published: "18443"
+        protocol: tcp
+      - mode: ingress
+        target: 8080
+        published: "18081"
+        protocol: tcp
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+        read_only: true
+        bind: {}
+      - type: bind
+        source: /opt/woodops/repo/infra_v2/services/traefik/dynamic
+        target: /etc/traefik/dynamic
+        read_only: true
+        bind: {}
+      - type: bind
+        source: /srv/woodops-data-v2/traefik/acme.json
+        target: /acme.json
+        bind: {}
+  trino:
+    container_name: woodops_v2_trino
+    depends_on:
+      iceberg-rest:
+        condition: service_started
+        required: true
+      minio:
+        condition: service_started
+        required: true
+      postgres:
+        condition: service_started
+        required: true
+    environment:
+      CATALOG_MANAGEMENT: static
+      MINIO_ROOT_PASSWORD: WoodOps12345
+      MINIO_ROOT_USER: woodops
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - /usr/lib/trino/bin/health-check
+      timeout: 5s
+      interval: 10s
+      start_period: 10s
+    image: trinodb/trino:477
+    networks:
+      woodops_v2_net: null
+    ports:
+      - mode: ingress
+        target: 8080
+        published: "18082"
+        protocol: tcp
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /opt/woodops/repo/infra_v2/services/trino/catalog
+        target: /etc/trino/catalog
+        read_only: true
+        bind: {}
+      - type: bind
+        source: /srv/woodops-data-v2/trino
+        target: /var/trino/data
+        bind: {}
+  vault:
+    cap_add:
+      - IPC_LOCK
+    command:
+      - server
+    container_name: woodops_v2_vault
+    environment:
+      VAULT_ADDR: http://127.0.0.1:8200
+      VAULT_LOCAL_CONFIG: |
+        ui = true
+        listener "tcp" {
+          address     = "0.0.0.0:8200"
+          tls_disable = 1
+        }
+        storage "file" {
+          path = "/vault/file"
+        }
+        api_addr     = "http://vault.local"
+        cluster_addr = "http://woodops_v2_vault:8201"
+        disable_mlock = true
+    image: hashicorp/vault:1.18
+    networks:
+      woodops_v2_net: null
+    ports:
+      - mode: ingress
+        target: 8200
+        published: "18200"
+        protocol: tcp
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /srv/woodops-data-v2/vault/file
+        target: /vault/file
+        bind: {}
+      - type: bind
+        source: /opt/woodops/repo/infra_v2/volumes/vault/logs
+        target: /vault/logs
+        bind: {}
+networks:
+  woodops_v2_net:
+    name: woodops_v2_net
+    driver: bridge

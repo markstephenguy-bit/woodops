@@ -1,0 +1,25 @@
+services:
+  trino:
+    image: trinodb/trino:477
+    container_name: woodops_v2_trino
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - minio
+      - iceberg-rest
+    ports:
+      - "18082:8080"
+    volumes:
+      - /opt/woodops/repo/infra_v2/services/trino/catalog:/etc/trino/catalog:ro
+      - /srv/woodops-data-v2/trino:/var/trino/data
+    healthcheck:
+      test: ["CMD-SHELL", "/usr/lib/trino/bin/health-check"]
+      interval: 10s
+      timeout: 5s
+      start_period: 10s
+    environment:
+      CATALOG_MANAGEMENT: static
+      MINIO_ROOT_USER: ${WOODOPS_ADMIN_USER}
+      MINIO_ROOT_PASSWORD: ${WOODOPS_ADMIN_PASSWORD}
+    networks:
+      - woodops_v2_net

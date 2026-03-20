@@ -1,0 +1,16 @@
+services:
+  minio:
+    image: minio/minio:latest
+    container_name: woodops_v2_minio
+    restart: unless-stopped
+    environment:
+      MINIO_ROOT_USER: ${WOODOPS_ADMIN_USER}
+      MINIO_ROOT_PASSWORD: ${WOODOPS_ADMIN_PASSWORD}
+    command: server /data --console-address :9001
+    ports:
+      - "19000:9000"
+      - "19001:9001"
+    volumes:
+      - /srv/woodops-data-v2/minio:/data
+    networks:
+      - woodops_v2_net

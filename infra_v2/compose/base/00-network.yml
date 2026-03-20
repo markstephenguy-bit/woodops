@@ -1,0 +1,8 @@
+name: ${COMPOSE_PROJECT_NAME:-woodops_v2}
+
+services: {}
+
+networks:
+  woodops_v2_net:
+    name: ${WOODOPS_NETWORK:-woodops_v2_net}
+    driver: bridge

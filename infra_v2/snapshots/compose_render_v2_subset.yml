@@ -1,0 +1,209 @@
+name: woodops_v2
+services:
+  iceberg-rest:
+    container_name: woodops_v2_iceberg_rest
+    depends_on:
+      minio:
+        condition: service_started
+        required: true
+      postgres:
+        condition: service_started
+        required: true
+    environment:
+      AWS_ACCESS_KEY_ID: woodops
+      AWS_REGION: us-east-1
+      AWS_SECRET_ACCESS_KEY: WoodOps12345
+      CATALOG_CATALOG__IMPL: org.apache.iceberg.jdbc.JdbcCatalog
+      CATALOG_IO__IMPL: org.apache.iceberg.aws.s3.S3FileIO
+      CATALOG_JDBC_PASSWORD: WoodOps12345
+      CATALOG_JDBC_SCHEMA: iceberg
+      CATALOG_JDBC_USER: woodops
+      CATALOG_URI: jdbc:postgresql://postgres:5432/woodops
+      CATALOG_WAREHOUSE: s3://warehouse/
+      REST_PORT: "8181"
+      S3_ENDPOINT: http://minio:9000
+      S3_PATH_STYLE_ACCESS: "true"
+    image: tabulario/iceberg-rest:latest
+    networks:
+      woodops_v2_net: null
+    ports:
+      - mode: ingress
+        target: 8181
+        published: "18181"
+        protocol: tcp
+    restart: unless-stopped
+  minio:
+    command:
+      - server
+      - /data
+      - --console-address
+      - :9001
+    container_name: woodops_v2_minio
+    environment:
+      MINIO_ROOT_PASSWORD: WoodOps12345
+      MINIO_ROOT_USER: woodops
+    image: minio/minio:latest
+    networks:
+      woodops_v2_net: null
+    ports:
+      - mode: ingress
+        target: 9000
+        published: "19000"
+        protocol: tcp
+      - mode: ingress
+        target: 9001
+        published: "19001"
+        protocol: tcp
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /srv/woodops-data/minio
+        target: /data
+        bind: {}
+  pgbouncer:
+    command:
+      - /usr/bin/pgbouncer
+      - /etc/pgbouncer/pgbouncer.ini
+    container_name: woodops_v2_pgbouncer
+    depends_on:
+      postgres:
+        condition: service_started
+        required: true
+    environment:
+      DB_HOST: postgres
+      DB_NAME: woodops
+      DB_PASSWORD: WoodOps12345
+      DB_USER: woodops
+    image: edoburu/pgbouncer:v1.25.1-p0
+    networks:
+      woodops_v2_net: null
+    ports:
+      - mode: ingress
+        target: 6432
+        published: "16432"
+        protocol: tcp
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /opt/woodops/repo/infra_v2/services/pgbouncer/pgbouncer.ini
+        target: /etc/pgbouncer/pgbouncer.ini
+        read_only: true
+        bind: {}
+      - type: bind
+        source: /opt/woodops/repo/infra_v2/services/pgbouncer/userlist.txt
+        target: /etc/pgbouncer/userlist.txt
+        read_only: true
+        bind: {}
+  postgres:
+    container_name: woodops_v2_postgres
+    environment:
+      PGDATA: /var/lib/postgresql/data
+      POSTGRES_DB: woodops
+      POSTGRES_PASSWORD: WoodOps12345
+      POSTGRES_USER: woodops
+    image: postgres:16
+    networks:
+      woodops_v2_net: null
+    ports:
+      - mode: ingress
+        target: 5432
+        published: "15432"
+        protocol: tcp
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /srv/woodops-data/postgres
+        target: /var/lib/postgresql/data
+        bind: {}
+  traefik:
+    command:
+      - --api.dashboard=true
+      - --api.insecure=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.file.directory=/etc/traefik/dynamic
+      - --providers.file.watch=true
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --ping=true
+      - --accesslog=true
+      - --log.level=INFO
+    container_name: woodops_v2_traefik
+    image: traefik:v2.11
+    networks:
+      woodops_v2_net: null
+    ports:
+      - mode: ingress
+        target: 80
+        published: "18080"
+        protocol: tcp
+      - mode: ingress
+        target: 443
+        published: "18443"
+        protocol: tcp
+      - mode: ingress
+        target: 8080
+        published: "18081"
+        protocol: tcp
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+        read_only: true
+        bind: {}
+      - type: bind
+        source: /opt/woodops/repo/infra_v2/services/traefik/dynamic
+        target: /etc/traefik/dynamic
+        read_only: true
+        bind: {}
+      - type: bind
+        source: /srv/woodops-data/traefik/acme.json
+        target: /acme.json
+        bind: {}
+  trino:
+    container_name: woodops_v2_trino
+    depends_on:
+      iceberg-rest:
+        condition: service_started
+        required: true
+      minio:
+        condition: service_started
+        required: true
+      postgres:
+        condition: service_started
+        required: true
+    environment:
+      CATALOG_MANAGEMENT: static
+      MINIO_ROOT_PASSWORD: WoodOps12345
+      MINIO_ROOT_USER: woodops
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - /usr/lib/trino/bin/health-check
+      timeout: 5s
+      interval: 10s
+      start_period: 10s
+    image: trinodb/trino:477
+    networks:
+      woodops_v2_net: null
+    ports:
+      - mode: ingress
+        target: 8080
+        published: "18082"
+        protocol: tcp
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /opt/woodops/repo/infra_v2/services/trino/catalog
+        target: /etc/trino/catalog
+        read_only: true
+        bind: {}
+      - type: bind
+        source: /srv/woodops-data/trino
+        target: /var/trino/data
+        bind: {}
+networks:
+  woodops_v2_net:
+    name: woodops_v2_net
+    driver: bridge

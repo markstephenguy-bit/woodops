@@ -1,0 +1,27 @@
+services:
+  traefik:
+    image: traefik:v2.11
+    container_name: woodops_v2_traefik
+    restart: unless-stopped
+    command:
+      - --api.dashboard=true
+      - --api.insecure=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.file.directory=/etc/traefik/dynamic
+      - --providers.file.watch=true
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --ping=true
+      - --accesslog=true
+      - --log.level=INFO
+    ports:
+      - "18080:80"
+      - "18443:443"
+      - "18081:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /opt/woodops/repo/infra_v2/services/traefik/dynamic:/etc/traefik/dynamic:ro
+      - /srv/woodops-data-v2/traefik/acme.json:/acme.json
+    networks:
+      - woodops_v2_net
