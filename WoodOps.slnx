@@ -1,5 +1,9 @@
 <Solution>
   <Folder Name="/Solution Items/">
+    <File Path="01_create_infra_v2_tree.sh" />
+    <File Path="02_copy_repo_configs.sh" />
+    <File Path="03_inventory_live_binds.sh" />
+    <File Path="04_prepare_volume_roots.sh" />
     <File Path="AI_ASSISTANT_WORKFLOW.md" />
     <File Path="AI_WORKING_MODEL.md" />
     <File Path="ARCHITECTURE.md" />
