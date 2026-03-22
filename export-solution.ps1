@@ -33,7 +33,9 @@ $includeFileNames = @(
     ".env",
     ".env.*",
     "Makefile",
-    "makefile"
+    "makefile",
+    "docker-compose.yml",
+    "docker-compose.*.yml"
 )
 
 $excludeDirs = @(
