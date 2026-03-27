@@ -1,0 +1,392 @@
+# WoodOps Schema Organization — Context and Purpose
+
+## 1. Objective
+
+Define a **durable, system-aligned schema organization** for WoodOps that:
+
+* Supports ingestion from multiple external systems
+* Enables internal normalization and reuse
+* Preserves source independence
+* Allows derived data and relationships to evolve without schema churn
+* Provides clear boundaries for development and reasoning
+
+This is not a table design.
+This is the **structural contract** for how data is organized.
+
+---
+
+## 2. Core Principle
+
+WoodOps is not a business application.
+It is a **data platform that absorbs, relates, and produces data**.
+
+Therefore:
+
+* Schemas are **not business-domain driven**
+* Schemas are **not source-system driven**
+* Schemas are **not feature-driven**
+
+Schemas are organized by:
+
+> **What role the data plays in the system**
+
+---
+
+## 3. Schema Roles
+
+Each schema represents a **distinct concern space** with clear boundaries.
+
+---
+
+## 4. Schema Definitions
+
+### `reference`
+
+**Purpose**
+Holds shared, stable entities that are referenced across the entire platform.
+
+**Characteristics**
+
+* Low frequency of change
+* Identity-centric
+* High fan-out (many other schemas depend on it)
+
+**Examples**
+
+* sites
+* facilities
+* equipment
+* products
+* grades
+* locations
+* units of measure
+
+**Role in system**
+Acts as the **anchor layer** for joins and context.
+
+---
+
+### `source`
+
+**Purpose**
+Describes external systems and how WoodOps connects to them.
+
+**Characteristics**
+
+* Defines provenance
+* Separates external identity from internal identity
+
+**Examples**
+
+* source systems
+* connectors
+* external object references
+* source keys
+
+**Role in system**
+Enables traceability back to origin without polluting core data.
+
+---
+
+### `lake`
+
+**Purpose**
+Stores ingested data in a **disconnected, source-aligned form**.
+
+**Characteristics**
+
+* Append-heavy
+* Payload-bearing
+* Minimal normalization
+* Preserves source shape when practical
+
+**Examples**
+
+* telemetry records
+* document records
+* transactional records
+* event records
+
+**Role in system**
+Acts as the **raw intake layer** of WoodOps.
+
+---
+
+### `canonical`
+
+**Purpose**
+Represents **WoodOps-owned normalized data**.
+
+**Characteristics**
+
+* Identity-stable
+* Cross-domain usable
+* Not tied to a single source
+
+**Examples**
+
+* canonical records
+* normalized entities
+* internally generated first-class records
+
+**Role in system**
+Becomes the **internal truth layer**.
+
+---
+
+### `lineage`
+
+**Purpose**
+Captures how data relates, derives, and is positioned.
+
+**Characteristics**
+
+* Graph-oriented
+* Cross-schema
+* Independent of payload
+
+**Examples**
+
+* relationships
+* assertions
+* derivation links
+* paths / addresses
+
+**Role in system**
+Provides **navigability and meaning across data**.
+
+---
+
+### `artifact`
+
+**Purpose**
+Stores outputs produced from data processing.
+
+**Characteristics**
+
+* Derived
+* Lineage-dependent
+* May be recomputed
+
+**Examples**
+
+* summaries
+* embeddings
+* classifications
+* extracted document structures
+* generated files
+
+**Role in system**
+Represents **system-produced knowledge and transformations**.
+
+---
+
+### `operation`
+
+**Purpose**
+Tracks execution of platform mechanics.
+
+**Characteristics**
+
+* Temporal
+* Operational
+* Not domain data
+
+**Examples**
+
+* ingestion runs
+* pipeline stages
+* checkpoints
+* retries
+* offsets
+
+**Role in system**
+Supports **reliability, observability, and recovery**.
+
+---
+
+### `workflow`
+
+**Purpose**
+Represents managed work within the system.
+
+**Characteristics**
+
+* Stateful
+* Lifecycle-driven
+* May involve human or system actors
+
+**Examples**
+
+* tasks
+* jobs
+* reviews
+* approvals
+
+**Role in system**
+Handles **orchestrated work and decision processes**.
+
+---
+
+### `notification`
+
+**Purpose**
+Handles alerting and communication of conditions.
+
+**Characteristics**
+
+* Event-driven
+* Lifecycle-based
+* Often derived from other data
+
+**Examples**
+
+* alerts
+* notifications
+* acknowledgements
+* escalations
+
+**Role in system**
+Provides **operational awareness and response mechanisms**.
+
+---
+
+### `annotation`
+
+**Purpose**
+Stores interpretive overlays on data.
+
+**Characteristics**
+
+* Additive
+* Non-destructive
+* Human or system generated
+
+**Examples**
+
+* comments
+* notes
+* tags
+* overrides
+
+**Role in system**
+Captures **contextual interpretation and feedback**.
+
+---
+
+## 5. How Schemas Work Together
+
+### Flow (conceptual)
+
+```text
+source → lake → canonical → artifact
+                ↓
+             lineage
+                ↓
+     workflow / notification / annotation
+```
+
+* `source` defines origin
+* `lake` captures intake
+* `canonical` normalizes
+* `artifact` derives outputs
+* `lineage` connects everything
+* `operation` supports execution
+* `workflow`, `notification`, `annotation` operate on top
+
+---
+
+## 6. Key Constraints
+
+### 1. No schema owns everything
+
+Data is distributed by role, not convenience.
+
+---
+
+### 2. Cross-schema references are expected
+
+Example:
+
+* `lake.telemetry_record` → `reference.equipment`
+* `artifact.summary` → `canonical.record`
+* `workflow.task` → any domain
+
+---
+
+### 3. Domains span schemas
+
+A single domain (e.g., documents) may exist in:
+
+* `lake`
+* `artifact`
+* `lineage`
+* `annotation`
+
+---
+
+### 4. Schemas must remain stable
+
+Adding new data types should:
+
+* add tables
+* not require new schemas (in most cases)
+
+---
+
+### 5. Ingestion remains disconnected
+
+The `lake` schema should not assume:
+
+* canonical identity
+* full normalization
+* complete referential integrity
+
+---
+
+## 7. Design Implications
+
+### For EF Core
+
+* Schemas map cleanly to DbSets with schema configuration
+* Avoid inheritance-based table design at the database level
+* Favor composition + shared keys
+
+---
+
+### For ingestion
+
+* Write first to `lake`
+* Do not prematurely normalize
+
+---
+
+### For relationships
+
+* Centralize in `lineage`
+* Do not embed relationships in every table
+
+---
+
+### For extensibility
+
+* New domains should fit into existing schemas
+* If a new schema is required, it signals a missing concern boundary
+
+---
+
+## 8. Summary
+
+This schema organization:
+
+* Separates **what data is** from **how it is used**
+* Prevents domain coupling
+* Enables incremental system growth
+* Supports ingestion, normalization, derivation, and interaction as independent concerns
+
+The result is a **composable data platform** where:
+
+* ingestion does not constrain analytics
+* derived data does not corrupt source data
+* relationships are not lost inside tables
+* new capabilities can be added without restructuring the foundation
