@@ -1,0 +1,991 @@
+-- mes.dim_area definition
+
+-- Drop table
+
+-- DROP TABLE mes.dim_area;
+
+CREATE TABLE mes.dim_area (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	area_id int8 NOT NULL,
+	site_code varchar(10) NOT NULL,
+	enterprise_name varchar(50) NOT NULL,
+	area_name varchar(50) NOT NULL,
+	sort_order int4 NOT NULL,
+	active_status bool NOT NULL,
+	created_date timestamp NOT NULL,
+	created_by varchar(100) NULL,
+	changed_date timestamp NOT NULL,
+	changed_by varchar(100) NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT uk_mes_dim_area PRIMARY KEY (_unique_key)
+);
+CREATE INDEX idx_dim_area ON mes.dim_area USING btree (site_code, enterprise_name, area_id, area_name);
+CREATE UNIQUE INDEX pk_mes_dim_area ON mes.dim_area USING btree (seq_id);
+
+
+-- mes.dim_asset_type definition
+
+-- Drop table
+
+-- DROP TABLE mes.dim_asset_type;
+
+CREATE TABLE mes.dim_asset_type (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	asset_type_id int8 NOT NULL,
+	asset_type_code varchar(50) NOT NULL,
+	asset_type_name varchar(50) NOT NULL,
+	sort_order int4 NOT NULL,
+	active_status bool NOT NULL,
+	created_date timestamp NOT NULL,
+	created_by varchar(100) NULL,
+	changed_date timestamp NOT NULL,
+	changed_by varchar(100) NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT uk_mes_dim_asset_type PRIMARY KEY (_unique_key)
+);
+CREATE UNIQUE INDEX pk_mes_dim_asset_type ON mes.dim_asset_type USING btree (seq_id);
+
+
+-- mes.dim_cell definition
+
+-- Drop table
+
+-- DROP TABLE mes.dim_cell;
+
+CREATE TABLE mes.dim_cell (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	cell_id int8 NOT NULL,
+	site_code varchar(10) NOT NULL,
+	enterprise_name varchar(50) NOT NULL,
+	area_name varchar(50) NOT NULL,
+	line_name varchar(50) NOT NULL,
+	cell_group_name varchar(50) NOT NULL,
+	cell_name varchar(50) NOT NULL,
+	mes_udt_path varchar(50) NOT NULL,
+	inherits_common_cell_flag bool NOT NULL,
+	excessive_gap_seconds numeric(18, 2) NOT NULL,
+	short_interval_seconds numeric(18, 2) NOT NULL,
+	extended_downtime_seconds numeric(18, 2) NOT NULL,
+	sort_order int4 NOT NULL,
+	active_status bool NOT NULL,
+	created_date timestamp NOT NULL,
+	created_by varchar(100) NULL,
+	changed_date timestamp NOT NULL,
+	changed_by varchar(100) NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT uk_mes_dim_cell PRIMARY KEY (_unique_key)
+);
+CREATE INDEX idx_dim_cell_site_code ON mes.dim_cell USING btree (site_code, enterprise_name, area_name, line_name, cell_group_name, cell_name, sort_order);
+CREATE UNIQUE INDEX pk_mes_dim_cell ON mes.dim_cell USING btree (seq_id);
+
+
+-- mes.dim_cell_group definition
+
+-- Drop table
+
+-- DROP TABLE mes.dim_cell_group;
+
+CREATE TABLE mes.dim_cell_group (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	cell_group_id int8 NOT NULL,
+	site_code varchar(10) NOT NULL,
+	enterprise_name varchar(50) NOT NULL,
+	area_name varchar(50) NOT NULL,
+	line_name varchar(50) NOT NULL,
+	cell_group_name varchar(50) NOT NULL,
+	sort_order int4 NOT NULL,
+	active_status bool NOT NULL,
+	created_date timestamp NOT NULL,
+	created_by varchar(100) NULL,
+	changed_date timestamp NOT NULL,
+	changed_by varchar(100) NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT uk_mes_dim_cell_group PRIMARY KEY (_unique_key)
+);
+CREATE INDEX idx_dim_cell_group ON mes.dim_cell_group USING btree (site_code, enterprise_name, area_name, line_name, cell_group_name);
+CREATE UNIQUE INDEX pk_mes_dim_cell_group ON mes.dim_cell_group USING btree (seq_id);
+
+
+-- mes.dim_crew definition
+
+-- Drop table
+
+-- DROP TABLE mes.dim_crew;
+
+CREATE TABLE mes.dim_crew (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	crew_id int8 NOT NULL,
+	site_code varchar(10) NOT NULL,
+	enterprise_name varchar(50) NOT NULL,
+	area_name varchar(50) NOT NULL,
+	line_name varchar(50) NOT NULL,
+	crew_code varchar(50) NOT NULL,
+	crew_name varchar(50) NOT NULL,
+	active_status bool NOT NULL,
+	created_date timestamp NOT NULL,
+	created_by varchar(100) NULL,
+	changed_date timestamp NOT NULL,
+	changed_by varchar(100) NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT uk_mes_dim_crew PRIMARY KEY (_unique_key)
+);
+CREATE INDEX idx_dim_crew ON mes.dim_crew USING btree (site_code, enterprise_name, area_name, line_name, crew_code);
+CREATE UNIQUE INDEX pk_mes_dim_crew ON mes.dim_crew USING btree (seq_id);
+
+
+-- mes.dim_enterprise definition
+
+-- Drop table
+
+-- DROP TABLE mes.dim_enterprise;
+
+CREATE TABLE mes.dim_enterprise (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	enterprise_id int8 NOT NULL,
+	enterprise_name varchar(50) NOT NULL,
+	enterprise_code varchar(50) NOT NULL,
+	sort_order int4 NOT NULL,
+	active_status bool NOT NULL,
+	created_date timestamp NOT NULL,
+	created_by varchar(100) NULL,
+	changed_date timestamp NOT NULL,
+	changed_by varchar(100) NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT uk_mes_dim_enterprise PRIMARY KEY (_unique_key)
+);
+CREATE INDEX idx_dim_enterprise ON mes.dim_enterprise USING btree (_source_instance_name, enterprise_name, enterprise_code);
+CREATE UNIQUE INDEX pk_mes_dim_enterprise ON mes.dim_enterprise USING btree (seq_id);
+
+
+-- mes.dim_event_reason definition
+
+-- Drop table
+
+-- DROP TABLE mes.dim_event_reason;
+
+CREATE TABLE mes.dim_event_reason (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	seq int4 NOT NULL,
+	site_code varchar(10) NULL,
+	event_reason_id int4 NOT NULL,
+	event_type_id int4 NULL,
+	asset_type_id int4 NULL,
+	event_reason_name varchar(150) NULL,
+	event_reason_abbreviation varchar(150) NULL,
+	event_reason_full_name varchar(1000) NOT NULL,
+	opex_parent_category varchar(50) NULL,
+	opex_sub_category varchar(100) NULL,
+	"level" int4 NOT NULL,
+	lineage varchar(128) NOT NULL,
+	uncontrollable_reason_flag bool NOT NULL,
+	planned_reason_flag bool NOT NULL,
+	upe_include_flag bool NOT NULL,
+	active_status varchar(1) NULL,
+	created_by varchar(25) NULL,
+	create_date timestamp NULL,
+	changed_by varchar(25) NULL,
+	changed_date timestamp NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT uk_mes_dim_event_reason PRIMARY KEY (_unique_key)
+);
+CREATE INDEX idx_dim_event_reason ON mes.dim_event_reason USING btree (site_code, event_reason_id);
+CREATE UNIQUE INDEX pk_mes_dim_event_reason ON mes.dim_event_reason USING btree (seq_id);
+
+
+-- mes.dim_event_type definition
+
+-- Drop table
+
+-- DROP TABLE mes.dim_event_type;
+
+CREATE TABLE mes.dim_event_type (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	event_type_id int8 NOT NULL,
+	event_type_code varchar(50) NOT NULL,
+	event_type_name varchar(50) NOT NULL,
+	sort_order int4 NOT NULL,
+	active_status bool NOT NULL,
+	created_date timestamp NOT NULL,
+	created_by varchar(100) NULL,
+	changed_date timestamp NOT NULL,
+	changed_by varchar(100) NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT uk_mes_dim_event_type PRIMARY KEY (_unique_key)
+);
+CREATE INDEX idx_dim_event_type ON mes.dim_event_type USING btree (_source_instance_name, event_type_id);
+CREATE UNIQUE INDEX pk_mes_dim_event_type ON mes.dim_event_type USING btree (seq_id);
+
+
+-- mes.dim_line definition
+
+-- Drop table
+
+-- DROP TABLE mes.dim_line;
+
+CREATE TABLE mes.dim_line (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	line_id int8 NOT NULL,
+	site_code varchar(10) NOT NULL,
+	enterprise_name varchar(50) NOT NULL,
+	area_name varchar(50) NOT NULL,
+	line_name varchar(50) NOT NULL,
+	sort_order int4 NOT NULL,
+	active_status bool NOT NULL,
+	created_date timestamp NOT NULL,
+	created_by varchar(100) NULL,
+	changed_date timestamp NOT NULL,
+	changed_by varchar(100) NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT uk_mes_dim_line PRIMARY KEY (_unique_key)
+);
+CREATE INDEX idx_dim_line ON mes.dim_line USING btree (site_code, area_name, line_id, line_name, active_status);
+CREATE UNIQUE INDEX pk_mes_dim_line ON mes.dim_line USING btree (seq_id);
+
+
+-- mes.dim_line_configuration definition
+
+-- Drop table
+
+-- DROP TABLE mes.dim_line_configuration;
+
+CREATE TABLE mes.dim_line_configuration (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	line_configuration_id int8 NOT NULL,
+	site_code varchar(10) NOT NULL,
+	enterprise_name varchar(50) NOT NULL,
+	area_name varchar(50) NOT NULL,
+	line_name varchar(50) NOT NULL,
+	line_type varchar(50) NOT NULL,
+	erp_work_center_code varchar(50) NULL,
+	is_bottleneck_flag bool NULL,
+	buffer_min_start int4 NULL,
+	buffer_min_end int4 NULL,
+	manual_downtime_entry_flag bool NULL,
+	kpi_department_name varchar(50) NULL,
+	kpi_submit_posting_required bool NULL,
+	effective_date timestamp NOT NULL,
+	active_status bool NOT NULL,
+	created_date timestamp NOT NULL,
+	created_by varchar(100) NULL,
+	changed_date timestamp NOT NULL,
+	changed_by varchar(100) NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT uk_mes_dim_line_configuration PRIMARY KEY (_unique_key)
+);
+CREATE INDEX dim_line_configuration_site_code_idx ON mes.dim_line_configuration USING btree (site_code, area_name, line_configuration_id, line_name, active_status);
+CREATE UNIQUE INDEX pk_mes_dim_line_configuration ON mes.dim_line_configuration USING btree (seq_id);
+
+
+-- mes.dim_line_dates definition
+
+-- Drop table
+
+-- DROP TABLE mes.dim_line_dates;
+
+CREATE TABLE mes.dim_line_dates (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	line_dates_id int8 NOT NULL,
+	site_code varchar(10) NOT NULL,
+	enterprise_name varchar(50) NOT NULL,
+	area_name varchar(50) NOT NULL,
+	line_name varchar(50) NOT NULL,
+	production_date timestamp NOT NULL,
+	day_of_week varchar(50) NOT NULL,
+	start_time timestamp NOT NULL,
+	end_time timestamp NOT NULL,
+	locked_flag bool NOT NULL,
+	locked_by varchar(100) NULL,
+	locked_date timestamp NULL,
+	created_date timestamp NOT NULL,
+	created_by varchar(100) NULL,
+	changed_date timestamp NOT NULL,
+	changed_by varchar(100) NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT uk_mes_dim_line_dates PRIMARY KEY (_unique_key)
+);
+CREATE INDEX idx_dim_line_dates ON mes.dim_line_dates USING btree (site_code, production_date, area_name, line_name, start_time, end_time);
+CREATE UNIQUE INDEX pk_mes_dim_line_dates ON mes.dim_line_dates USING btree (seq_id);
+
+
+-- mes.dim_line_operation_definition definition
+
+-- Drop table
+
+-- DROP TABLE mes.dim_line_operation_definition;
+
+CREATE TABLE mes.dim_line_operation_definition (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	line_operation_definition_id int8 NOT NULL,
+	site_code varchar(10) NOT NULL,
+	enterprise_name varchar(50) NOT NULL,
+	area_name varchar(50) NOT NULL,
+	line_name varchar(50) NOT NULL,
+	operation_name varchar(150) NOT NULL,
+	operation_abbreviation varchar(50) NOT NULL,
+	mode_code varchar(50) NOT NULL,
+	active_status bool NOT NULL,
+	created_date timestamp NOT NULL,
+	created_by varchar(100) NULL,
+	changed_date timestamp NOT NULL,
+	changed_by varchar(100) NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT uk_mes_dim_line_operation_definition PRIMARY KEY (_unique_key)
+);
+CREATE INDEX idx_dim_line_operation_definition_site_code ON mes.dim_line_operation_definition USING btree (site_code, area_name, line_name, operation_name, line_operation_definition_id, active_status);
+CREATE UNIQUE INDEX pk_mes_dim_line_operation_definition ON mes.dim_line_operation_definition USING btree (seq_id);
+
+
+-- mes.dim_maintenance_equipment definition
+
+-- Drop table
+
+-- DROP TABLE mes.dim_maintenance_equipment;
+
+CREATE TABLE mes.dim_maintenance_equipment (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	maintenance_equipment_id int8 NOT NULL,
+	site_code varchar(10) NULL,
+	"location" varchar(250) NULL,
+	sub_location_1 varchar(250) NULL,
+	sub_location_2 varchar(250) NULL,
+	sub_location_3 varchar(250) NULL,
+	equipment_number varchar(250) NULL,
+	equipment_name varchar(250) NULL,
+	active_status bool NULL,
+	created_date timestamp NOT NULL,
+	created_by varchar(100) NULL,
+	changed_date timestamp NOT NULL,
+	changed_by varchar(100) NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT uk_mes_dim_maintenance_equipment PRIMARY KEY (_unique_key)
+);
+CREATE INDEX idx_dim_maintenance_equipment ON mes.dim_maintenance_equipment USING btree (site_code, maintenance_equipment_id, equipment_number, active_status);
+CREATE UNIQUE INDEX pk_mes_dim_maintenance_equipment ON mes.dim_maintenance_equipment USING btree (seq_id);
+
+
+-- mes.dim_maintenance_equipment_xref definition
+
+-- Drop table
+
+-- DROP TABLE mes.dim_maintenance_equipment_xref;
+
+CREATE TABLE mes.dim_maintenance_equipment_xref (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	maintenance_equipment_xref_id int8 NOT NULL,
+	site_code varchar(10) NULL,
+	equipment_number varchar(250) NULL,
+	area varchar(250) NULL,
+	line varchar(250) NULL,
+	cell_group varchar(250) NULL,
+	cell varchar(250) NULL,
+	active_status bool NULL,
+	created_date timestamp NOT NULL,
+	created_by varchar(100) NULL,
+	changed_date timestamp NOT NULL,
+	changed_by varchar(100) NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT uk_mes_dim_maintenance_equipment_xref PRIMARY KEY (_unique_key)
+);
+CREATE INDEX idx_dim_maintenance_equipment_xref ON mes.dim_maintenance_equipment_xref USING btree (site_code, maintenance_equipment_xref_id, equipment_number, area, line, cell, active_status);
+CREATE UNIQUE INDEX pk_mes_dim_maintenance_equipment_xref ON mes.dim_maintenance_equipment_xref USING btree (seq_id);
+
+
+-- mes.dim_mode definition
+
+-- Drop table
+
+-- DROP TABLE mes.dim_mode;
+
+CREATE TABLE mes.dim_mode (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	mode_id int8 NOT NULL,
+	mode_code varchar(50) NOT NULL,
+	mode_name varchar(50) NOT NULL,
+	mode_type_name varchar(50) NOT NULL,
+	sort_order int4 NOT NULL,
+	active_status bool NOT NULL,
+	created_date timestamp NOT NULL,
+	created_by varchar(100) NULL,
+	changed_date timestamp NOT NULL,
+	changed_by varchar(100) NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT uk_mes_dim_mode PRIMARY KEY (_unique_key)
+);
+CREATE INDEX idx_dim_mode ON mes.dim_mode USING btree (_source_instance_name, mode_id, mode_code, mode_name);
+CREATE UNIQUE INDEX pk_mes_dim_mode ON mes.dim_mode USING btree (seq_id);
+
+
+-- mes.dim_mode_type definition
+
+-- Drop table
+
+-- DROP TABLE mes.dim_mode_type;
+
+CREATE TABLE mes.dim_mode_type (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	mode_type_id int8 NOT NULL,
+	mode_type_name varchar(50) NOT NULL,
+	sort_order int4 NOT NULL,
+	active_status bool NOT NULL,
+	created_date timestamp NOT NULL,
+	created_by varchar(100) NULL,
+	changed_date timestamp NOT NULL,
+	changed_by varchar(100) NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT uk_mes_dim_mode_type PRIMARY KEY (_unique_key)
+);
+CREATE INDEX idx_dim_mode_type ON mes.dim_mode_type USING btree (_source_instance_name, mode_type_id, mode_type_name);
+CREATE UNIQUE INDEX pk_mes_dim_mode_type ON mes.dim_mode_type USING btree (seq_id);
+
+
+-- mes.dim_shift definition
+
+-- Drop table
+
+-- DROP TABLE mes.dim_shift;
+
+CREATE TABLE mes.dim_shift (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	shift_id int8 NOT NULL,
+	site_code varchar(10) NOT NULL,
+	enterprise_name varchar(50) NOT NULL,
+	area_name varchar(50) NOT NULL,
+	line_name varchar(50) NOT NULL,
+	shift_code varchar(50) NOT NULL,
+	shift_name varchar(50) NOT NULL,
+	start_time timestamp NOT NULL,
+	end_time timestamp NOT NULL,
+	planned_break_minutes int4 NOT NULL,
+	default_operation_name varchar(150) NOT NULL,
+	monday_default_include_flag bool NOT NULL,
+	monday_default_operation_name varchar(150) NULL,
+	monday_start_time timestamp NULL,
+	monday_end_time timestamp NULL,
+	tuesday_default_include_flag bool NOT NULL,
+	tuesday_default_operation_name varchar(150) NULL,
+	tuesday_start_time timestamp NULL,
+	tuesday_end_time timestamp NULL,
+	wednesday_default_include_flag bool NOT NULL,
+	wednesday_default_operation_name varchar(150) NULL,
+	wednesday_start_time timestamp NULL,
+	wednesday_end_time timestamp NULL,
+	thursday_default_include_flag bool NOT NULL,
+	thursday_default_operation_name varchar(150) NULL,
+	thursday_start_time timestamp NULL,
+	thursday_end_time timestamp NULL,
+	friday_default_include_flag bool NOT NULL,
+	friday_default_operation_name varchar(150) NULL,
+	friday_start_time timestamp NULL,
+	friday_end_time timestamp NULL,
+	saturday_default_include_flag bool NOT NULL,
+	saturday_default_operation_name varchar(150) NULL,
+	saturday_start_time timestamp NULL,
+	saturday_end_time timestamp NULL,
+	sunday_default_include_flag bool NOT NULL,
+	sunday_default_operation_name varchar(150) NULL,
+	sunday_start_time timestamp NULL,
+	sunday_end_time timestamp NULL,
+	effective_date timestamp NOT NULL,
+	created_date timestamp NOT NULL,
+	created_by varchar(100) NULL,
+	changed_date timestamp NOT NULL,
+	changed_by varchar(100) NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT uk_mes_dim_shift PRIMARY KEY (_unique_key)
+);
+CREATE INDEX idx_dim_shift ON mes.dim_shift USING btree (shift_id, effective_date, area_name, line_name, shift_code, shift_name, monday_default_operation_name, tuesday_default_include_flag, wednesday_default_include_flag, thursday_default_include_flag, friday_default_include_flag, saturday_default_include_flag, sunday_default_include_flag);
+CREATE UNIQUE INDEX pk_mes_dim_shift ON mes.dim_shift USING btree (seq_id);
+
+
+-- mes.dim_state definition
+
+-- Drop table
+
+-- DROP TABLE mes.dim_state;
+
+CREATE TABLE mes.dim_state (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	state_id int8 NOT NULL,
+	state_code varchar(50) NOT NULL,
+	state_name varchar(50) NOT NULL,
+	state_label varchar(50) NOT NULL,
+	state_type_name varchar(50) NOT NULL,
+	sort_order int4 NOT NULL,
+	active_status bool NOT NULL,
+	created_date timestamp NOT NULL,
+	created_by varchar(100) NULL,
+	changed_date timestamp NOT NULL,
+	changed_by varchar(100) NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT uk_mes_dim_state PRIMARY KEY (_unique_key)
+);
+CREATE INDEX idx_dim_state ON mes.dim_state USING btree (_source_instance_name, state_id, state_code, state_name);
+CREATE UNIQUE INDEX pk_mes_dim_state ON mes.dim_state USING btree (seq_id);
+
+
+-- mes.dim_state_type definition
+
+-- Drop table
+
+-- DROP TABLE mes.dim_state_type;
+
+CREATE TABLE mes.dim_state_type (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	state_type_id int8 NOT NULL,
+	state_type_name varchar(50) NOT NULL,
+	sort_order int4 NOT NULL,
+	active_status bool NOT NULL,
+	created_date timestamp NOT NULL,
+	created_by varchar(100) NULL,
+	changed_date timestamp NOT NULL,
+	changed_by varchar(100) NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT uk_mes_dim_state_type PRIMARY KEY (_unique_key)
+);
+CREATE INDEX idx_dim_state_type ON mes.dim_state_type USING btree (_source_instance_name, state_type_id, state_type_name, active_status);
+CREATE UNIQUE INDEX pk_mes_dim_state_type ON mes.dim_state_type USING btree (seq_id);
+
+
+-- mes.fact_cell_state_event definition
+
+-- Drop table
+
+-- DROP TABLE mes.fact_cell_state_event;
+
+CREATE TABLE mes.fact_cell_state_event (
+	seq_id int8 DEFAULT nextval('mes.fact_cell_state_event_new_seq_id_seq'::regclass) NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	cell_state_event_id int8 NOT NULL,
+	line_id int4 NOT NULL,
+	cell_id int4 NOT NULL,
+	start_datetime timestamp NOT NULL,
+	end_datetime timestamp NOT NULL,
+	duration_seconds numeric(18, 2) DEFAULT 0 NULL,
+	state_id int4 NOT NULL,
+	original_state_id int4 NOT NULL,
+	event_cell_id int4 NOT NULL,
+	event_reason_id int4 NULL,
+	maintenance_equipment_id int4 NULL,
+	"comments" varchar(500) NULL,
+	created_date timestamp NOT NULL,
+	created_by varchar(25) NULL,
+	changed_date timestamp NOT NULL,
+	changed_by varchar(25) NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT uk_mes_fact_cell_state_event PRIMARY KEY (_unique_key)
+);
+CREATE INDEX idx_fact_cell_state_event ON mes.fact_cell_state_event USING btree (_source_instance_name, start_datetime, end_datetime, line_id, cell_id, maintenance_equipment_id);
+CREATE UNIQUE INDEX pk_mes_fact_cell_state_event ON mes.fact_cell_state_event USING btree (seq_id);
+
+
+-- mes.fact_cell_state_event_short_interval definition
+
+-- Drop table
+
+-- DROP TABLE mes.fact_cell_state_event_short_interval;
+
+CREATE TABLE mes.fact_cell_state_event_short_interval (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	cell_state_event_id int8 NOT NULL,
+	line_id int4 NOT NULL,
+	cell_id int4 NOT NULL,
+	start_datetime timestamp NOT NULL,
+	end_datetime timestamp NOT NULL,
+	duration_seconds numeric(18, 2) DEFAULT 0 NOT NULL,
+	state_id int4 NOT NULL,
+	original_state_id int4 NOT NULL,
+	event_cell_id int4 NOT NULL,
+	event_reason_id int4 NULL,
+	maintenance_equipment_id int4 NULL,
+	"comments" varchar(500) NULL,
+	created_date timestamp NOT NULL,
+	created_by varchar(25) NULL,
+	changed_date timestamp NOT NULL,
+	changed_by varchar(25) NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT uk_mes_fact_cell_state_event_short_interval PRIMARY KEY (_unique_key)
+);
+CREATE INDEX idx_fact_cell_state_event_short_interval ON mes.fact_cell_state_event_short_interval USING btree (_source_instance_name, start_datetime, end_datetime, line_id, cell_id, maintenance_equipment_id);
+CREATE UNIQUE INDEX pk_mes_fact_cell_state_event_short_interval ON mes.fact_cell_state_event_short_interval USING btree (seq_id);
+
+
+-- mes.fact_downtime_event_summary definition
+
+-- Drop table
+
+-- DROP TABLE mes.fact_downtime_event_summary;
+
+CREATE TABLE mes.fact_downtime_event_summary (
+	site_code varchar(10) NOT NULL,
+	site_name varchar(50) NULL,
+	enterprise_name varchar(50) NOT NULL,
+	area_name varchar(50) NOT NULL,
+	line_name varchar(50) NOT NULL,
+	cell_name varchar(50) NOT NULL,
+	event_cell_name varchar(50) NOT NULL,
+	sub_machine_center varchar(50) NULL,
+	shift_name varchar(50) NOT NULL,
+	crew_name varchar(50) NOT NULL,
+	state_name varchar(250) NOT NULL,
+	occurence int4 NULL,
+	minutes numeric NULL,
+	event_loss_mbf_per_target numeric NULL,
+	mbf numeric NULL,
+	mbf_per_hr_target numeric NULL,
+	sched_minutes numeric NULL,
+	event_loss_mbf_per_sched_minute numeric NULL,
+	sub_category varchar(250) NULL,
+	equipment_name varchar(250) NULL,
+	component varchar(50) NULL,
+	failure_mode varchar(50) NULL,
+	"comments" varchar(500) NULL,
+	production_date date NOT NULL,
+	event_start_datetime text NOT NULL,
+	unix_ms float8 NULL,
+	site_timezone varchar(50) NULL,
+	sort_order int4 NULL,
+	event_end_datetime text NOT NULL,
+	unix_end_ms float8 NULL,
+	first_date text NOT NULL,
+	first_hour int4 NULL,
+	first_minutes int4 NULL,
+	last_date text NOT NULL,
+	last_hour int4 NULL,
+	last_minutes int4 NULL,
+	changed_datetime timestamp NULL,
+	etl_load_datetime timestamp NULL,
+	CONSTRAINT pk_fact_downtime_event_summary PRIMARY KEY (event_start_datetime, production_date, enterprise_name, site_code, area_name, line_name, cell_name, event_cell_name, shift_name, crew_name, state_name)
+);
+CREATE INDEX idx_fact_downtime_event_summary ON mes.fact_downtime_event_summary USING btree (production_date, site_code, area_name, line_name, cell_name, shift_name, crew_name, event_start_datetime);
+
+
+-- mes.fact_line_operation definition
+
+-- Drop table
+
+-- DROP TABLE mes.fact_line_operation;
+
+CREATE TABLE mes.fact_line_operation (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	line_operations_schedule_id int8 NULL,
+	line_operations_response_id int8 NULL,
+	site_code varchar(10) NOT NULL,
+	enterprise_name varchar(50) NOT NULL,
+	area_name varchar(50) NOT NULL,
+	line_id int8 NOT NULL,
+	line_name varchar(50) NOT NULL,
+	line_schedule_id int8 NOT NULL,
+	line_request_id int8 NULL,
+	line_response_id int8 NULL,
+	production_date timestamp NOT NULL,
+	shift_id int8 NOT NULL,
+	shift_code varchar(50) NULL,
+	shift_name varchar(50) NOT NULL,
+	crew_id int8 NULL,
+	crew_code varchar(50) NULL,
+	crew_name varchar(50) NULL,
+	schedule_start timestamp NOT NULL,
+	schedule_end timestamp NOT NULL,
+	actual_start timestamp NULL,
+	actual_end timestamp NULL,
+	prior_buffer_end timestamp NULL,
+	next_start timestamp NULL,
+	allocated_buffer_start timestamp NULL,
+	allocated_buffer_end timestamp NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT uk_mes_fact_line_operation PRIMARY KEY (_unique_key)
+);
+CREATE INDEX idx_fact_line_operation ON mes.fact_line_operation USING btree (site_code, allocated_buffer_start, allocated_buffer_end, production_date, line_id, area_name, line_name);
+CREATE INDEX idx_fact_line_operation_1 ON mes.fact_line_operation USING btree (site_code, production_date, shift_code, area_name, line_name);
+CREATE INDEX idx_fact_line_operation_2 ON mes.fact_line_operation USING btree (site_code, line_schedule_id, line_request_id, line_response_id);
+CREATE INDEX idx_fact_line_operation_3 ON mes.fact_line_operation USING btree (_source_instance_name, line_schedule_id, line_response_id);
+CREATE UNIQUE INDEX pk_mes_fact_line_operation ON mes.fact_line_operation USING btree (seq_id);
+
+
+-- mes.fact_line_request definition
+
+-- Drop table
+
+-- DROP TABLE mes.fact_line_request;
+
+CREATE TABLE mes.fact_line_request (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	line_operations_request_id int8 NOT NULL,
+	line_request_id int8 NOT NULL,
+	line_schedule_id int8 NOT NULL,
+	site_code varchar(10) NOT NULL,
+	enterprise_name varchar(50) NOT NULL,
+	area_name varchar(50) NOT NULL,
+	line_id int8 NOT NULL,
+	line_name varchar(50) NOT NULL,
+	schedule_start timestamp NOT NULL,
+	schedule_end timestamp NOT NULL,
+	line_operation_id int8 NOT NULL,
+	manufacturing_order_id int8 NULL,
+	original_schedule_start timestamp NOT NULL,
+	original_schedule_end timestamp NOT NULL,
+	response_started_flag bool NOT NULL,
+	reference_number varchar(50) NULL,
+	created_date timestamp NOT NULL,
+	created_by varchar(100) NULL,
+	changed_date timestamp NOT NULL,
+	changed_by varchar(100) NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT uk_mes_fact_line_request PRIMARY KEY (_unique_key)
+);
+CREATE INDEX idx_fact_line_request ON mes.fact_line_request USING btree (site_code, schedule_start, schedule_end, line_id, area_name, line_name);
+CREATE INDEX idx_fact_line_request_2 ON mes.fact_line_request USING btree (site_code, line_id, line_schedule_id, line_request_id, line_operations_request_id);
+CREATE UNIQUE INDEX pk_mes_fact_line_request ON mes.fact_line_request USING btree (seq_id);
+
+
+-- mes.fact_line_response definition
+
+-- Drop table
+
+-- DROP TABLE mes.fact_line_response;
+
+CREATE TABLE mes.fact_line_response (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	line_operations_response_id int8 NOT NULL,
+	line_response_id int8 NOT NULL,
+	line_request_id int8 NOT NULL,
+	line_schedule_id int8 NOT NULL,
+	site_code varchar(10) NOT NULL,
+	enterprise_name varchar(50) NOT NULL,
+	area_name varchar(50) NOT NULL,
+	line_id int8 NOT NULL,
+	line_name varchar(50) NOT NULL,
+	line_operation_id int8 NOT NULL,
+	manufacturing_order_id int8 NULL,
+	production_scheduler varchar(25) NULL,
+	production_leader varchar(25) NULL,
+	actual_start timestamp NOT NULL,
+	actual_end timestamp NULL,
+	created_date timestamp NOT NULL,
+	created_by varchar(100) NULL,
+	changed_date timestamp NOT NULL,
+	changed_by varchar(100) NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT uk_mes_fact_line_response PRIMARY KEY (_unique_key)
+);
+CREATE INDEX idx_fact_line_response ON mes.fact_line_response USING btree (site_code, enterprise_name, area_name, line_name, line_response_id, line_request_id, line_schedule_id);
+CREATE INDEX idx_fact_line_response_2 ON mes.fact_line_response USING btree (site_code, actual_start, actual_end, line_operations_response_id, line_response_id, line_request_id, line_schedule_id, area_name, line_id, line_name);
+CREATE UNIQUE INDEX pk_mes_fact_line_response ON mes.fact_line_response USING btree (seq_id);
+
+
+-- mes.fact_line_schedule definition
+
+-- Drop table
+
+-- DROP TABLE mes.fact_line_schedule;
+
+CREATE TABLE mes.fact_line_schedule (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	line_operations_schedule_id int8 NOT NULL,
+	line_schedule_id int8 NOT NULL,
+	site_code varchar(10) NOT NULL,
+	enterprise_name varchar(50) NOT NULL,
+	area_name varchar(50) NOT NULL,
+	line_id int8 NOT NULL,
+	line_name varchar(50) NOT NULL,
+	line_path varchar(203) NULL,
+	production_date timestamp NOT NULL,
+	schedule_start timestamp NOT NULL,
+	schedule_end timestamp NOT NULL,
+	shift_start timestamp NULL,
+	shift_end timestamp NULL,
+	shift_id int8 NOT NULL,
+	shift_code varchar(50) NULL,
+	shift_name varchar(50) NOT NULL,
+	crew_id int8 NULL,
+	crew_code varchar(50) NULL,
+	line_operation_id int8 NOT NULL,
+	manufacturing_order_id int8 NULL,
+	default_schedule_flag bool NOT NULL,
+	request_generated_flag bool NOT NULL,
+	reference_number varchar(50) NULL,
+	created_date timestamp NOT NULL,
+	created_by varchar(100) NULL,
+	changed_date timestamp NOT NULL,
+	changed_by varchar(100) NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT uk_mes_fact_line_schedule PRIMARY KEY (_unique_key)
+);
+CREATE INDEX idx_fact_line_schedule ON mes.fact_line_schedule USING btree (site_code, production_date, shift_code, area_name, line_name);
+CREATE INDEX idx_fact_line_schedule_shifttime ON mes.fact_line_schedule USING btree (site_code, production_date, shift_start, shift_end, area_name, line_name, default_schedule_flag, request_generated_flag);
+CREATE INDEX idx_fact_line_schedule_time ON mes.fact_line_schedule USING btree (site_code, schedule_start, schedule_end, enterprise_name, area_name, line_name);
+CREATE UNIQUE INDEX pk_mes_fact_line_schedule ON mes.fact_line_schedule USING btree (seq_id);

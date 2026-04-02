@@ -1,0 +1,1372 @@
+-- optimizer.dim_dry_end_trimmer_downgrade_config definition
+
+-- Drop table
+
+-- DROP TABLE optimizer.dim_dry_end_trimmer_downgrade_config;
+
+CREATE TABLE optimizer.dim_dry_end_trimmer_downgrade_config (
+	seq_id bigserial NOT NULL,
+	site_code varchar(10) NOT NULL,
+	enterprise_name varchar(50) NOT NULL,
+	area_name varchar(50) NOT NULL,
+	line_id int8 NOT NULL,
+	line_name varchar(50) NOT NULL,
+	system_vendor varchar(50) NOT NULL,
+	sort_order int4 NOT NULL,
+	active_status bool NOT NULL,
+	created_date timestamp NOT NULL,
+	created_by varchar(100) NULL,
+	changed_date timestamp NOT NULL,
+	changed_by varchar(100) NULL,
+	extract_guid varchar(36) NULL,
+	extract_timestamp timestamp NULL,
+	load_guid varchar(36) NULL,
+	load_timestamp timestamp NULL,
+	CONSTRAINT uk_optimizer_dim_dry_end_trimmer_downgrade_config PRIMARY KEY (site_code, line_id)
+);
+CREATE INDEX dim_dry_end_trimmer_downgrade_config_site_code_idx ON optimizer.dim_dry_end_trimmer_downgrade_config USING btree (site_code, line_id, system_vendor, area_name, line_name, active_status);
+CREATE UNIQUE INDEX pk_optimizer_dim_dry_end_trimmer_downgrade_config ON optimizer.dim_dry_end_trimmer_downgrade_config USING btree (seq_id);
+
+
+-- optimizer.dim_dry_end_trimmer_downgrade_reasons definition
+
+-- Drop table
+
+-- DROP TABLE optimizer.dim_dry_end_trimmer_downgrade_reasons;
+
+CREATE TABLE optimizer.dim_dry_end_trimmer_downgrade_reasons (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	trimmer_downgrade_reasons_id int8 NOT NULL,
+	site_code varchar(10) NULL,
+	area_name varchar(50) NULL,
+	line_name varchar(50) NULL,
+	downgrade_reason_id int4 NULL,
+	downgrade_reason_name varchar(500) NULL,
+	created_datetime timestamp NOT NULL,
+	changed_datetime timestamp NOT NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT uk_optimizer_dim_dry_end_trimmer_downgrade_reasons PRIMARY KEY (_unique_key)
+);
+CREATE INDEX idx_dim_dry_end_trimmer_downgrade_reasons ON optimizer.dim_dry_end_trimmer_downgrade_reasons USING btree (site_code, downgrade_reason_id, area_name, line_name);
+CREATE UNIQUE INDEX pk_optimizer_dim_dry_end_trimmer_downgrade_reasons ON optimizer.dim_dry_end_trimmer_downgrade_reasons USING btree (seq_id);
+
+
+-- optimizer.dim_dry_end_trimmer_downgrade_xref definition
+
+-- Drop table
+
+-- DROP TABLE optimizer.dim_dry_end_trimmer_downgrade_xref;
+
+CREATE TABLE optimizer.dim_dry_end_trimmer_downgrade_xref (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	trimmer_downgrade_xref_id int8 NOT NULL,
+	site_code varchar(10) NULL,
+	area_name varchar(50) NULL,
+	line_name varchar(50) NULL,
+	downgrade_rule_type varchar(200) NULL,
+	downgrade_reason_id varchar(50) NULL,
+	downgrade_reason_name varchar(500) NULL,
+	standard_downgrade_reason_name varchar(200) NULL,
+	downgrade_category_code varchar(250) NULL,
+	downgrade_category_name varchar(250) NULL,
+	controllable_flag bool NULL,
+	active_status bool NULL,
+	created_date timestamp NOT NULL,
+	changed_date timestamp NOT NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT uk_optimizer_dim_dry_end_trimmer_downgrade_xref PRIMARY KEY (_unique_key)
+);
+CREATE INDEX idx_dim_dry_end_trimmer_downgrade_xref ON optimizer.dim_dry_end_trimmer_downgrade_xref USING btree (site_code, downgrade_reason_id, area_name, line_name, controllable_flag);
+CREATE UNIQUE INDEX pk_optimizer_dim_dry_end_trimmer_downgrade_xref ON optimizer.dim_dry_end_trimmer_downgrade_xref USING btree (seq_id);
+
+
+-- optimizer.dim_dry_end_trimmer_grade_xref definition
+
+-- Drop table
+
+-- DROP TABLE optimizer.dim_dry_end_trimmer_grade_xref;
+
+CREATE TABLE optimizer.dim_dry_end_trimmer_grade_xref (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	trimmer_grade_xref_id int8 NOT NULL,
+	site_code varchar(10) NULL,
+	area_name varchar(50) NULL,
+	line_name varchar(50) NULL,
+	source_grade varchar(200) NULL,
+	standard_grade_code varchar(2) NULL,
+	standard_grade varchar(200) NULL,
+	two_better_flag bool NULL,
+	wet_grade_flag bool NULL,
+	square_flag bool NULL,
+	stud_flag bool NULL,
+	cores_flag bool NULL,
+	green_flag bool NULL,
+	rerun_flag bool NULL,
+	active_status bool NOT NULL,
+	created_date timestamp NOT NULL,
+	created_by varchar(100) NULL,
+	changed_date timestamp NOT NULL,
+	changed_by varchar(100) NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT uk_optimizer_dim_dry_end_trimmer_grade_xref PRIMARY KEY (_unique_key)
+);
+CREATE INDEX idx_dim_dry_end_trimmer_grade_xref ON optimizer.dim_dry_end_trimmer_grade_xref USING btree (site_code, source_grade, area_name, line_name, two_better_flag, wet_grade_flag, cores_flag, green_flag, rerun_flag);
+CREATE UNIQUE INDEX pk_optimizer_dim_dry_end_trimmer_grade_xref ON optimizer.dim_dry_end_trimmer_grade_xref USING btree (seq_id);
+
+
+-- optimizer.dim_dry_end_trimmer_length_factors definition
+
+-- Drop table
+
+-- DROP TABLE optimizer.dim_dry_end_trimmer_length_factors;
+
+CREATE TABLE optimizer.dim_dry_end_trimmer_length_factors (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	trimmer_length_factors_id int8 NOT NULL,
+	site_code varchar(10) NULL,
+	length numeric(18, 2) NULL,
+	minimum_length numeric(18, 2) NULL,
+	spec_minimum_length numeric(18, 2) NULL,
+	spec_maximum_length numeric(18, 2) NULL,
+	active_status bool NOT NULL,
+	created_date timestamp NOT NULL,
+	created_by varchar(100) NULL,
+	changed_date timestamp NOT NULL,
+	changed_by varchar(100) NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT uk_optimizer_dim_dry_end_trimmer_length_factors PRIMARY KEY (_unique_key)
+);
+CREATE UNIQUE INDEX pk_optimizer_dim_dry_end_trimmer_length_factors ON optimizer.dim_dry_end_trimmer_length_factors USING btree (seq_id);
+
+
+-- optimizer.dim_green_end_trimmer_grade_xref definition
+
+-- Drop table
+
+-- DROP TABLE optimizer.dim_green_end_trimmer_grade_xref;
+
+CREATE TABLE optimizer.dim_green_end_trimmer_grade_xref (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	trimmer_grade_xref_id int8 NOT NULL,
+	site_code varchar(10) NULL,
+	area_name varchar(50) NULL,
+	line_name varchar(50) NULL,
+	source_grade varchar(200) NULL,
+	standard_grade_code varchar(2) NULL,
+	standard_grade varchar(200) NULL,
+	two_better_flag bool NULL,
+	stud_flag bool NULL,
+	active_status bool NOT NULL,
+	created_date timestamp NOT NULL,
+	created_by varchar(100) NULL,
+	changed_date timestamp NOT NULL,
+	changed_by varchar(100) NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT uk_optimizer_dim_green_end_trimmer_grade_xref PRIMARY KEY (_unique_key)
+);
+CREATE INDEX idx_dim_green_end_trimmer_grade_xref ON optimizer.dim_green_end_trimmer_grade_xref USING btree (site_code, source_grade, area_name, line_name, two_better_flag, stud_flag);
+CREATE UNIQUE INDEX pk_optimizer_dim_green_end_trimmer_grade_xref ON optimizer.dim_green_end_trimmer_grade_xref USING btree (seq_id);
+
+
+-- optimizer.dim_standard_code_types definition
+
+-- Drop table
+
+-- DROP TABLE optimizer.dim_standard_code_types;
+
+CREATE TABLE optimizer.dim_standard_code_types (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	value_id int8 NOT NULL,
+	site_code varchar(10) NULL,
+	area_name varchar(50) NULL,
+	line_name varchar(50) NULL,
+	code_type int4 NOT NULL,
+	type_desc varchar(10) NOT NULL,
+	created_date timestamp NOT NULL,
+	created_by varchar(100) NULL,
+	changed_date timestamp NOT NULL,
+	changed_by varchar(100) NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT uk_optimizer_dim_standard_code_types PRIMARY KEY (_unique_key)
+);
+CREATE INDEX idx_dim_standard_code_types ON optimizer.dim_standard_code_types USING btree (site_code, code_type, area_name, line_name);
+CREATE UNIQUE INDEX pk_optimizer_dim_standard_code_types ON optimizer.dim_standard_code_types USING btree (seq_id);
+
+
+-- optimizer.dim_standard_code_values definition
+
+-- Drop table
+
+-- DROP TABLE optimizer.dim_standard_code_values;
+
+CREATE TABLE optimizer.dim_standard_code_values (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	value_id int8 NOT NULL,
+	site_code varchar(10) NULL,
+	area_name varchar(50) NULL,
+	line_name varchar(50) NULL,
+	type_code int4 NOT NULL,
+	type_desc varchar(10) NOT NULL,
+	nominal int4 NOT NULL,
+	target numeric(8, 3) NOT NULL,
+	minimum numeric(8, 3) NOT NULL,
+	maximum numeric(8, 3) NOT NULL,
+	start_date timestamp NOT NULL,
+	end_date timestamp NULL,
+	created_date timestamp NOT NULL,
+	created_by varchar(100) NULL,
+	changed_date timestamp NOT NULL,
+	changed_by varchar(100) NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT uk_optimizer_dim_standard_code_values PRIMARY KEY (_unique_key)
+);
+CREATE INDEX idx_dim_standard_code_values ON optimizer.dim_standard_code_values USING btree (site_code, type_code, nominal, target, minimum, maximum);
+CREATE UNIQUE INDEX pk_optimizer_dim_standard_code_values ON optimizer.dim_standard_code_values USING btree (seq_id);
+
+
+-- optimizer.fact_dry_end_trimmer_board_detail definition
+
+-- Drop table
+
+-- DROP TABLE optimizer.fact_dry_end_trimmer_board_detail;
+
+CREATE TABLE optimizer.fact_dry_end_trimmer_board_detail (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	trimmer_board_detail_id int8 NOT NULL,
+	site_code varchar(10) NULL,
+	area_name varchar(50) NULL,
+	line_name varchar(50) NULL,
+	cell_name varchar(50) NULL,
+	shift_code varchar(50) NULL,
+	shift_name varchar(50) NULL,
+	crew_code varchar(50) NULL,
+	crew_name varchar(50) NULL,
+	production_date timestamp NULL,
+	record_datetime timestamp NULL,
+	input_board_id int8 NULL,
+	output_board_id int8 NULL,
+	input_solution_flag bool NULL,
+	valid_solution_flag bool NULL,
+	solution_number int4 NULL,
+	specie_name varchar(255) NULL,
+	rule_name varchar(255) NULL,
+	source_grade varchar(255) NULL,
+	block_name varchar(255) NULL,
+	cut_in_two_flag bool NULL,
+	input_actual_thickness_inches numeric(18, 4) NULL,
+	input_actual_width_inches numeric(18, 4) NULL,
+	input_actual_length_inches numeric(18, 4) NULL,
+	input_nominal_thickness_inches numeric(18, 4) NULL,
+	input_nominal_width_inches numeric(18, 4) NULL,
+	input_nominal_length_inches numeric(18, 4) NULL,
+	output_nominal_thickness_inches numeric(18, 4) NULL,
+	output_nominal_width_inches numeric(18, 4) NULL,
+	output_nominal_length_inches numeric(18, 4) NULL,
+	input_board_count int4 NULL,
+	output_board_count int4 NULL,
+	slash_board_count int4 NULL,
+	input_board_footage numeric(18, 4) NULL,
+	output_board_footage numeric(18, 4) NULL,
+	slash_board_footage numeric(18, 4) NULL,
+	trim_board_footage numeric(18, 4) NULL,
+	average_moisture numeric(18, 4) NULL,
+	peak_moisture numeric(18, 4) NULL,
+	downgrade_reason_id int4 NULL,
+	trim_reason_id int4 NULL,
+	process_guid varchar(100) NULL,
+	created_datetime timestamp NOT NULL,
+	changed_datetime timestamp NOT NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT pk_optimizer_fact_dry_end_trimmer_board_detail PRIMARY KEY (seq_id)
+);
+CREATE INDEX idx_fact_dry_end_trimmer_board_detail ON optimizer.fact_dry_end_trimmer_board_detail USING btree (site_code, production_date, shift_code, area_name, line_name, cell_name);
+CREATE INDEX idx_fact_dry_end_trimmer_board_detail_1 ON optimizer.fact_dry_end_trimmer_board_detail USING btree (site_code, record_datetime, area_name, line_name, cell_name);
+CREATE INDEX idx_fact_dry_end_trimmer_board_detail_2 ON optimizer.fact_dry_end_trimmer_board_detail USING btree (production_date);
+CREATE INDEX uk_optimizer_fact_dry_end_trimmer_board_detail ON optimizer.fact_dry_end_trimmer_board_detail USING btree (_unique_key);
+
+
+-- optimizer.fact_dry_end_trimmer_board_summary definition
+
+-- Drop table
+
+-- DROP TABLE optimizer.fact_dry_end_trimmer_board_summary;
+
+CREATE TABLE optimizer.fact_dry_end_trimmer_board_summary (
+	seq_id bigserial NOT NULL,
+	site_code varchar(10) NULL,
+	area_name varchar(50) NULL,
+	line_name varchar(50) NULL,
+	cell_name varchar(50) NULL,
+	shift_code varchar(50) NULL,
+	shift_name varchar(50) NULL,
+	crew_code varchar(50) NULL,
+	crew_name varchar(50) NULL,
+	production_date timestamp NULL,
+	prod_utc_unix_ms int8 NULL,
+	input_nominal_thickness_inches numeric(15) NULL,
+	input_nominal_width_inches numeric(15) NULL,
+	input_nominal_length_inches numeric(15) NULL,
+	output_nominal_thickness_inches numeric(15) NULL,
+	output_nominal_width_inches numeric(15) NULL,
+	output_nominal_length_inches numeric(15) NULL,
+	product_dimension_input varchar(20) NULL,
+	product_dimension_output varchar(20) NULL,
+	cut_in_two_flag bool DEFAULT false NULL,
+	splitter_flag bool DEFAULT false NULL,
+	price numeric(15, 3) NULL,
+	standard_grade varchar(20) NULL,
+	rerun_flag bool DEFAULT false NULL,
+	trim_reason_id varchar(20) NULL,
+	downgrade_reason_name varchar(100) NULL,
+	standard_downgrade_reason_name varchar(50) NULL,
+	downgrade_category_name varchar(50) NULL,
+	controllable_flag bool DEFAULT false NULL,
+	too_wet_flag_division bool DEFAULT false NULL,
+	too_wet_flag bool DEFAULT false NULL,
+	too_dry_flag bool DEFAULT false NULL,
+	zero_average_moisture_flag bool DEFAULT false NULL,
+	sum_input_actual_thickness_inches numeric(15, 3) NULL,
+	sum_input_actual_width_inches numeric(15, 3) NULL,
+	sum_input_actual_length_inches numeric(15, 3) NULL,
+	sum_input_board_count numeric(15) NULL,
+	sum_output_board_count numeric(15) NULL,
+	sum_input_board_footage numeric(15, 3) NULL,
+	sum_output_board_footage numeric(15, 3) NULL,
+	sum_block_count numeric(15) NULL,
+	sum_slash_board_count numeric(15) NULL,
+	sum_slash_board_footage numeric(15, 3) NULL,
+	sum_trim_loss_board_footage numeric(15, 3) NULL,
+	sum_average_moisture numeric(15, 3) NULL,
+	sum_peak_moisture numeric(15, 3) NULL,
+	sum_too_thin_board_count numeric(15) NULL,
+	sum_too_thick_board_count numeric(15) NULL,
+	sum_too_narrow_board_count numeric(15) NULL,
+	sum_too_wide_board_count numeric(15) NULL,
+	sum_too_short_board_count numeric(15) NULL,
+	sum_too_long_board_count numeric(15) NULL,
+	sum_variance_thin numeric(15, 3) NULL,
+	sum_variance_thick numeric(15, 3) NULL,
+	sum_variance_narrow numeric(15, 3) NULL,
+	sum_variance_wide numeric(15, 3) NULL,
+	sum_variance_short numeric(15, 3) NULL,
+	sum_variance_long numeric(15, 3) NULL,
+	created_datetime timestamp NOT NULL,
+	changed_datetime timestamp NOT NULL,
+	load_guid varchar(36) NULL,
+	load_timestamp timestamp NULL
+);
+CREATE INDEX idx_fact_dry_end_trimmer_board_summary ON optimizer.fact_dry_end_trimmer_board_summary USING btree (site_code, production_date, shift_code, area_name, line_name, cell_name);
+CREATE INDEX idx_fact_dry_end_trimmer_board_summary_2 ON optimizer.fact_dry_end_trimmer_board_summary USING btree (production_date);
+CREATE UNIQUE INDEX pk_optimizer_fact_dry_end_trimmer_board_summary ON optimizer.fact_dry_end_trimmer_board_summary USING btree (seq_id);
+
+
+-- optimizer.fact_dry_end_trimmer_board_summary_2024_06_18_bkp definition
+
+-- Drop table
+
+-- DROP TABLE optimizer.fact_dry_end_trimmer_board_summary_2024_06_18_bkp;
+
+CREATE TABLE optimizer.fact_dry_end_trimmer_board_summary_2024_06_18_bkp (
+	seq_id int8 DEFAULT nextval('optimizer.fact_dry_end_trimmer_board_summary_seq_id_seq'::regclass) NOT NULL,
+	site_code varchar(10) NULL,
+	area_name varchar(50) NULL,
+	line_name varchar(50) NULL,
+	cell_name varchar(50) NULL,
+	shift_code varchar(50) NULL,
+	shift_name varchar(50) NULL,
+	crew_code varchar(50) NULL,
+	crew_name varchar(50) NULL,
+	production_date timestamp NULL,
+	prod_utc_unix_ms int8 NULL,
+	input_nominal_thickness_inches numeric(15) NULL,
+	input_nominal_width_inches numeric(15) NULL,
+	input_nominal_length_inches numeric(15) NULL,
+	output_nominal_thickness_inches numeric(15) NULL,
+	output_nominal_width_inches numeric(15) NULL,
+	output_nominal_length_inches numeric(15) NULL,
+	product_dimension_input varchar(20) NULL,
+	product_dimension_output varchar(20) NULL,
+	splitter_flag bool DEFAULT false NULL,
+	price numeric(15, 3) NULL,
+	standard_grade varchar(20) NULL,
+	trim_reason_id varchar(20) NULL,
+	downgrade_reason_name varchar(100) NULL,
+	standard_downgrade_reason_name varchar(50) NULL,
+	downgrade_category_name varchar(50) NULL,
+	controllable_flag bool DEFAULT false NULL,
+	too_wet_flag_division bool DEFAULT false NULL,
+	too_wet_flag bool DEFAULT false NULL,
+	too_dry_flag bool DEFAULT false NULL,
+	zero_average_moisture_flag bool DEFAULT false NULL,
+	sum_input_actual_thickness_inches numeric(15, 3) NULL,
+	sum_input_actual_width_inches numeric(15, 3) NULL,
+	sum_input_actual_length_inches numeric(15, 3) NULL,
+	sum_input_board_count numeric(15) NULL,
+	sum_output_board_count numeric(15) NULL,
+	sum_input_board_footage numeric(15, 3) NULL,
+	sum_output_board_footage numeric(15, 3) NULL,
+	sum_slash_board_count numeric(15) NULL,
+	sum_slash_board_footage numeric(15, 3) NULL,
+	sum_trim_loss_board_footage numeric(15, 3) NULL,
+	sum_average_moisture numeric(15, 3) NULL,
+	sum_peak_moisture numeric(15, 3) NULL,
+	sum_too_thin_board_count numeric(15) NULL,
+	sum_too_thick_board_count numeric(15) NULL,
+	sum_too_narrow_board_count numeric(15) NULL,
+	sum_too_wide_board_count numeric(15) NULL,
+	sum_too_short_board_count numeric(15) NULL,
+	sum_too_long_board_count numeric(15) NULL,
+	sum_variance_thin numeric(15, 3) NULL,
+	sum_variance_thick numeric(15, 3) NULL,
+	sum_variance_narrow numeric(15, 3) NULL,
+	sum_variance_wide numeric(15, 3) NULL,
+	sum_variance_short numeric(15, 3) NULL,
+	sum_variance_long numeric(15, 3) NULL,
+	created_datetime timestamp NOT NULL,
+	changed_datetime timestamp NOT NULL,
+	load_guid varchar(36) NULL,
+	load_timestamp timestamp NULL
+);
+CREATE INDEX idx_fact_dry_end_trimmer_board_summary_2024_06_18_bkp ON optimizer.fact_dry_end_trimmer_board_summary_2024_06_18_bkp USING btree (site_code, production_date, shift_code, area_name, line_name, cell_name);
+CREATE INDEX idx_fact_dry_end_trimmer_board_summary_2_2024_06_18_bkp ON optimizer.fact_dry_end_trimmer_board_summary_2024_06_18_bkp USING btree (production_date);
+CREATE UNIQUE INDEX pk_optimizer_fact_dry_end_trimmer_board_summary_2024_06_18_bkp ON optimizer.fact_dry_end_trimmer_board_summary_2024_06_18_bkp USING btree (seq_id);
+
+
+-- optimizer.fact_green_end_bucking_log_detail definition
+
+-- Drop table
+
+-- DROP TABLE optimizer.fact_green_end_bucking_log_detail;
+
+CREATE TABLE optimizer.fact_green_end_bucking_log_detail (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	bucking_log_detail_id int8 NOT NULL,
+	site_code varchar(10) NULL,
+	area_name varchar(255) NULL,
+	line_name varchar(255) NULL,
+	cell_name varchar(255) NULL,
+	shift_code varchar(50) NULL,
+	shift_name varchar(50) NULL,
+	crew_code varchar(50) NULL,
+	crew_name varchar(50) NULL,
+	production_date timestamp NULL,
+	record_datetime timestamp NULL,
+	specie_name varchar(255) NULL,
+	stem_id int8 NULL,
+	log_id int8 NULL,
+	stem_position varchar(10) NULL,
+	line_speed numeric(18, 4) NULL,
+	line_gap_feet numeric(18, 4) NULL,
+	large_end_diameter numeric(18, 4) NULL,
+	small_end_diameter numeric(18, 4) NULL,
+	taper numeric(18, 4) NULL,
+	sweep numeric(18, 4) NULL,
+	cubic_footage numeric(18, 4) NULL,
+	linear_footage numeric(18, 4) NULL,
+	board_footage numeric(18, 4) NULL,
+	log_count int4 NULL,
+	rejected_log_count int4 NULL,
+	optimized_log_count int4 NULL,
+	override_log_count int4 NULL,
+	process_guid varchar(100) NULL,
+	created_datetime timestamp NOT NULL,
+	changed_datetime timestamp NOT NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT pk_optimizer_fact_green_end_bucking_log_detail PRIMARY KEY (seq_id)
+);
+CREATE INDEX idx_fact_green_end_bucking_log_detail ON optimizer.fact_green_end_bucking_log_detail USING btree (site_code, production_date, shift_code, area_name, line_name, cell_name);
+CREATE INDEX idx_fact_green_end_bucking_log_detail_1 ON optimizer.fact_green_end_bucking_log_detail USING btree (site_code, record_datetime, area_name, line_name, cell_name);
+CREATE INDEX idx_fact_green_end_bucking_log_detail_2 ON optimizer.fact_green_end_bucking_log_detail USING btree (production_date);
+CREATE INDEX idx_fact_green_end_bucking_log_detail_3 ON optimizer.fact_green_end_bucking_log_detail USING btree (stem_position, linear_footage, rejected_log_count);
+CREATE INDEX uk_optimizer_fact_green_end_bucking_log_detail ON optimizer.fact_green_end_bucking_log_detail USING btree (_unique_key);
+
+
+-- optimizer.fact_green_end_bucking_log_summary definition
+
+-- Drop table
+
+-- DROP TABLE optimizer.fact_green_end_bucking_log_summary;
+
+CREATE TABLE optimizer.fact_green_end_bucking_log_summary (
+	seq_id bigserial NOT NULL,
+	site_code varchar(10) NULL,
+	area_name varchar(50) NULL,
+	line_name varchar(50) NULL,
+	cell_name varchar(50) NULL,
+	shift_code varchar(50) NULL,
+	shift_name varchar(50) NULL,
+	crew_code varchar(50) NULL,
+	crew_name varchar(50) NULL,
+	production_date timestamp NULL,
+	prod_utc_unix_ms int8 NULL,
+	sweep_classification varchar(20) NULL,
+	cant_length_classification varchar(20) NULL,
+	led_classification varchar(20) NULL,
+	sed_classification varchar(20) NULL,
+	stem_position varchar(20) NULL,
+	length_inches numeric(15) NULL,
+	sum_line_speed numeric(15, 3) NULL,
+	sum_line_gap_feet numeric(15, 3) NULL,
+	sum_large_end_diameter numeric(15, 3) NULL,
+	sum_small_end_diameter numeric(15, 3) NULL,
+	sum_taper numeric(15, 3) NULL,
+	sum_sweep numeric(15, 3) NULL,
+	sum_cubic_feet numeric(15, 3) NULL,
+	sum_linear_feet numeric(15, 3) NULL,
+	sum_log_count numeric(15, 3) NULL,
+	sum_rejected_log_count numeric(15, 3) NULL,
+	sum_optimized_log_count numeric(15, 3) NULL,
+	sum_override_log_count numeric(15, 3) NULL,
+	created_datetime timestamp NOT NULL,
+	changed_datetime timestamp NOT NULL,
+	load_guid varchar(36) NULL,
+	load_timestamp timestamp NULL
+);
+CREATE INDEX idx_fact_green_end_bucking_log_summary ON optimizer.fact_green_end_bucking_log_summary USING btree (site_code, production_date, shift_code, area_name, line_name, cell_name);
+CREATE INDEX idx_fact_green_end_bucking_log_summary_2 ON optimizer.fact_green_end_bucking_log_summary USING btree (production_date);
+CREATE UNIQUE INDEX pk_optimizer_fact_green_end_bucking_log_summary ON optimizer.fact_green_end_bucking_log_summary USING btree (seq_id);
+
+
+-- optimizer.fact_green_end_bucking_stem_detail definition
+
+-- Drop table
+
+-- DROP TABLE optimizer.fact_green_end_bucking_stem_detail;
+
+CREATE TABLE optimizer.fact_green_end_bucking_stem_detail (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	bucking_stem_detail_id int8 NOT NULL,
+	site_code varchar(10) NULL,
+	area_name varchar(255) NULL,
+	line_name varchar(255) NULL,
+	cell_name varchar(255) NULL,
+	shift_code varchar(50) NULL,
+	shift_name varchar(50) NULL,
+	crew_code varchar(50) NULL,
+	crew_name varchar(50) NULL,
+	production_date timestamp NULL,
+	record_datetime timestamp NULL,
+	specie_name varchar(255) NULL,
+	stem_id int8 NULL,
+	line_speed numeric(18, 4) NULL,
+	line_gap_feet numeric(18, 4) NULL,
+	large_end_diameter numeric(18, 4) NULL,
+	small_end_diameter numeric(18, 4) NULL,
+	taper numeric(18, 4) NULL,
+	sweep numeric(18, 4) NULL,
+	cubic_footage numeric(18, 4) NULL,
+	linear_footage numeric(18, 4) NULL,
+	board_footage numeric(18, 4) NULL,
+	stem_count int4 NULL,
+	rejected_stem_count int4 NULL,
+	optimized_stem_count int4 NULL,
+	override_stem_count int4 NULL,
+	process_guid varchar(100) NULL,
+	created_datetime timestamp NOT NULL,
+	changed_datetime timestamp NOT NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT pk_optimizer_fact_green_end_bucking_stem_detail PRIMARY KEY (seq_id)
+);
+CREATE INDEX idx_fact_green_end_bucking_stem_detail ON optimizer.fact_green_end_bucking_stem_detail USING btree (site_code, production_date, record_datetime, area_name, line_name, cell_name);
+CREATE INDEX idx_fact_green_end_bucking_stem_detail_2 ON optimizer.fact_green_end_bucking_stem_detail USING btree (production_date);
+CREATE INDEX uk_optimizer_fact_green_end_bucking_stem_detail ON optimizer.fact_green_end_bucking_stem_detail USING btree (_unique_key);
+
+
+-- optimizer.fact_green_end_bucking_stem_summary definition
+
+-- Drop table
+
+-- DROP TABLE optimizer.fact_green_end_bucking_stem_summary;
+
+CREATE TABLE optimizer.fact_green_end_bucking_stem_summary (
+	seq_id bigserial NOT NULL,
+	site_code varchar(10) NULL,
+	area_name varchar(50) NULL,
+	line_name varchar(50) NULL,
+	cell_name varchar(50) NULL,
+	shift_code varchar(50) NULL,
+	shift_name varchar(50) NULL,
+	crew_code varchar(50) NULL,
+	crew_name varchar(50) NULL,
+	production_date timestamp NULL,
+	prod_utc_unix_ms int8 NULL,
+	sweep_classification int4 NULL,
+	stem_length_classification int4 NULL,
+	led_classification int4 NULL,
+	sed_classification int4 NULL,
+	sum_small_end_diameter numeric(15, 3) NULL,
+	sum_large_end_diameter numeric(15, 3) NULL,
+	sum_taper numeric(15, 3) NULL,
+	sum_sweep numeric(15, 3) NULL,
+	sum_line_speed numeric(15, 3) NULL,
+	sum_line_gap_feet numeric(15, 3) NULL,
+	sum_cubic_feet numeric(15, 3) NULL,
+	sum_linear_feet numeric(15, 3) NULL,
+	sum_stem_count numeric(15, 3) NULL,
+	sum_rejected_stem_count numeric(15, 3) NULL,
+	sum_opt_stem_count numeric(15, 3) NULL,
+	sum_override_stem_count numeric(15, 3) NULL,
+	sum_stem_count_sed_undersized numeric(15, 3) NULL,
+	sum_stem_count_led_oversized numeric(15, 3) NULL,
+	sum_stem_sed_undersized numeric(15, 3) NULL,
+	sum_stem_led_oversized numeric(15, 3) NULL,
+	sum_stem_count_oversweep numeric(15, 3) NULL,
+	sum_stem_oversweep numeric(15, 3) NULL,
+	sum_stem_count_too_short numeric(15, 3) NULL,
+	sum_stem_count_too_long numeric(15, 3) NULL,
+	sum_stem_too_short numeric(15, 3) NULL,
+	sum_stem_too_long numeric(15, 3) NULL,
+	created_datetime timestamp NOT NULL,
+	changed_datetime timestamp NOT NULL,
+	load_guid varchar(36) NULL,
+	load_timestamp timestamp NULL
+);
+CREATE INDEX idx_fact_green_end_bucking_stem_summary ON optimizer.fact_green_end_bucking_stem_summary USING btree (site_code, production_date, shift_code, area_name, line_name, cell_name);
+CREATE INDEX idx_fact_green_end_bucking_stem_summary_2 ON optimizer.fact_green_end_bucking_stem_summary USING btree (production_date);
+CREATE UNIQUE INDEX pk_optimizer_fact_green_end_bucking_stem_summary ON optimizer.fact_green_end_bucking_stem_summary USING btree (seq_id);
+
+
+-- optimizer.fact_green_end_edger_board_detail definition
+
+-- Drop table
+
+-- DROP TABLE optimizer.fact_green_end_edger_board_detail;
+
+CREATE TABLE optimizer.fact_green_end_edger_board_detail (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	edger_board_detail_id int8 NOT NULL,
+	site_code varchar(10) NULL,
+	area_name varchar(255) NULL,
+	line_name varchar(255) NULL,
+	cell_name varchar(255) NULL,
+	shift_code varchar(50) NULL,
+	shift_name varchar(50) NULL,
+	crew_code varchar(50) NULL,
+	crew_name varchar(50) NULL,
+	production_date timestamp NULL,
+	record_datetime timestamp NULL,
+	specie_name varchar(255) NULL,
+	input_board_id int8 NULL,
+	output_board_id int8 NULL,
+	input_solution_flag bool NULL,
+	solution_number int4 NULL,
+	input_actual_thickness_inches numeric(18, 4) NULL,
+	input_actual_width_inches numeric(18, 4) NULL,
+	input_actual_length_inches numeric(18, 4) NULL,
+	input_nominal_thickness_inches numeric(18, 4) NULL,
+	input_nominal_width_inches numeric(18, 4) NULL,
+	input_nominal_length_inches numeric(18, 4) NULL,
+	output_nominal_thickness_inches numeric(18, 4) NULL,
+	output_nominal_width_inches numeric(18, 4) NULL,
+	output_nominal_length_inches numeric(18, 4) NULL,
+	source_grade varchar(255) NULL,
+	input_board_count int4 NULL,
+	output_board_count int4 NULL,
+	slash_board_count int4 NULL,
+	reman_board_count int4 NULL,
+	resawn_board_count int4 NULL,
+	input_board_footage numeric(18, 4) NULL,
+	output_board_footage numeric(18, 4) NULL,
+	slash_board_footage numeric(18, 4) NULL,
+	trim_board_footage numeric(18, 4) NULL,
+	reman_board_footage numeric(18, 4) NULL,
+	resawn_board_footage numeric(18, 4) NULL,
+	process_guid varchar(100) NULL,
+	created_datetime timestamp NOT NULL,
+	changed_datetime timestamp NOT NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT pk_optimizer_fact_green_end_edger_board_detail PRIMARY KEY (seq_id)
+);
+CREATE INDEX idx_fact_green_end_edger_board_detail ON optimizer.fact_green_end_edger_board_detail USING btree (site_code, production_date, shift_code, area_name, line_name, cell_name);
+CREATE INDEX idx_fact_green_end_edger_board_detail_1 ON optimizer.fact_green_end_edger_board_detail USING btree (site_code, record_datetime, area_name, line_name, cell_name);
+CREATE INDEX idx_fact_green_end_edger_board_detail_2 ON optimizer.fact_green_end_edger_board_detail USING btree (production_date);
+CREATE INDEX uk_optimizer_fact_green_end_edger_board_detail ON optimizer.fact_green_end_edger_board_detail USING btree (_unique_key);
+
+
+-- optimizer.fact_green_end_edger_board_summary definition
+
+-- Drop table
+
+-- DROP TABLE optimizer.fact_green_end_edger_board_summary;
+
+CREATE TABLE optimizer.fact_green_end_edger_board_summary (
+	seq_id bigserial NOT NULL,
+	site_code varchar(10) NULL,
+	area_name varchar(50) NULL,
+	line_name varchar(50) NULL,
+	cell_name varchar(50) NULL,
+	shift_code varchar(50) NULL,
+	shift_name varchar(50) NULL,
+	crew_code varchar(50) NULL,
+	crew_name varchar(50) NULL,
+	production_date timestamp NULL,
+	prod_utc_unix_ms int8 NULL,
+	input_nominal_thickness_inches numeric(15, 3) NULL,
+	input_nominal_width_inches numeric(15, 3) NULL,
+	input_nominal_length_inches numeric(15, 3) NULL,
+	output_nominal_thickness_inches numeric(15, 3) NULL,
+	output_nominal_width_inches numeric(15, 3) NULL,
+	output_nominal_length_inches numeric(15, 3) NULL,
+	base_dimension_output varchar(20) NULL,
+	product_dimension_output varchar(20) NULL,
+	sum_input_actual_thickness_inches numeric(18, 4) NULL,
+	sum_input_actual_width_inches numeric(18, 4) NULL,
+	sum_input_actual_length_inches numeric(18, 4) NULL,
+	sum_input_board_count numeric(15, 3) NULL,
+	sum_output_board_count numeric(15, 3) NULL,
+	sum_slash_board_count numeric(15, 3) NULL,
+	sum_reman_board_count numeric(15, 3) NULL,
+	sum_resawn_board_count numeric(15, 3) NULL,
+	sum_input_board_footage numeric(15, 3) NULL,
+	sum_output_board_footage numeric(15, 3) NULL,
+	sum_slash_board_footage numeric(15, 3) NULL,
+	sum_trim_board_footage numeric(15, 3) NULL,
+	sum_reman_board_footage numeric(15, 3) NULL,
+	sum_resawn_board_footage numeric(15, 3) NULL,
+	created_datetime timestamp NOT NULL,
+	changed_datetime timestamp NOT NULL,
+	load_guid varchar(36) NULL,
+	load_timestamp timestamp NULL
+);
+CREATE INDEX idx_fact_green_end_edger_board_summary ON optimizer.fact_green_end_edger_board_summary USING btree (site_code, production_date, shift_code, area_name, line_name, cell_name);
+CREATE INDEX idx_fact_green_end_edger_board_summary_2 ON optimizer.fact_green_end_edger_board_summary USING btree (production_date);
+CREATE UNIQUE INDEX pk_optimizer_fact_green_end_edger_board_summary ON optimizer.fact_green_end_edger_board_summary USING btree (seq_id);
+
+
+-- optimizer.fact_green_end_primary_board_detail definition
+
+-- Drop table
+
+-- DROP TABLE optimizer.fact_green_end_primary_board_detail;
+
+CREATE TABLE optimizer.fact_green_end_primary_board_detail (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	primary_board_detail_id int8 NOT NULL,
+	site_code varchar(10) NULL,
+	area_name varchar(255) NULL,
+	line_name varchar(255) NULL,
+	cell_name varchar(255) NULL,
+	shift_code varchar(50) NULL,
+	shift_name varchar(50) NULL,
+	crew_code varchar(50) NULL,
+	crew_name varchar(50) NULL,
+	production_date timestamp NULL,
+	record_datetime timestamp NULL,
+	specie_name varchar(255) NULL,
+	log_id int8 NULL,
+	board_id int8 NULL,
+	nominal_thickness_inches numeric(18, 4) NULL,
+	nominal_width_inches numeric(18, 4) NULL,
+	nominal_length_inches numeric(18, 4) NULL,
+	actual_thickness_inches numeric(18, 4) NULL,
+	actual_width_inches numeric(18, 4) NULL,
+	actual_length_inches numeric(18, 4) NULL,
+	board_count int4 NULL,
+	board_footage numeric(18, 4) NULL,
+	side_board_count int4 NULL,
+	edger_side_board_count int4 NULL,
+	edger_gang_board_count int4 NULL,
+	profiled_board_count int4 NULL,
+	side_board_footage numeric(18, 4) NULL,
+	edger_side_board_footage numeric(18, 4) NULL,
+	edger_gang_board_footage numeric(18, 4) NULL,
+	profiled_board_footage numeric(18, 4) NULL,
+	process_guid varchar(100) NULL,
+	created_datetime timestamp NOT NULL,
+	changed_datetime timestamp NOT NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT pk_optimizer_fact_green_end_primary_board_detail PRIMARY KEY (seq_id)
+);
+CREATE INDEX idx_fact_green_end_primary_board_detail ON optimizer.fact_green_end_primary_board_detail USING btree (site_code, production_date, log_id, area_name, line_name, cell_name, shift_code);
+CREATE INDEX idx_fact_green_end_primary_board_detail_1 ON optimizer.fact_green_end_primary_board_detail USING btree (site_code, record_datetime, area_name, line_name, cell_name);
+CREATE INDEX idx_fact_green_end_primary_board_detail_2 ON optimizer.fact_green_end_primary_board_detail USING btree (production_date);
+CREATE INDEX uk_optimizer_fact_green_end_primary_board_detail ON optimizer.fact_green_end_primary_board_detail USING btree (_unique_key);
+
+
+-- optimizer.fact_green_end_primary_board_summary definition
+
+-- Drop table
+
+-- DROP TABLE optimizer.fact_green_end_primary_board_summary;
+
+CREATE TABLE optimizer.fact_green_end_primary_board_summary (
+	seq_id bigserial NOT NULL,
+	site_code varchar(10) NULL,
+	area_name varchar(50) NULL,
+	line_name varchar(50) NULL,
+	cell_name varchar(50) NULL,
+	shift_code varchar(50) NULL,
+	shift_name varchar(50) NULL,
+	crew_code varchar(50) NULL,
+	crew_name varchar(50) NULL,
+	production_date timestamp NULL,
+	prod_utc_unix_ms int8 NULL,
+	nominal_thickness_inches numeric(15) NULL,
+	nominal_width_inches numeric(15) NULL,
+	nominal_length_inches numeric(15) NULL,
+	base_dimension varchar(20) NULL,
+	product_dimension varchar(20) NULL,
+	sum_board_count numeric(15, 3) NULL,
+	sum_board_footage numeric(15, 3) NULL,
+	sum_side_board_count numeric(15, 3) NULL,
+	sum_edger_side_board_count numeric(15, 3) NULL,
+	sum_edger_gang_board_count numeric(15, 3) NULL,
+	sum_profiled_board_count numeric(15, 3) NULL,
+	sum_side_board_footage numeric(15, 3) NULL,
+	sum_edger_side_board_footage numeric(15, 3) NULL,
+	sum_edger_gang_board_footage numeric(15, 3) NULL,
+	sum_profiled_board_footage numeric(15, 3) NULL,
+	created_datetime timestamp NOT NULL,
+	changed_datetime timestamp NOT NULL,
+	load_guid varchar(36) NULL,
+	load_timestamp timestamp NULL
+);
+CREATE INDEX idx_fact_green_end_primary_board_summary ON optimizer.fact_green_end_primary_board_summary USING btree (site_code, production_date, shift_code, area_name, line_name, cell_name);
+CREATE INDEX idx_fact_green_end_primary_board_summary_2 ON optimizer.fact_green_end_primary_board_summary USING btree (production_date);
+CREATE UNIQUE INDEX pk_optimizer_fact_green_end_primary_board_summary ON optimizer.fact_green_end_primary_board_summary USING btree (seq_id);
+
+
+-- optimizer.fact_green_end_primary_log_detail definition
+
+-- Drop table
+
+-- DROP TABLE optimizer.fact_green_end_primary_log_detail;
+
+CREATE TABLE optimizer.fact_green_end_primary_log_detail (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	primary_log_detail_id int8 NOT NULL,
+	site_code varchar(10) NULL,
+	area_name varchar(255) NULL,
+	line_name varchar(255) NULL,
+	cell_name varchar(255) NULL,
+	shift_code varchar(50) NULL,
+	shift_name varchar(50) NULL,
+	crew_code varchar(50) NULL,
+	crew_name varchar(50) NULL,
+	production_date timestamp NULL,
+	record_datetime timestamp NULL,
+	specie_name varchar(255) NULL,
+	log_id int8 NULL,
+	line_speed numeric(18, 4) NULL,
+	line_gap_feet numeric(18, 4) NULL,
+	line_gap_too_long_count int4 NULL,
+	line_gap_too_short_count int4 NULL,
+	large_end_diameter numeric(18, 4) NULL,
+	small_end_diameter numeric(18, 4) NULL,
+	taper numeric(18, 4) NULL,
+	sweep numeric(18, 4) NULL,
+	scribner numeric(16, 6) NULL,
+	thickness_inches numeric(18, 4) NULL,
+	width_inches numeric(18, 4) NULL,
+	length_inches numeric(18, 4) NULL,
+	log_tons numeric(18, 4) NULL,
+	cubic_footage numeric(18, 4) NULL,
+	linear_footage numeric(18, 4) NULL,
+	board_footage numeric(18, 4) NULL,
+	log_count int4 NULL,
+	no_solution_log_count int4 NULL,
+	diameter_solution_log_count int4 NULL,
+	optimized_solution_log_count int4 NULL,
+	override_log_count int4 NULL,
+	edger_side_board_count int4 NULL,
+	process_guid varchar(100) NULL,
+	created_datetime timestamp NOT NULL,
+	changed_datetime timestamp NOT NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT pk_optimizer_fact_green_end_primary_log_detail PRIMARY KEY (seq_id)
+);
+CREATE INDEX idx_fact_green_end_primary_log_detail ON optimizer.fact_green_end_primary_log_detail USING btree (site_code, production_date, shift_code, area_name, line_name, cell_name);
+CREATE INDEX idx_fact_green_end_primary_log_detail_1 ON optimizer.fact_green_end_primary_log_detail USING btree (site_code, record_datetime, area_name, line_name, cell_name);
+CREATE INDEX idx_fact_green_end_primary_log_detail_2 ON optimizer.fact_green_end_primary_log_detail USING btree (production_date);
+CREATE INDEX uk_optimier_fact_green_end_primary_log_detail ON optimizer.fact_green_end_primary_log_detail USING btree (_unique_key);
+
+
+-- optimizer.fact_green_end_primary_log_summary definition
+
+-- Drop table
+
+-- DROP TABLE optimizer.fact_green_end_primary_log_summary;
+
+CREATE TABLE optimizer.fact_green_end_primary_log_summary (
+	seq_id bigserial NOT NULL,
+	site_code varchar(10) NULL,
+	area_name varchar(50) NULL,
+	line_name varchar(50) NULL,
+	cell_name varchar(50) NULL,
+	shift_code varchar(50) NULL,
+	shift_name varchar(50) NULL,
+	crew_code varchar(50) NULL,
+	crew_name varchar(50) NULL,
+	production_date timestamp NULL,
+	prod_utc_unix_ms int8 NULL,
+	sweep_classification varchar(20) NULL,
+	cant_length_classification varchar(20) NULL,
+	led_classification varchar(20) NULL,
+	sed_classification varchar(20) NULL,
+	cant_thickness_classification varchar(20) NULL,
+	sum_line_speed numeric(15, 3) NULL,
+	sum_line_gap_feet numeric(15, 3) NULL,
+	sum_large_end_diameter numeric(15, 3) NULL,
+	sum_small_end_diameter numeric(15, 3) NULL,
+	sum_taper numeric(15, 3) NULL,
+	sum_sweep numeric(15, 3) NULL,
+	sum_log_tons numeric(18, 9) NULL,
+	sum_cubic_footage numeric(15, 3) NULL,
+	sum_linear_feet numeric(15, 3) NULL,
+	sum_board_footage numeric(15, 3) NULL,
+	sum_log_count int4 NULL,
+	sum_no_solution_log_count int4 NULL,
+	sum_diameter_solution_log_count int4 NULL,
+	sum_optimized_solution_log_count int4 NULL,
+	sum_override_log_count int4 NULL,
+	sum_edger_side_board_count int4 NULL,
+	sum_thickness_inches numeric(15, 3) NULL,
+	sum_width_inches numeric(15, 3) NULL,
+	sum_length_inches numeric(15, 3) NULL,
+	created_datetime timestamp NOT NULL,
+	changed_datetime timestamp NOT NULL,
+	load_guid varchar(36) NULL,
+	load_timestamp timestamp NULL
+);
+CREATE INDEX idx_fact_green_end_primary_log_summary ON optimizer.fact_green_end_primary_log_summary USING btree (site_code, production_date, shift_code, area_name, line_name, cell_name);
+CREATE INDEX idx_fact_green_end_primary_log_summary_2 ON optimizer.fact_green_end_primary_log_summary USING btree (production_date);
+CREATE UNIQUE INDEX pk_optimizer_fact_green_end_primary_log_summary ON optimizer.fact_green_end_primary_log_summary USING btree (seq_id);
+
+
+-- optimizer.fact_green_end_secondary_board_detail definition
+
+-- Drop table
+
+-- DROP TABLE optimizer.fact_green_end_secondary_board_detail;
+
+CREATE TABLE optimizer.fact_green_end_secondary_board_detail (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	secondary_board_detail_id int8 NOT NULL,
+	site_code varchar(10) NULL,
+	area_name varchar(255) NULL,
+	line_name varchar(255) NULL,
+	cell_name varchar(255) NULL,
+	shift_code varchar(50) NULL,
+	shift_name varchar(50) NULL,
+	crew_code varchar(50) NULL,
+	crew_name varchar(50) NULL,
+	production_date timestamp NULL,
+	record_datetime timestamp NULL,
+	specie_name varchar(255) NULL,
+	log_id int8 NULL,
+	board_id int8 NULL,
+	nominal_thickness_inches numeric(18, 4) NULL,
+	nominal_width_inches numeric(18, 4) NULL,
+	nominal_length_inches numeric(18, 4) NULL,
+	actual_thickness_inches numeric(18, 4) NULL,
+	actual_width_inches numeric(18, 4) NULL,
+	actual_length_inches numeric(18, 4) NULL,
+	board_count int4 NULL,
+	board_footage numeric(18, 4) NULL,
+	side_board_count int4 NULL,
+	edger_side_board_count int4 NULL,
+	edger_gang_board_count int4 NULL,
+	profiled_board_count int4 NULL,
+	side_board_footage numeric(18, 4) NULL,
+	edger_side_board_footage numeric(18, 4) NULL,
+	edger_gang_board_footage numeric(18, 4) NULL,
+	profiled_board_footage numeric(18, 4) NULL,
+	process_guid varchar(100) NULL,
+	created_datetime timestamp NOT NULL,
+	changed_datetime timestamp NOT NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT pk_optimizer_fact_green_end_secondary_board_detail PRIMARY KEY (seq_id)
+);
+CREATE INDEX idx_fact_green_end_secondary_board_detail ON optimizer.fact_green_end_secondary_board_detail USING btree (site_code, production_date, log_id, area_name, line_name, cell_name, shift_code);
+CREATE INDEX idx_fact_green_end_secondary_board_detail_1 ON optimizer.fact_green_end_secondary_board_detail USING btree (site_code, record_datetime, area_name, line_name, cell_name);
+CREATE INDEX idx_fact_green_end_secondary_board_detail_2 ON optimizer.fact_green_end_secondary_board_detail USING btree (production_date);
+CREATE INDEX uk_optimizer_fact_green_end_secondary_board_detail ON optimizer.fact_green_end_secondary_board_detail USING btree (_unique_key);
+
+
+-- optimizer.fact_green_end_secondary_board_summary definition
+
+-- Drop table
+
+-- DROP TABLE optimizer.fact_green_end_secondary_board_summary;
+
+CREATE TABLE optimizer.fact_green_end_secondary_board_summary (
+	seq_id bigserial NOT NULL,
+	site_code varchar(10) NULL,
+	area_name varchar(50) NULL,
+	line_name varchar(50) NULL,
+	cell_name varchar(50) NULL,
+	shift_code varchar(50) NULL,
+	shift_name varchar(50) NULL,
+	crew_code varchar(50) NULL,
+	crew_name varchar(50) NULL,
+	production_date timestamp NULL,
+	prod_utc_unix_ms int8 NULL,
+	nominal_thickness_inches numeric(15) NULL,
+	nominal_width_inches numeric(15) NULL,
+	nominal_length_inches numeric(15) NULL,
+	sum_actual_thickness_inches numeric(15) NULL,
+	sum_actual_width_inches numeric(15) NULL,
+	sum_actual_length_inches numeric(15) NULL,
+	base_dimension varchar(20) NULL,
+	product_dimension varchar(20) NULL,
+	sum_board_count numeric(15, 3) NULL,
+	sum_board_footage numeric(15, 3) NULL,
+	sum_side_board_count numeric(15, 3) NULL,
+	sum_edger_side_board_count numeric(15, 3) NULL,
+	sum_edger_gang_board_count numeric(15, 3) NULL,
+	sum_profiled_board_count numeric(15, 3) NULL,
+	sum_side_board_footage numeric(15, 3) NULL,
+	sum_edger_side_board_footage numeric(15, 3) NULL,
+	sum_edger_gang_board_footage numeric(15, 3) NULL,
+	sum_profiled_board_footage numeric(15, 3) NULL,
+	created_datetime timestamp NOT NULL,
+	changed_datetime timestamp NOT NULL,
+	load_guid varchar(36) NULL,
+	load_timestamp timestamp NULL
+);
+CREATE INDEX idx_fact_green_end_secondary_board_summary ON optimizer.fact_green_end_secondary_board_summary USING btree (site_code, production_date, shift_code, area_name, line_name, cell_name);
+CREATE INDEX idx_fact_green_end_secondary_board_summary_2 ON optimizer.fact_green_end_secondary_board_summary USING btree (production_date);
+CREATE UNIQUE INDEX pk_optimizer_fact_green_end_secondary_board_summary ON optimizer.fact_green_end_secondary_board_summary USING btree (seq_id);
+
+
+-- optimizer.fact_green_end_secondary_log_detail definition
+
+-- Drop table
+
+-- DROP TABLE optimizer.fact_green_end_secondary_log_detail;
+
+CREATE TABLE optimizer.fact_green_end_secondary_log_detail (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	secondary_log_detail_id int8 NOT NULL,
+	site_code varchar(10) NULL,
+	area_name varchar(255) NULL,
+	line_name varchar(255) NULL,
+	cell_name varchar(255) NULL,
+	shift_code varchar(50) NULL,
+	shift_name varchar(50) NULL,
+	crew_code varchar(50) NULL,
+	crew_name varchar(50) NULL,
+	production_date timestamp NULL,
+	record_datetime timestamp NULL,
+	specie_name varchar(255) NULL,
+	log_id int8 NULL,
+	line_speed numeric(18, 4) NULL,
+	line_gap_feet numeric(18, 4) NULL,
+	line_gap_too_long_count int4 NULL,
+	line_gap_too_short_count int4 NULL,
+	large_end_diameter numeric(18, 4) NULL,
+	small_end_diameter numeric(18, 4) NULL,
+	taper numeric(18, 4) NULL,
+	sweep numeric(18, 4) NULL,
+	scribner numeric(16, 6) NULL,
+	thickness_inches numeric(18, 4) NULL,
+	width_inches numeric(18, 4) NULL,
+	length_inches numeric(18, 4) NULL,
+	log_tons numeric(18, 4) NULL,
+	cubic_footage numeric(18, 4) NULL,
+	linear_footage numeric(18, 4) NULL,
+	board_footage numeric(18, 4) NULL,
+	log_count int4 NULL,
+	no_solution_log_count int4 NULL,
+	diameter_solution_log_count int4 NULL,
+	optimized_solution_log_count int4 NULL,
+	override_log_count int4 NULL,
+	process_guid varchar(100) NULL,
+	created_datetime timestamp NOT NULL,
+	changed_datetime timestamp NOT NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT pk_optimizer_fact_green_end_secondary_log_detail PRIMARY KEY (seq_id)
+);
+CREATE INDEX idx_fact_green_end_secondary_log_detail ON optimizer.fact_green_end_secondary_log_detail USING btree (site_code, production_date, shift_code, area_name, line_name, cell_name);
+CREATE INDEX idx_fact_green_end_secondary_log_detail_1 ON optimizer.fact_green_end_secondary_log_detail USING btree (site_code, record_datetime, area_name, line_name, cell_name);
+CREATE INDEX idx_fact_green_end_secondary_log_detail_2 ON optimizer.fact_green_end_secondary_log_detail USING btree (production_date);
+CREATE INDEX uk_optimizer_fact_green_end_secondary_log_detail ON optimizer.fact_green_end_secondary_log_detail USING btree (_unique_key);
+
+
+-- optimizer.fact_green_end_secondary_log_summary definition
+
+-- Drop table
+
+-- DROP TABLE optimizer.fact_green_end_secondary_log_summary;
+
+CREATE TABLE optimizer.fact_green_end_secondary_log_summary (
+	seq_id bigserial NOT NULL,
+	site_code varchar(10) NULL,
+	area_name varchar(50) NULL,
+	line_name varchar(50) NULL,
+	cell_name varchar(50) NULL,
+	shift_code varchar(50) NULL,
+	shift_name varchar(50) NULL,
+	crew_code varchar(50) NULL,
+	crew_name varchar(50) NULL,
+	production_date timestamp NULL,
+	prod_utc_unix_ms int8 NULL,
+	cant_length_classification varchar(20) NULL,
+	sweep_classification varchar(20) NULL,
+	led_classification varchar(20) NULL,
+	sed_classification varchar(20) NULL,
+	cant_thickness_classification varchar(20) NULL,
+	sum_line_speed numeric(15, 3) NULL,
+	sum_line_gap_feet numeric(15, 3) NULL,
+	sum_large_end_diameter numeric(15, 3) NULL,
+	sum_small_end_diameter numeric(15, 3) NULL,
+	sum_taper numeric(15, 3) NULL,
+	sum_sweep numeric(15, 3) NULL,
+	sum_log_tons numeric(18, 9) NULL,
+	sum_cubic_footage numeric(15, 3) NULL,
+	sum_linear_feet numeric(15, 3) NULL,
+	sum_board_footage numeric(15, 3) NULL,
+	sum_log_count int4 NULL,
+	sum_no_solution_log_count int4 NULL,
+	sum_diameter_solution_log_count int4 NULL,
+	sum_optimized_solution_log_count int4 NULL,
+	sum_override_log_count int4 NULL,
+	sum_thickness_inches numeric(15, 3) NULL,
+	sum_width_inches numeric(15, 3) NULL,
+	sum_length_inches numeric(15, 3) NULL,
+	created_datetime timestamp NOT NULL,
+	changed_datetime timestamp NOT NULL,
+	load_guid varchar(36) NULL,
+	load_timestamp timestamp NULL
+);
+CREATE INDEX idx_fact_green_end_secondary_log_summary ON optimizer.fact_green_end_secondary_log_summary USING btree (site_code, production_date, shift_code, area_name, line_name, cell_name);
+CREATE INDEX idx_fact_green_end_secondary_log_summary_2 ON optimizer.fact_green_end_secondary_log_summary USING btree (production_date);
+CREATE UNIQUE INDEX pk_optimizer_fact_green_end_secondary_log_summary ON optimizer.fact_green_end_secondary_log_summary USING btree (seq_id);
+
+
+-- optimizer.fact_green_end_trimmer_board_detail definition
+
+-- Drop table
+
+-- DROP TABLE optimizer.fact_green_end_trimmer_board_detail;
+
+CREATE TABLE optimizer.fact_green_end_trimmer_board_detail (
+	seq_id bigserial NOT NULL,
+	"_source_instance_name" varchar(50) NOT NULL,
+	trimmer_board_detail_id int8 NOT NULL,
+	site_code varchar(10) NULL,
+	area_name varchar(255) NULL,
+	line_name varchar(255) NULL,
+	cell_name varchar(255) NULL,
+	shift_code varchar(50) NULL,
+	shift_name varchar(50) NULL,
+	crew_code varchar(50) NULL,
+	crew_name varchar(50) NULL,
+	production_date timestamp NULL,
+	record_datetime timestamp NULL,
+	specie_name varchar(255) NULL,
+	input_board_id int8 NULL,
+	output_board_id int8 NULL,
+	input_solution_flag bool NULL,
+	solution_number int4 NULL,
+	input_actual_thickness_inches numeric(18, 4) NULL,
+	input_actual_width_inches numeric(18, 4) NULL,
+	input_actual_length_inches numeric(18, 4) NULL,
+	input_nominal_thickness_inches int4 NULL,
+	input_nominal_width_inches int4 NULL,
+	input_nominal_length_inches int4 NULL,
+	output_nominal_thickness_inches int4 NULL,
+	output_nominal_width_inches int4 NULL,
+	output_nominal_length_inches int4 NULL,
+	source_grade varchar(255) NULL,
+	input_board_count int4 NULL,
+	output_board_count int4 NULL,
+	slash_board_count int4 NULL,
+	reman_board_count int4 NULL,
+	rerun_board_count int4 NULL,
+	resawn_board_count int4 NULL,
+	input_board_footage numeric(18, 4) NULL,
+	output_board_footage numeric(18, 4) NULL,
+	slash_board_footage numeric(18, 4) NULL,
+	trim_block_length numeric(18, 4) NULL,
+	trim_block_board_footage numeric(18, 4) NULL,
+	trim_board_footage numeric(18, 4) NULL,
+	reman_board_footage numeric(18, 4) NULL,
+	rerun_board_footage numeric(18, 4) NULL,
+	resawn_board_footage numeric(18, 4) NULL,
+	process_guid varchar(100) NULL,
+	created_datetime timestamp NOT NULL,
+	changed_datetime timestamp NOT NULL,
+	"_item_change_tracking_detail_id" int8 NULL,
+	"_item_change_tracking_datetime" timestamp NULL,
+	"_extract_guid" varchar(36) NOT NULL,
+	"_extract_timestamp" timestamp NULL,
+	"_load_guid" varchar(36) NOT NULL,
+	"_load_timestamp" timestamp NULL,
+	"_unique_key" varchar(32) NOT NULL,
+	CONSTRAINT pk_optimizer_fact_green_end_trimmer_board_detail PRIMARY KEY (seq_id)
+);
+CREATE INDEX idx_fact_green_end_trimmer_board_detail ON optimizer.fact_green_end_trimmer_board_detail USING btree (site_code, production_date, shift_code, area_name, line_name, cell_name);
+CREATE INDEX idx_fact_green_end_trimmer_board_detail_1 ON optimizer.fact_green_end_trimmer_board_detail USING btree (site_code, record_datetime, area_name, line_name, cell_name);
+CREATE INDEX idx_fact_green_end_trimmer_board_detail_2 ON optimizer.fact_green_end_trimmer_board_detail USING btree (production_date);
+CREATE INDEX uk_optimizer_fact_green_end_trimmer_board_detail ON optimizer.fact_green_end_trimmer_board_detail USING btree (_unique_key);
+
+
+-- optimizer.fact_green_end_trimmer_board_summary definition
+
+-- Drop table
+
+-- DROP TABLE optimizer.fact_green_end_trimmer_board_summary;
+
+CREATE TABLE optimizer.fact_green_end_trimmer_board_summary (
+	seq_id bigserial NOT NULL,
+	site_code varchar(10) NULL,
+	area_name varchar(50) NULL,
+	line_name varchar(50) NULL,
+	cell_name varchar(50) NULL,
+	shift_code varchar(50) NULL,
+	shift_name varchar(50) NULL,
+	crew_code varchar(50) NULL,
+	crew_name varchar(50) NULL,
+	production_date timestamp NULL,
+	prod_utc_unix_ms int8 NULL,
+	input_nominal_thickness_inches int4 NULL,
+	input_nominal_width_inches int4 NULL,
+	input_nominal_length_inches int4 NULL,
+	output_nominal_thickness_inches numeric(15, 3) NULL,
+	output_nominal_width_inches numeric(15, 3) NULL,
+	ouput_nominal_length_inches numeric(15, 3) NULL,
+	base_dimension_input varchar(50) NULL,
+	product_dimension_input varchar(50) NULL,
+	product_dimension_output varchar(50) NULL,
+	standard_grade varchar(20) NULL,
+	sum_input_actual_thickness numeric(15, 3) NULL,
+	sum_input_actual_width numeric(15, 3) NULL,
+	sum_input_actual_length numeric(15, 3) NULL,
+	sum_input_board_count int4 NULL,
+	sum_output_board_count int4 NULL,
+	sum_input_board_footage numeric(18, 4) NULL,
+	sum_output_board_footage numeric(18, 4) NULL,
+	sum_reman_board_count int4 NULL,
+	sum_reman_board_footage numeric(18, 4) NULL,
+	sum_rerun_board_count int4 NULL,
+	sum_rerun_board_footage numeric(18, 4) NULL,
+	sum_slash_board_count int4 NULL,
+	sum_slash_board_footage numeric(18, 4) NULL,
+	sum_trim_loss_board_footage numeric(18, 4) NULL,
+	sum_trim_block_board_footage numeric(18, 4) NULL,
+	sum_too_thin_board_count int4 NULL,
+	sum_too_thick_board_count int4 NULL,
+	sum_too_narrow_board_count int4 NULL,
+	sum_too_wide_board_count int4 NULL,
+	sum_too_short_board_count int4 NULL,
+	sum_too_long_board_count int4 NULL,
+	sum_variance_thin numeric(15, 3) NULL,
+	sum_variance_thick numeric(15, 3) NULL,
+	sum_variance_narrow numeric(15, 3) NULL,
+	sum_variance_wide numeric(15, 3) NULL,
+	sum_variance_short numeric(15, 3) NULL,
+	sum_variance_long numeric(15, 3) NULL,
+	created_datetime timestamp NOT NULL,
+	changed_datetime timestamp NOT NULL,
+	load_guid varchar(36) NULL,
+	load_timestamp timestamp NULL
+);
+CREATE INDEX idx_fact_green_end_trimmer_board_summary ON optimizer.fact_green_end_trimmer_board_summary USING btree (site_code, production_date, shift_code, area_name, line_name, cell_name);
+CREATE INDEX idx_fact_green_end_trimmer_board_summary_2 ON optimizer.fact_green_end_trimmer_board_summary USING btree (production_date);
+CREATE UNIQUE INDEX pk_optimizer_fact_green_end_trimmer_board_summary ON optimizer.fact_green_end_trimmer_board_summary USING btree (seq_id);
